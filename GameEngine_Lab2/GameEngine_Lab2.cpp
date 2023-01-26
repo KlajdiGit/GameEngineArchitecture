@@ -1,10 +1,17 @@
-// GameEngine_Lab2.cpp : This file contains the 'main' function. Program execution begins and ends there.
-//
-
 #include <iostream>
+#include "FileController.h"
 
 int main()
 {
-    std::cout << "Hello World!\n";
+	FileController* fc = &FileController::Instance();
+	cout << fc->GetCurDirectory() << endl;
+	int fs = fc->GetFileSize("FileController.cpp");
+	unsigned char* buffer = new unsigned char[fs];
+	if (fc->ReadFile("FileController.cpp", buffer, fs))
+	{
+		cout << "File read operation successful." << endl;
+	}
+   
+	delete[] buffer;
 }
 

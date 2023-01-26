@@ -127,7 +127,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="FileController.cpp" />
     <ClCompile Include="GameEngine_Lab2.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="FileController.h" />
+    <ClInclude Include="Singleton.h" />
+    <ClInclude Include="StandardIncludes.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
