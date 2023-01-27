@@ -6,7 +6,7 @@ class StackAllocator
 public:
 	//Constructors/Destructors
 	StackAllocator();
-	~StackAllocator();
+	virtual ~StackAllocator();
 
 	//Accessors
 	unsigned char* GetMarker() { return m_marker;  }
