@@ -3,6 +3,7 @@
 
 int main()
 {
+
 	FileController* fc = &FileController::Instance();
 	StackAllocator* sa = new StackAllocator();
 	sa->AllocateStack(100); //Allocate 100 bytes on the heap

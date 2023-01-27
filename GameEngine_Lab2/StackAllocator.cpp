@@ -27,10 +27,10 @@ unsigned char* StackAllocator::GetMemory(unsigned int _sizeBytes)
 		m_stackPosition += _sizeBytes;
 		return hold;
 	}
-	return nullptr; //Not enough bytes left on stack
+	return nullptr;
 }
 
-void StackAllocator::Mark()
+void  StackAllocator::Mark()
 {
 	m_marker = m_stackPosition;
 }
@@ -52,5 +52,4 @@ void StackAllocator::ClearMemory()
 	m_stackStart = nullptr;
 	m_stackPosition = nullptr;
 	m_stackEnd = nullptr;
-
 }
