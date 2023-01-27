@@ -36,13 +36,43 @@ void Resource::ToString()
 	}
 }
 
+void Resource::SerializePointer(std::ostream& _stream, Resource* _pointer)
+{
+	byte exists = 1;
+	if (_pointer != nullptr)
+	{
+		_stream.write(reinterpret_cast<char*>(&exists), sizeof(byte));
+		_pointer->Serialize(_stream);
+	}
+	else
+	{
+		exists = 0;
+		_stream.write(reinterpret_cast<char*>(&exists), sizeof(byte));
+
+	}
+}
+
+void Resource::DeserializePointer(std::istream& _stream, Resource*& _pointer)
+{
+	byte exists = 0;
+	_stream.read(reinterpret_cast<char*>(&exists), sizeof(byte));
+
+	if (exists == 1)
+	{
+		_pointer = Resource::Pool->GetResource();
+		_pointer->Deserialize(_stream);
+	}
+
+}
+
 void Resource::Serialize(std::ostream& _stream)
 {
 	_stream.write(reinterpret_cast<char*>(&m_val1), sizeof(m_val1));
 	_stream.write(reinterpret_cast<char*>(&m_val2), sizeof(m_val2));
 	_stream.write(reinterpret_cast<char*>(&m_val3), sizeof(m_val3));
+	SerializePointer(_stream, m_subResource);
 
-	byte exists = 1;
+	/*byte exists = 1;
 	if (m_subResource != nullptr)
 	{
 		_stream.write(reinterpret_cast<char*>(&exists), sizeof(byte));
@@ -52,7 +82,7 @@ void Resource::Serialize(std::ostream& _stream)
 	{
 		exists = 0;
 		_stream.write(reinterpret_cast<char*>(&exists), sizeof(byte));
-	}
+	}*/
 }
 
 void Resource::Deserialize(std::istream& _stream)
@@ -60,13 +90,13 @@ void Resource::Deserialize(std::istream& _stream)
 	_stream.read(reinterpret_cast<char*>(&m_val1), sizeof(m_val1));
 	_stream.read(reinterpret_cast<char*>(&m_val2), sizeof(m_val2));
 	_stream.read(reinterpret_cast<char*>(&m_val3), sizeof(m_val3));
-	
-	byte exists = 0;
+	DeserializePointer(_stream, m_subResource);
+	/*byte exists = 0;
 	_stream.read(reinterpret_cast<char*>(&exists), sizeof(exists));
 
 	if (exists == 1)
 	{
 		m_subResource = Resource::Pool->GetResource();
 		m_subResource->Deserialize(_stream);
-	}
+	}*/
 }
