@@ -129,10 +129,12 @@
   <ItemGroup>
     <ClCompile Include="FileController.cpp" />
     <ClCompile Include="GameEngine_Lab2.cpp" />
+    <ClCompile Include="StackAllocator.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="FileController.h" />
     <ClInclude Include="Singleton.h" />
+    <ClInclude Include="StackAllocator.h" />
     <ClInclude Include="StandardIncludes.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
