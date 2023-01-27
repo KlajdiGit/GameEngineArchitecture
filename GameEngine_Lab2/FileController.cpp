@@ -45,7 +45,10 @@ bool FileController::ReadFile(string _filePath, unsigned char* _buffer, unsigned
 		M_ASSERT(fclose(m_handle) == 0, "Could not close file.");
 		m_readSuccess = true;
 	}
-	m_thread.detach(); //Make thread not joinable anymore
+	if (m_thread.joinable())
+	{
+		m_thread.detach(); //Make thread not joinable anymore
+	}
 	return m_readSuccess;
 }
 
