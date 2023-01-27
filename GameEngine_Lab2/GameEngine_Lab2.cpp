@@ -1,27 +1,25 @@
-#include <iostream>
-#include "FileController.h"
+#include "ObjectPool.h"
+#include "Resource.h"
 
 int main()
 {
-	FileController* fc = &FileController::Instance();
-	cout << fc->GetCurDirectory() << endl;
-	int fs = fc->GetFileSize("FileController.cpp");
-	unsigned char* buffer = new unsigned char[fs];
-	fc->ReadFileAsync("FileController.cpp", buffer, fs);
-	while (!fc->GetFilereadDone())
-	{
-		cout << "Thread Running..." << std::endl;
-	}
+	ObjectPool<Resource>* objP = new ObjectPool<Resource>();
+	Resource* r1 = objP->GetResource();
+	r1->AssignNonDefaultValues();
 
-	if (fc->GetFileReadSuccess())
-	{
-		cout << "File size: " << fs << endl;
-	}
-	else
-	{
-		cout << "File read operation unsuccessful." << endl;
-	}
-   
-	delete[] buffer;
+	ofstream writeStream("resource.bin", ios::out | ios::binary);
+	r1->Serialize(writeStream);
+	writeStream.close();
+	cout << "r1 values: ";
+	r1->ToString();
+	
+	Resource* r2 = objP->GetResource();
+	ifstream readStream("resource.bin", ios::in | ios::binary);
+	r2->Deserialize(readStream);
+	readStream.close();
+	cout << "r2 values: ";
+	r1->ToString();
+	
+	delete objP;
 }
 

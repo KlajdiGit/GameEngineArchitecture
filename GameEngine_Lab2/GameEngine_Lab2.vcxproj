@@ -129,9 +129,13 @@
   <ItemGroup>
     <ClCompile Include="FileController.cpp" />
     <ClCompile Include="GameEngine_Lab2.cpp" />
+    <ClCompile Include="Resource.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="FileController.h" />
+    <ClInclude Include="ObjectPool.h" />
+    <ClInclude Include="Resource.h" />
+    <ClInclude Include="Serializable.h" />
     <ClInclude Include="Singleton.h" />
     <ClInclude Include="StandardIncludes.h" />
   </ItemGroup>
