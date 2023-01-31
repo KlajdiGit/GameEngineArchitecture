@@ -3,8 +3,8 @@
 
 int main()
 {
-	AssetController::Instance().Initialize(100000000);
-	Asset* asset = AssetController::Instance().GetAsset("emoji.jpg");
+	AssetController::Instance().Initialize(10000000);
+	Asset* asset = AssetController::Instance().GetAsset("Emoji.jpg");
 	cout << "Bytes used by imgae.bmp: " << AssetController::Stack->GetBytesUsed() << endl;
 }
 

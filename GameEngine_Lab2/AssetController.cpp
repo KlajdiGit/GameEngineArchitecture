@@ -17,7 +17,7 @@ void AssetController::Initialize(int _stackSize)
 AssetController::~AssetController()
 {
 	//Remove all asset objects from the object pool
-	for (auto& x : m_assets)
+	for (auto const& x : m_assets)
 	{
 		Asset::Pool->ReleaseResource(x.second);
 	}

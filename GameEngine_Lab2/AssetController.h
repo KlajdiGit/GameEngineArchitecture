@@ -13,10 +13,12 @@ public:
 
 	void Initialize(int _stackSize);
 	Asset* GetAsset(string _guid);
-
+	
+	//members
 	static StackAllocator* Stack;
 
 private:
+	//members
 	map<string, Asset*> m_assets;
 };
 
