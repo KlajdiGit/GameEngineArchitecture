@@ -128,7 +128,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="FileController.cpp" />
-    <ClCompile Include="GameEngine_Lab2.cpp" />
+    <ClCompile Include="GameEngine.cpp" />
     <ClCompile Include="Resource.cpp" />
   </ItemGroup>
   <ItemGroup>
