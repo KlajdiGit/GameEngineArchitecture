@@ -41,7 +41,7 @@ public:
 
 	void ReleaseResource(T* _object)
 	{
-		_object->Reset();
+		//_object->Reset();
 		m_available.push_back(_object);
 	}
 
