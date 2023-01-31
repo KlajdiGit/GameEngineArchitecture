@@ -5,7 +5,20 @@
 #include "StackAllocator.h"
 #include "Asset.h"
 
-class AssetController
+class AssetController : public Singleton<AssetController>
 {
+public:
+	AssetController();
+	virtual ~AssetController();
+
+	void Initialize(int _stackSize);
+	Asset* GetAsset(string _guid);
+
+	static StackAllocator* Stack;
+
+private:
+	map<string, Asset*> m_assets;
 };
+
+#endif 
 

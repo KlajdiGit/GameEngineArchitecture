@@ -132,6 +132,7 @@
     <ClCompile Include="FileController.cpp" />
     <ClCompile Include="GameEngine_Lab2.cpp" />
     <ClCompile Include="Resource.cpp" />
+    <ClCompile Include="StackAllocator.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Asset.h" />
@@ -141,7 +142,14 @@
     <ClInclude Include="Resource.h" />
     <ClInclude Include="Serializable.h" />
     <ClInclude Include="Singleton.h" />
+    <ClInclude Include="StackAllocator.h" />
     <ClInclude Include="StandardIncludes.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="..\..\..\..\Downloads\Assets\Emoji.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Media Include="..\..\..\..\Downloads\Assets\SoundEffect.wav" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
