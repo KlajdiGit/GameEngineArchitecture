@@ -22,5 +22,5 @@ private:
 	map<string, Asset*> m_assets;
 };
 
-#endif 
+#endif //ASSET_CONTROLLER_H
 
