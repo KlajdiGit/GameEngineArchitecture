@@ -24,7 +24,7 @@ public:
 protected:
 	//Members
 	template<class T>
-	void SerializePointer(std::ostream& _stream, Resource* _pointer)
+	void SerializePointer(std::ostream& _stream, T* _pointer)
 	{
 		byte exists = 1;
 		if (_pointer != nullptr)
@@ -41,14 +41,14 @@ protected:
 	}
 
 	template<class T>
-	void DeserializePointer(std::istream& _stream, Resource*& _pointer)
+	void DeserializePointer(std::istream& _stream, T*& _pointer)
 	{
 		byte exists = 0;
-		_stream.read(reinterpret_cast<char*>(&exists), sizeof(byte));
+		_stream.read(reinterpret_cast<char*>(&exists), sizeof(exists));
 
 		if (exists == 1)
 		{
-			_pointer = Resource::Pool->GetResource();
+			_pointer = T::Pool->GetResource();
 			_pointer->Deserialize(_stream);
 		}
 

@@ -5,6 +5,10 @@ StackAllocator* AssetController::Stack = nullptr;
 
 AssetController::AssetController()
 {
+}
+
+AssetController::~AssetController()
+{
 	Clear();
 }
 
@@ -32,17 +36,17 @@ void AssetController::Initialize(int _stackSize)
 	Asset::Pool = new ObjectPool<Asset>();
 }
 
-AssetController::~AssetController()
-{
-	//Remove all asset objects from the object pool
-	for (auto const& x : m_assets)
-	{
-		Asset::Pool->ReleaseResource(x.second);
-	}
-	delete Asset::Pool;
-	Stack->ClearMemory();
-	m_assets.clear();
-}
+//AssetController::~AssetController()
+//{
+//	//Remove all asset objects from the object pool
+//	for (auto const& x : m_assets)
+//	{
+//		Asset::Pool->ReleaseResource(x.second);
+//	}
+//	delete Asset::Pool;
+//	Stack->ClearMemory();
+//	m_assets.clear();
+//}
 
 Asset* AssetController::GetAsset(string _guid)
 {
