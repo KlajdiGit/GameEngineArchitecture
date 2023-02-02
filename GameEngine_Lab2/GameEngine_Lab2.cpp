@@ -4,7 +4,7 @@
 int main()
 {
 	AssetController::Instance().Initialize(10000000);
-	Asset* asset = AssetController::Instance().GetAsset("Text.txt");
+	Asset* asset = AssetController::Instance().GetAsset("Emoji.jpg");
 	cout << "Bytes used by imgage.bmp: " << AssetController::Stack->GetBytesUsed() << endl;
 }
 
