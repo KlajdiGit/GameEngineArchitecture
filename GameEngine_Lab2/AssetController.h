@@ -12,6 +12,7 @@ public:
 	virtual ~AssetController();
 
 	void Initialize(int _stackSize);
+	void Clear();
 	Asset* GetAsset(string _guid);
 	
 	//members

@@ -132,6 +132,7 @@
     <ClCompile Include="FileController.cpp" />
     <ClCompile Include="GameEngine_Lab2.cpp" />
     <ClCompile Include="Resource.cpp" />
+    <ClCompile Include="SoundEffects.cpp" />
     <ClCompile Include="StackAllocator.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -142,6 +143,7 @@
     <ClInclude Include="Resource.h" />
     <ClInclude Include="Serializable.h" />
     <ClInclude Include="Singleton.h" />
+    <ClInclude Include="SoundEffects.h" />
     <ClInclude Include="StackAllocator.h" />
     <ClInclude Include="StandardIncludes.h" />
   </ItemGroup>

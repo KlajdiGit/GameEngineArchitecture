@@ -5,6 +5,24 @@ StackAllocator* AssetController::Stack = nullptr;
 
 AssetController::AssetController()
 {
+	Clear();
+}
+
+void AssetController::Clear()
+{
+	//Remove all asset objects from the object pool
+	for (auto const& x : m_assets)
+	{
+		Asset::Pool->ReleaseResource(x.second);
+	}
+	if (Asset::Pool != nullptr)
+	{
+		delete Asset::Pool;
+		Asset::Pool = nullptr;
+	}
+	Stack->ClearMemory();
+	m_assets.clear();
+
 }
 
 void AssetController::Initialize(int _stackSize)
