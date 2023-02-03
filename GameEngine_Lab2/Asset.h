@@ -15,7 +15,7 @@ public:
 	string GetGUID() { return m_GUID; }
 	int GetDataSize() { return m_dataSize; }
 	void SetDataSize(int _size) { m_dataSize = _size; }
-	byte* GetData() { return m_data; }
+ 	byte* GetData() { return m_data; }
 	void SetData(byte* _data) { m_data = _data; }
 
 	//Methods
