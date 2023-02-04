@@ -2,7 +2,6 @@
 #define RESOURCE_H
 
 #include "Serializable.h"
-//#include "ObjectPool.h"
 #include "AssetController.h"
 
 class Resource : public Serializable
@@ -18,8 +17,6 @@ public:
 	virtual void AssignNonDefaultValues();
 	virtual void ToString();
 
-	//Members
-	static ObjectPool<Resource>* Pool;
 
 protected:
 	//Members

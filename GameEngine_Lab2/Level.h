@@ -8,7 +8,7 @@ class Level : public Resource
 public:
 	//Constructor/Destructor
 	Level();
-	~Level();
+	virtual ~Level();
 
 	//Methods
 	void Serialize(std::ostream& _stream) override;

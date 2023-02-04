@@ -1,6 +1,5 @@
 #include "Resource.h"
 
-ObjectPool<Resource>* Resource::Pool;
 
 Resource::Resource()
 {
@@ -16,7 +15,7 @@ void Resource::AssignNonDefaultValues()
 
 void Resource::ToString()
 {
-	cout << "Base Resource" << endl;
+	cout << "BASE RESOURCE" << endl;
 }
 
 
@@ -25,7 +24,7 @@ void Resource::SerializeAsset(std::ostream& _stream, Asset* _asset)
 	byte guidLength = 0;
 	if (_asset != nullptr)
 	{
-		guidLength = _asset->GetGUID().length();
+		guidLength = (byte) _asset->GetGUID().length();
 	}
 
 	_stream.write(reinterpret_cast<char*>(&guidLength), sizeof(guidLength));

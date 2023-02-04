@@ -13,17 +13,20 @@ SoundEffects::~SoundEffects()
 
 void SoundEffects::AssignNonDefaultValues()
 {
-	m_effect = AssetController::Instance().GetAsset("SouundEffect.wav");	
+	m_effect = AssetController::Instance().GetAsset("SoundEffect.wav");	
+	Resource::AssignNonDefaultValues();
 }
 
 void SoundEffects::Serialize(std::ostream& _stream)
 {
 	SerializeAsset(_stream, m_effect);
+	Resource::Serialize(_stream);
 }
 
 void SoundEffects::Deserialize(std::istream& _stream)
 {
 	DeserializeAsset(_stream, m_effect);
+	Resource::Deserialize(_stream);
 }
 
 void SoundEffects::ToString()
