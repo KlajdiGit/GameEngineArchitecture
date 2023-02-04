@@ -2,7 +2,7 @@
 #define RESOURCE_H
 
 #include "Serializable.h"
-#include "ObjectPool.h"
+//#include "ObjectPool.h"
 #include "AssetController.h"
 
 class Resource : public Serializable
