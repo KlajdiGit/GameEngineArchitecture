@@ -136,8 +136,10 @@
     <ClCompile Include="Asset.cpp" />
     <ClCompile Include="AssetController.cpp" />
     <ClCompile Include="FileController.cpp" />
+    <ClCompile Include="GameController.cpp" />
     <ClCompile Include="GameEngine_Lab2.cpp" />
     <ClCompile Include="Level.cpp" />
+    <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="Resource.cpp" />
     <ClCompile Include="SoundEffects.cpp" />
     <ClCompile Include="StackAllocator.cpp" />
@@ -147,8 +149,10 @@
     <ClInclude Include="Asset.h" />
     <ClInclude Include="AssetController.h" />
     <ClInclude Include="FileController.h" />
+    <ClInclude Include="GameController.h" />
     <ClInclude Include="Level.h" />
     <ClInclude Include="ObjectPool.h" />
+    <ClInclude Include="Renderer.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="Serializable.h" />
     <ClInclude Include="Singleton.h" />
