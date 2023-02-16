@@ -76,6 +76,7 @@ public:
 	 void RenderFillRectangle(Rect _rect);
 	 void RenderTexture(Texture* _texture, Point _point);
 	 void RenderTexture(Texture* _texture, Rect _rect);
+	 void RenderTexture(Texture* _texture, Rect _srcRect, Rect _destRect);
 	 void Shutdown();
 
 private:
@@ -83,6 +84,7 @@ private:
 	SDL_Window* m_window;
 	SDL_Renderer* m_renderer;
 	SDL_Rect m_destRect;
+	SDL_Rect m_srcRect;
 	SDL_Surface* m_surface;
 	SDL_Rect m_viewPort;
 	map<string, SDL_Texture*> m_textures;
