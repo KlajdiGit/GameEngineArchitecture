@@ -38,6 +38,7 @@ public:
 	void SetSize(byte _rows, byte _columns, byte _clipSizeX, byte _clipSizeY);
 	void AddAnimation(AnimationNames _names, short _clipStart, short _clipCount, float _clipSpeed);
 	Rect Update(AnimationNames _name);
+	int GetCurrentClip(AnimationNames _name);
 
 	//Memebers
 	static ObjectPool<SpriteSheet>* Pool;
