@@ -19,7 +19,7 @@ void GameController::RunGame()
 	AssetController::Instance().Initialize(10000000); //Allocate 10MB
 	Renderer* r = &Renderer::Instance();
 	Timing* t = &Timing::Instance();
-	r->Initialize(800, 600);
+	r->Initialize(1220, 800);  // 1920x1080
 	
 	TTFont* font = new TTFont();
 	font->Initialize(20);
@@ -41,16 +41,18 @@ void GameController::RunGame()
 		t->Tick();
 
 		SDL_PollEvent(&m_sdlEvent);
-		r->SetDrawColor(Color(255, 255, 255, 255));
+		r->SetDrawColor(Color(128, 128, 128, 255));
 		r->ClearScreen();
-		r->RenderTexture(sheet, sheet->Update(EN_AN_IDLE, t->GetDeltaTime()), Rect(0, 0, 69*3, 44 * 3));
-		r->RenderTexture(sheet, sheet->Update(EN_AN_RUN, t->GetDeltaTime()), Rect(0, 150, 69 * 3, 150 + 44 * 3));
+		r->RenderTexture(sheet, sheet->Update(EN_AN_RUN, t->GetDeltaTime()), Rect(0, 10, 69,44));
+		r->RenderTexture(sheet, sheet->Update(EN_AN_RUN, t->GetDeltaTime()), Rect(0, 110, 69,44));
+		r->RenderTexture(sheet, sheet->Update(EN_AN_RUN, t->GetDeltaTime()), Rect(0, 210, 69,44));
 
-		std::string s = "Frame number: " + std::to_string(sheet->GetCurrentClip(EN_AN_IDLE));
+
+		/*std::string s = "Frame number: " + std::to_string(sheet->GetCurrentClip(EN_AN_IDLE));
 		font->Write(r->GetRenderer(), s.c_str(), SDL_Color{ 0, 255, 0 }, SDL_Point{ 250, 50 });
 
 		s = "Frame number: " + std::to_string(sheet->GetCurrentClip(EN_AN_RUN));
-		font->Write(r->GetRenderer(), s.c_str(), SDL_Color{ 0, 255, 0 }, SDL_Point{ 250, 200 });
+		font->Write(r->GetRenderer(), s.c_str(), SDL_Color{ 0, 255, 0 }, SDL_Point{ 250, 200 });*/
 
 		std::string fps = "Frames Per Second: " + std::to_string(t->GetFPS());
 		font->Write(r->GetRenderer(), fps.c_str(), SDL_Color{ 0, 0, 255 }, SDL_Point{ 0, 0 });
