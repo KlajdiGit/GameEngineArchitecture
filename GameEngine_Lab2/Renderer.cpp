@@ -69,7 +69,7 @@ void Renderer::Initialize(int x_Resolution, int _yResolution)
                         		x_Resolution, _yResolution, SDL_WINDOW_SHOWN);
 
 	M_ASSERT(m_window != nullptr, "Failed to initialize SDL window.");
-	m_renderer = SDL_CreateRenderer(Renderer::Instance().GetWindow(), -1, 0);
+	m_renderer = SDL_CreateRenderer(Renderer::Instance().GetWindow(), -1, SDL_RENDERER_PRESENTVSYNC);
 	M_ASSERT(m_renderer != nullptr, "Failed to initialize SDL renderer.");
 }
 

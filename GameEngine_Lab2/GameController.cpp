@@ -19,7 +19,7 @@ void GameController::RunGame()
 	AssetController::Instance().Initialize(10000000); //Allocate 10MB
 	Renderer* r = &Renderer::Instance();
 	Timing* t = &Timing::Instance();
-	r->Initialize(1220, 800);  // 1920x1080
+	r->Initialize(1220, 1000);  // 1920x1080
 	
 	TTFont* font = new TTFont();
 	font->Initialize(20);
@@ -31,8 +31,7 @@ void GameController::RunGame()
 	SpriteSheet* sheet = SpriteSheet::Pool->GetResource();
 	sheet->Load("../Assets/Textures/Warrior.tga");
 	sheet->SetSize(17, 6, 69, 44);
-	sheet->AddAnimation(EN_AN_IDLE, 0, 6, 6.0f);
-	sheet->AddAnimation(EN_AN_RUN, 6, 8, 6.0f);
+	sheet->AddAnimation(EN_AN_RUN, 6, 8, 2.0f);
 
 	
 
@@ -43,16 +42,13 @@ void GameController::RunGame()
 		SDL_PollEvent(&m_sdlEvent);
 		r->SetDrawColor(Color(128, 128, 128, 255));
 		r->ClearScreen();
-		r->RenderTexture(sheet, sheet->Update(EN_AN_RUN, t->GetDeltaTime()), Rect(0, 10, 69,44));
-		r->RenderTexture(sheet, sheet->Update(EN_AN_RUN, t->GetDeltaTime()), Rect(0, 110, 69,44));
-		r->RenderTexture(sheet, sheet->Update(EN_AN_RUN, t->GetDeltaTime()), Rect(0, 210, 69,44));
-
-
-		/*std::string s = "Frame number: " + std::to_string(sheet->GetCurrentClip(EN_AN_IDLE));
-		font->Write(r->GetRenderer(), s.c_str(), SDL_Color{ 0, 255, 0 }, SDL_Point{ 250, 50 });
-
-		s = "Frame number: " + std::to_string(sheet->GetCurrentClip(EN_AN_RUN));
-		font->Write(r->GetRenderer(), s.c_str(), SDL_Color{ 0, 255, 0 }, SDL_Point{ 250, 200 });*/
+		for (unsigned int count = 0; count < 10; count++)
+		{
+			unsigned int yPos = 10 + count * 100;
+			r->RenderTexture(sheet, sheet->Update(EN_AN_RUN, t->GetDeltaTime()), Rect(0, yPos, 69 * 1.8, yPos + 44 * 1.8));
+			
+		}
+		
 
 		std::string fps = "Frames Per Second: " + std::to_string(t->GetFPS());
 		font->Write(r->GetRenderer(), fps.c_str(), SDL_Color{ 0, 0, 255 }, SDL_Point{ 0, 0 });

@@ -14,7 +14,7 @@ Timing::Timing()
 void Timing::Tick()
 {
 	m_currentTime = SDL_GetTicks();
-	m_deltaTime = m_currentTime - m_lastTime;
+	m_deltaTime = (float)(m_currentTime - m_lastTime) / 1000.0f;
 	if (m_fpsStart + 1000 <= m_currentTime)
 	{
 		m_fpsLast = m_fpsCount;

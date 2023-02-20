@@ -15,13 +15,15 @@ public:
 	void Deserialize(std::istream& _stream) override;
 	void ToString() override;
 	void AssignNonDefaultValues() override;
-
+	void RunLevel();
 private:
 	//Members
 	int m_mapSizeX;
 	int m_mapSizeY;
 	float m_gameTime;
 	vector<Unit*> m_units;
+	SDL_Event m_sdlEvent;
+
 };
 
 #endif //LEVEL_H

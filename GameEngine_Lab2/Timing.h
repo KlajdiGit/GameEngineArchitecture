@@ -12,7 +12,7 @@ public:
 
 	//Accessors
 	unsigned int GetFPS() { return m_fpsLast; }
-	unsigned int GetDeltaTime() { return m_deltaTime; }
+	float GetDeltaTime() { return m_deltaTime; }
 
 	//Methods
 	void Tick();
@@ -24,7 +24,7 @@ private:
 	unsigned int m_fpsStart;
 	unsigned int m_fpsCount;
 	unsigned int m_fpsLast;
-	unsigned int m_deltaTime;
+	float m_deltaTime;
 
 };
 
