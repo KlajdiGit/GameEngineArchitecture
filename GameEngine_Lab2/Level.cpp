@@ -60,7 +60,7 @@ void Level::RunLevel()
 			unsigned int yPos = 10 + count * 100;
 			unsigned int xPos = 80* ((SDL_GetTicks() - yPos) / 1000.0f);
 			//unsigned int  xPos = count * 10;
-			r->RenderTexture(sheet, sheet->Update(EN_AN_RUN, t->GetDeltaTime()), Rect(xPos, yPos, 69 * 1.8 +xPos,yPos + 44 * 1.8));
+			r->RenderTexture(sheet, sheet->Update(EN_AN_RUN, t->GetDeltaTime()), Rect(xPos, yPos, 69 * 1.8 +xPos, yPos + 44 * 1.8));
 
 		}
 
