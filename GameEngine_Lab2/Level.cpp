@@ -95,6 +95,8 @@ void Level::RunLevel()
 		s = "Game Time: " + std::to_string(saveTime);
 		font->Write(r->GetRenderer(), s.c_str(), SDL_Color{ 0, 0, 255 }, SDL_Point{ 250, 0 });
 
+
+
 		SDL_RenderPresent(r->GetRenderer());
 	}
 
