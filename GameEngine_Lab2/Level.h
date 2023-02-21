@@ -2,6 +2,7 @@
 #define LEVEL_H
 
 #include "Unit.h"
+#include "Renderer.h"
 
 class Level : public Resource
 {
@@ -16,6 +17,9 @@ public:
 	void ToString() override;
 	void AssignNonDefaultValues() override;
 	void RunLevel();
+	void RunLevel2();
+
+
 private:
 	//Members
 	int m_mapSizeX;

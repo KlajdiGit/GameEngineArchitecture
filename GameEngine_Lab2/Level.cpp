@@ -7,6 +7,8 @@
 #include <time.h>
 #include <cstdlib>
 
+Renderer* r = &Renderer::Instance();
+
 Level::Level()
 {
 	AssetController::Instance().Initialize(10000000); //Allocate 10 MB
@@ -32,9 +34,9 @@ Level::~Level()
 void Level::RunLevel()
 {
 	AssetController::Instance().Initialize(10000000); //Allocate 10MB
-	Renderer* r = &Renderer::Instance();
+//	Renderer* r = &Renderer::Instance();
 	Timing* t = &Timing::Instance();
-	r->Initialize(1200, 1000);  // 1920x1080
+	r->Initialize(1920, 1080);  // 1920x1080
 
 	TTFont* font = new TTFont();
 	font->Initialize(20);
@@ -48,9 +50,9 @@ void Level::RunLevel()
 	sheet->SetSize(17, 6, 69, 44);
 	sheet->AddAnimation(EN_AN_RUN, 6, 8, 2.0f);
 
+	unsigned int xPos = 1;
 
-
-	while (m_sdlEvent.type != SDL_QUIT)
+	while (xPos < 1920)
 	{
 		t->Tick();
 		/*srand(time(0));
@@ -62,17 +64,19 @@ void Level::RunLevel()
 
 		}*/
 
-		SDL_PollEvent(&m_sdlEvent);
 		r->SetDrawColor(Color(128, 128, 128, 255));
 		r->ClearScreen();
 		for (unsigned int count = 0; count < 10; count++)
 		{
 
 			unsigned int yPos = 10 + count * 100;
-			unsigned int xPos = /*speed[count]*/ 80 * ((SDL_GetTicks() - yPos) / 1000.0f);
+			xPos = /*speed[count]*/ 80 * ((SDL_GetTicks() - xPos) / 1000.0f);
 			//unsigned int  xPos = count * 10;
 			r->RenderTexture(sheet, sheet->Update(EN_AN_RUN, t->GetDeltaTime()), Rect(xPos, yPos, 69 * 1.8 + xPos, yPos + 44 * 1.8));
 			
+			/*if (xPos > 1200) {
+				RunLevel2();
+			}*/
 
 		}
 
@@ -92,20 +96,136 @@ void Level::RunLevel()
 		font->Write(r->GetRenderer(), s.c_str(), SDL_Color{ 0, 0, 255 }, SDL_Point{ 0, 0 });
 
 		unsigned int saveTime = SDL_GetTicks() / 1000;
+	
 		s = "Game Time: " + std::to_string(saveTime);
 		font->Write(r->GetRenderer(), s.c_str(), SDL_Color{ 0, 0, 255 }, SDL_Point{ 250, 0 });
+		s = "Auto Save: ";
+		if (saveTime >= 5 )
+		{
+			ofstream writeStream("level1.bin", ios::out | ios::binary);
+			sheet->Serialize(writeStream);
+			writeStream.close();
+			s += " Yes";
+		}
+		else {
+			s += " No";
+		}
+		font->Write(r->GetRenderer(), s.c_str(), SDL_Color{ 0, 0, 255 }, SDL_Point{ 400, 0 });
 
+		s = "xPos: " + to_string(xPos);
+		font->Write(r->GetRenderer(), s.c_str(), SDL_Color{ 0, 0, 255 }, SDL_Point{ 600, 0 });
 
 
 		SDL_RenderPresent(r->GetRenderer());
 	}
+	//RunLevel2();
+//----------------------------------------------------------------------------------	
+	//TTFont* font = new TTFont();
+	//font->Initialize(20);
 
+	//Point ws = r->GetWindowSize();
+	Level::RunLevel2();
+
+//-----------------------------------------------------------------------------------
 	delete SpriteAnim::Pool;
 	delete SpriteSheet::Pool;
 
 	font->Shutdown();
 	r->Shutdown();
 }
+
+
+
+void Level::RunLevel2()
+{
+	AssetController::Instance().Initialize(10000000); //Allocate 10MB
+	//Renderer* r = &Renderer::Instance();
+	Timing* t = &Timing::Instance();
+	//r->Initialize(1200, 1000);  // 1920x1080
+
+	TTFont* font = new TTFont();
+	font->Initialize(20);
+
+	Point ws = r->GetWindowSize();
+
+	SpriteSheet::Pool = new ObjectPool<SpriteSheet>();
+	SpriteAnim::Pool = new ObjectPool<SpriteAnim>();
+	SpriteSheet* sheet = SpriteSheet::Pool->GetResource();
+	sheet->Load("../Assets/Textures/Warrior.tga");
+	sheet->SetSize(17, 6, 69, 44);
+	sheet->AddAnimation(EN_AN_RUN, 6, 8, 2.0f);
+
+
+	unsigned int xPos = 1;
+	while ( xPos < 1920)
+	{
+		t->Tick();
+		/*srand(time(0));
+
+		unsigned int speed[10];
+		for (int i = 0; i < 10; i++)
+		{
+		  speed[i] = (rand() % 20) + 80;
+
+		}*/
+		SDL_PollEvent(&m_sdlEvent);
+		r->SetDrawColor(Color(0, 128, 0, 255));
+		r->ClearScreen();
+		for (unsigned int count = 0; count < 10; count++)
+		{
+
+			unsigned int yPos = 10 + count * 100;
+			xPos = (80 * ((SDL_GetTicks() - yPos) / 1000.0f)) - 1920;
+			//unsigned int  xPos = count * 10;
+			r->RenderTexture(sheet, sheet->Update(EN_AN_RUN, t->GetDeltaTime()), Rect(xPos, yPos, 69 * 1.8 + xPos, yPos + 44 * 1.8));
+
+
+		}
+
+		/*r->SetDrawColor(Color(0, 128, 0, 255));
+		r->ClearScreen();
+
+		for (int count2 = 0; count2 < 10; count2++) {
+			unsigned int yPos = 10 + count2 * 100;
+			unsigned int xPos = 80 * ((SDL_GetTicks() - yPos) / 1000.0f);
+			r->RenderTexture(sheet, sheet->Update(EN_AN_RUN, t->GetDeltaTime()), Rect(xPos, yPos, 69 * 1.8 + xPos, yPos + 44 * 1.8));
+
+		}*/
+
+
+
+		std::string s = "Frames Per Second: " + std::to_string(t->GetFPS());
+		font->Write(r->GetRenderer(), s.c_str(), SDL_Color{ 0, 0, 255 }, SDL_Point{ 0, 0 });
+
+		unsigned int saveTime = SDL_GetTicks() / 1000;
+
+		s = "Game Time: " + std::to_string(saveTime);
+		font->Write(r->GetRenderer(), s.c_str(), SDL_Color{ 0, 0, 255 }, SDL_Point{ 250, 0 });
+		s = "Auto Save: ";
+		if (saveTime >= 5)
+		{
+			ofstream writeStream("level1.bin", ios::out | ios::binary);
+			sheet->Serialize(writeStream);
+			writeStream.close();
+			s += " Yes";
+		}
+		else {
+			s += " No";
+		}
+		font->Write(r->GetRenderer(), s.c_str(), SDL_Color{ 0, 0, 255 }, SDL_Point{ 400, 0 });
+
+		s = "xPos: " + to_string(xPos);
+		font->Write(r->GetRenderer(), s.c_str(), SDL_Color{ 0, 0, 255 }, SDL_Point{ 600, 0 });
+		SDL_RenderPresent(r->GetRenderer());
+	}
+
+	/*delete SpriteAnim::Pool;
+	delete SpriteSheet::Pool;*/
+
+	font->Shutdown();
+	//r->Shutdown();
+}
+
 
 
 void Level::AssignNonDefaultValues()
