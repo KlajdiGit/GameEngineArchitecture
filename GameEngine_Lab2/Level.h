@@ -23,7 +23,7 @@ private:
 	float m_gameTime;
 	vector<Unit*> m_units;
 	SDL_Event m_sdlEvent;
-
+	
 };
 
 #endif //LEVEL_H
