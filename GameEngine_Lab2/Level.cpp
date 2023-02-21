@@ -118,15 +118,9 @@ void Level::RunLevel()
 
 		SDL_RenderPresent(r->GetRenderer());
 	}
-	//RunLevel2();
-//----------------------------------------------------------------------------------	
-	//TTFont* font = new TTFont();
-	//font->Initialize(20);
 
-	//Point ws = r->GetWindowSize();
 	Level::RunLevel2();
 
-//-----------------------------------------------------------------------------------
 	delete SpriteAnim::Pool;
 	delete SpriteSheet::Pool;
 
@@ -155,6 +149,10 @@ void Level::RunLevel2()
 	sheet->SetSize(17, 6, 69, 44);
 	sheet->AddAnimation(EN_AN_RUN, 6, 8, 2.0f);
 
+	SpriteSheet* sheet2 = SpriteSheet::Pool->GetResource();
+	sheet2->Load("../Assets/Textures/Rock.tga");
+	sheet2->SetSize(17, 6, 69, 44);
+
 
 	unsigned int xPos = 1;
 	while ( xPos < 1920)
@@ -178,6 +176,7 @@ void Level::RunLevel2()
 			xPos = (80 * ((SDL_GetTicks() - yPos) / 1000.0f)) - 1920;
 			//unsigned int  xPos = count * 10;
 			r->RenderTexture(sheet, sheet->Update(EN_AN_RUN, t->GetDeltaTime()), Rect(xPos, yPos, 69 * 1.8 + xPos, yPos + 44 * 1.8));
+			r->RenderTexture(sheet2, sheet2->Update(EN_ROCK_FALL, t->GetDeltaTime()), Rect(xPos, yPos, 69 * 1.8 + xPos, yPos + 44 * 1.8));
 
 
 		}
