@@ -41,6 +41,8 @@ Rect SpriteSheet::Update(AnimationNames _name, float _deltaTime)
 	return r;
 }
 
+
+
 void SpriteSheet::Serialize(std::ostream& _stream)
 {
 	_stream.write(reinterpret_cast<char*>(&m_rows), sizeof(m_rows));

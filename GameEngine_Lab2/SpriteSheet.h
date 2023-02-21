@@ -21,8 +21,10 @@ enum AnimationNames
 	EN_AN_DASH_ATTACH,
 	EN_AN_SLIDE,
 	EN_AN_LADDER_GRAP,
-	EN_ROCK_FALL
+	EN_ROCK_FALL 
+
 };
+
 
 class SpriteSheet : public Texture
 {
@@ -51,6 +53,7 @@ private:
 	byte m_clipSizeX;
 	byte m_clipSizeY;
 	map<AnimationNames, SpriteAnim*> m_animations;
+
 };
 
 #endif

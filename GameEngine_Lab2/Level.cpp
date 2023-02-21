@@ -151,7 +151,8 @@ void Level::RunLevel2()
 
 	SpriteSheet* sheet2 = SpriteSheet::Pool->GetResource();
 	sheet2->Load("../Assets/Textures/Rock.tga");
-	sheet2->SetSize(17, 6, 69, 44);
+	sheet2->SetSize(1, 4, 69, 44);
+	sheet2->AddAnimation(EN_ROCK_FALL, 6, 8, 2.0f);
 
 
 	unsigned int xPos = 1;
