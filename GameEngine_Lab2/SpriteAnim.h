@@ -27,11 +27,11 @@ public:
 
 private:
 	//Members
-	short m_clipStart = 0;
-	short m_clipCount = 0;
-	short m_clipEnd =0 ;
-	float m_clipCurrent = 0.0f;
-	float m_clipSpeed = 0.0f;
+	short m_clipStart;
+	short m_clipCount;
+	short m_clipEnd;
+	float m_clipCurrent;
+	float m_clipSpeed;
 };
 
 #endif SPRITEANIM_H

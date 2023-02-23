@@ -17,7 +17,7 @@ public:
 	void ToString() override;
 	void AssignNonDefaultValues() override;
 	void RunLevel();
-	void RunLevel2();
+	void RunLevel2(unsigned int _saveTime);
 
 
 private:
@@ -26,7 +26,6 @@ private:
 	int m_mapSizeY;
 	float m_gameTime;
 	vector<Unit*> m_units;
-	SDL_Event m_sdlEvent;
 	
 };
 
