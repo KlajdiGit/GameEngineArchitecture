@@ -184,7 +184,7 @@ void Level::RunLevel2(unsigned int _saveTime)
 			if (-1 * (xPos - yPos) <= 10 || xPos - yPos <= 10 )
 			{
 			   r->RenderTexture(sheet3, sheet3->Update(EN_AN_DEATH, t->GetDeltaTime()), Rect(xPos, yPos, 69 * 1.8 + xPos, yPos + 44 * 1.8));
-			   SDL_DestroyTexture(sheet);
+			   
 			}
 			else 
 			{
@@ -219,7 +219,15 @@ void Level::RunLevel2(unsigned int _saveTime)
 			ofstream writeStream("level2.bin", ios::out | ios::binary);
 			Level::Serialize(writeStream);
 			sheet->Serialize(writeStream);
-			
+			sheet2->Serialize(writeStream);
+			sheet3->Serialize(writeStream);
+
+
+			Level::ToString();
+			sheet->ToString();
+			sheet2->ToString();
+			sheet3->ToString();
+
 			writeStream.close();
 			s += " Yes";
 		}
