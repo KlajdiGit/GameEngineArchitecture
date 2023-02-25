@@ -9,6 +9,8 @@
 
 Renderer* r = &Renderer::Instance();
 
+
+
 Level::Level()
 {
 	AssetController::Instance().Initialize(10000000); //Allocate 10 MB
@@ -61,15 +63,13 @@ void Level::RunLevel()
 		{
 
 			unsigned int yPos = 10 + count * 100;
-			xPos = 80 * (SDL_GetTicks() - xPos) / 1000.0f;
-
 			// my idea of making randomized speed. Assuming the normal walk speed is ((((int)SDL_GetTicks()) -xPos) /1000)
 			// which is then multiplied by a speed coefficient 
 			//xPos = ((rand() % 21) + 80) *((((int)SDL_GetTicks()) -xPos) /1000) ;
-			r->RenderTexture(sheet, sheet->Update(EN_AN_RUN, t->GetDeltaTime()), Rect(xPos, yPos, 69 * 1.8 + xPos, yPos + 44 * 1.8));
-			
-		
+			// 80 will just be in this case the miniaml speed coefficient
+			xPos = 80 * (SDL_GetTicks() - xPos) / 1000.0f; 
 
+			r->RenderTexture(sheet, sheet->Update(EN_AN_RUN, t->GetDeltaTime()), Rect(xPos, yPos, 69 * 1.8 + xPos, yPos + 44 * 1.8));
 		}
 
 
@@ -117,9 +117,7 @@ void Level::RunLevel()
 void Level::RunLevel2(unsigned int _saveTime)
 {
 	AssetController::Instance().Initialize(10000000); //Allocate 10MB
-	//Renderer* r = &Renderer::Instance();
 	Timing* t = &Timing::Instance();
-	//r->Initialize(1200, 1000);  // 1920x1080
 
 	TTFont* font = new TTFont();
 	font->Initialize(20);
@@ -145,18 +143,14 @@ void Level::RunLevel2(unsigned int _saveTime)
 
 	unsigned int xPos = 1;
 	unsigned int yPos2 = 1;
+	unsigned int x = 1;
 
 	while ( xPos < 1920 )
 	{
+
 		t->Tick();
-		/*srand(time(0));
+		srand(time(0));
 
-		unsigned int speed[10];
-		for (int i = 0; i < 10; i++)
-		{
-		  speed[i] = (rand() % 20) + 80;
-
-		}*/
 		r->SetDrawColor(Color(0, 128, 0, 255));
 		r->ClearScreen();
 		for (unsigned int count = 0; count < 10; count++)
@@ -165,14 +159,18 @@ void Level::RunLevel2(unsigned int _saveTime)
 			unsigned int yPos = 10 + count * 100;
 			xPos = (80 * ((SDL_GetTicks() - yPos) / 1000.0f)) - 1920;
 			unsigned int xPos2 = 50 + count * 100;
-			//yPos2 = xPos2 + 69;
-			//yPos2 = (14 * ((SDL_GetTicks() - xPos2) / 1000.0f)) - 1920;
-			//unsigned int  xPos = count * 10;
-			r->RenderTexture(sheet2, sheet2->Update(EN_ROCK_FALL, t->GetDeltaTime()), Rect(xPos2, xPos, 20 * 1.0 + xPos2, xPos + 44 * 1.0));
+			//xPos = ((rand() % 21) + 80) *((((int)SDL_GetTicks()) -xPos) /1000) ;
+			r->RenderTexture(sheet2, sheet2->Update(EN_ROCK_FALL, t->GetDeltaTime()), Rect(xPos2, xPos /** x*/, 20 * 1.0 + xPos2, xPos + 44 * 1.0));
+		
 
 			if (-1 * (xPos - yPos) <= 20 || xPos - yPos <= 20)
 			{
-			   r->RenderTexture(sheet3, sheet3->Update(EN_AN_DEATH, t->GetDeltaTime()), Rect(xPos, yPos, 69 * 1.8 + xPos, yPos + 44 * 1.8));
+               // the logic to remove the rocks from my screen was to make the y coordinate big enough
+			   // to be not visible on the screen. Not functional.
+ 			   //x = 300;
+               // Didn't achieve to play the full death animation 
+			   r->RenderTexture(sheet3, sheet3->Update(EN_AN_DEATH, t->GetDeltaTime()), Rect(xPos, yPos , 69 * 1.8 + xPos, yPos + 44 * 1.8));
+
 			}
 			else 
 			{
@@ -182,17 +180,7 @@ void Level::RunLevel2(unsigned int _saveTime)
 
 		}
 
-		/*r->SetDrawColor(Color(0, 128, 0, 255));
-		r->ClearScreen();
-
-		for (int count2 = 0; count2 < 10; count2++) {
-			unsigned int yPos = 10 + count2 * 100;
-			unsigned int xPos = 80 * ((SDL_GetTicks() - yPos) / 1000.0f);
-			r->RenderTexture(sheet, sheet->Update(EN_AN_RUN, t->GetDeltaTime()), Rect(xPos, yPos, 69 * 1.8 + xPos, yPos + 44 * 1.8));
-
-		}*/
-
-
+	
 
 		std::string s = "Frames Per Second: " + std::to_string(t->GetFPS());
 		font->Write(r->GetRenderer(), s.c_str(), SDL_Color{ 0, 0, 255 }, SDL_Point{ 0, 0 });
@@ -209,14 +197,8 @@ void Level::RunLevel2(unsigned int _saveTime)
 			sheet->Serialize(writeStream);
 			sheet2->Serialize(writeStream);
 			sheet3->Serialize(writeStream);
-
-
-			Level::ToString();
-			sheet->ToString();
-			sheet2->ToString();
-			sheet3->ToString();
-
 			writeStream.close();
+
 			s += " Yes";
 		}
 		else {
@@ -228,11 +210,9 @@ void Level::RunLevel2(unsigned int _saveTime)
 		SDL_RenderPresent(r->GetRenderer());
 	}
 
-	/*delete SpriteAnim::Pool;
-	delete SpriteSheet::Pool;*/
+	
 
 	font->Shutdown();
-	//r->Shutdown();
 }
 
 
