@@ -45,7 +45,7 @@ void Level::RunLevel()
 	SpriteSheet* sheet = SpriteSheet::Pool->GetResource();
 	sheet->Load("../Assets/Textures/Warrior.tga");
 	sheet->SetSize(17, 6, 69, 44);
-	sheet->AddAnimation(EN_AN_RUN, 6, 8, 2.0f);
+	sheet->AddAnimation(EN_AN_RUN, 6, 8, 4.8f);
 
 	unsigned int xPos = 1;
 	unsigned int saveTime;
@@ -53,7 +53,7 @@ void Level::RunLevel()
 	while (xPos < 1920)
 	{
 		t->Tick();
-		srand(time(0));
+		srand(time(0)); // part of my idea to randomize the speed
 
 		r->SetDrawColor(Color(128, 128, 128, 255));
 		r->ClearScreen();
@@ -62,26 +62,17 @@ void Level::RunLevel()
 
 			unsigned int yPos = 10 + count * 100;
 			xPos = 80 * (SDL_GetTicks() - xPos) / 1000.0f;
-			//xPos += (((int)SDL_GetTicks()) % 21) + 80;
-			//unsigned int  xPos = count * 10;
+
+			// my idea of making randomized speed. Assuming the normal walk speed is ((((int)SDL_GetTicks()) -xPos) /1000)
+			// which is then multiplied by a speed coefficient 
+			//xPos = ((rand() % 21) + 80) *((((int)SDL_GetTicks()) -xPos) /1000) ;
 			r->RenderTexture(sheet, sheet->Update(EN_AN_RUN, t->GetDeltaTime()), Rect(xPos, yPos, 69 * 1.8 + xPos, yPos + 44 * 1.8));
 			
-			/*if (xPos > 1200) {
-				RunLevel2();
-			}*/
+		
 
 		}
 
-		/*r->SetDrawColor(Color(0, 128, 0, 255));
-		r->ClearScreen();
 
-		for (int count2 = 0; count2 < 10; count2++) {
-			unsigned int yPos = 10 + count2 * 100;
-			unsigned int xPos = 80 * ((SDL_GetTicks() - yPos) / 1000.0f);
-			r->RenderTexture(sheet, sheet->Update(EN_AN_RUN, t->GetDeltaTime()), Rect(xPos, yPos, 69 * 1.8 + xPos, yPos + 44 * 1.8));
-
-		}*/
-		
 	
 
 		std::string s = "Frames Per Second: " + std::to_string(t->GetFPS());
@@ -107,8 +98,6 @@ void Level::RunLevel()
 		}
 		font->Write(r->GetRenderer(), s.c_str(), SDL_Color{ 0, 0, 255 }, SDL_Point{ 400, 0 });
 
-		s = "xPos: " + to_string(xPos);
-		font->Write(r->GetRenderer(), s.c_str(), SDL_Color{ 0, 0, 255 }, SDL_Point{ 600, 0 });
 
 
 		SDL_RenderPresent(r->GetRenderer());
@@ -147,12 +136,12 @@ void Level::RunLevel2(unsigned int _saveTime)
 	SpriteSheet* sheet2 = SpriteSheet::Pool->GetResource();
 	sheet2->Load("../Assets/Textures/Rock.tga");
 	sheet2->SetSize(1, 4, 20, 44);
-	sheet2->AddAnimation(EN_ROCK_FALL, 0, 0, 2.0f);
+	sheet2->AddAnimation(EN_ROCK_FALL, 0, 0, 4.8f);
 
 	SpriteSheet* sheet3 = SpriteSheet::Pool->GetResource();
 	sheet3->Load("../Assets/Textures/Warrior.tga");
 	sheet3->SetSize(17, 6, 69, 44);
-	sheet3->AddAnimation(EN_AN_DEATH, 26, 11, 2.0f);
+	sheet3->AddAnimation(EN_AN_DEATH, 26, 11, 4.8f);
 
 	unsigned int xPos = 1;
 	unsigned int yPos2 = 1;
@@ -181,10 +170,9 @@ void Level::RunLevel2(unsigned int _saveTime)
 			//unsigned int  xPos = count * 10;
 			r->RenderTexture(sheet2, sheet2->Update(EN_ROCK_FALL, t->GetDeltaTime()), Rect(xPos2, xPos, 20 * 1.0 + xPos2, xPos + 44 * 1.0));
 
-			if (-1 * (xPos - yPos) <= 10 || xPos - yPos <= 10 )
+			if (-1 * (xPos - yPos) <= 20 || xPos - yPos <= 20)
 			{
 			   r->RenderTexture(sheet3, sheet3->Update(EN_AN_DEATH, t->GetDeltaTime()), Rect(xPos, yPos, 69 * 1.8 + xPos, yPos + 44 * 1.8));
-			   
 			}
 			else 
 			{
@@ -236,8 +224,7 @@ void Level::RunLevel2(unsigned int _saveTime)
 		}
 		font->Write(r->GetRenderer(), s.c_str(), SDL_Color{ 0, 0, 255 }, SDL_Point{ 400, 0 });
 
-		s = "xPos: " + to_string(xPos);
-		font->Write(r->GetRenderer(), s.c_str(), SDL_Color{ 0, 0, 255 }, SDL_Point{ 600, 0 });
+	
 		SDL_RenderPresent(r->GetRenderer());
 	}
 
