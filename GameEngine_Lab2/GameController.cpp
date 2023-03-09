@@ -4,6 +4,7 @@
 #include "SpriteAnim.h"
 #include "TTFont.h"
 #include "Timing.h"
+#include "RenderTarget.h"
 
 GameController::GameController()
 {
@@ -35,11 +36,13 @@ void GameController::RunGame()
 	sheet->AddAnimation(EN_AN_RUN, 6, 8, 6.0f);
 	/*sheet->SetBlendMode(SDL_BLENDMODE_BLEND);
 	sheet->SetBlendAlpha(128);*/
-	
+	RenderTarget* rt = new RenderTarget();
+	rt->Create(ws.X, ws.Y);
 
 	while (m_sdlEvent.type != SDL_QUIT)
 	{
 		t->Tick();
+		rt->Start();
 
 		SDL_PollEvent(&m_sdlEvent);
 		r->SetDrawColor(Color(255, 255, 255, 255));
@@ -56,10 +59,16 @@ void GameController::RunGame()
 		std::string fps = "Frames Per Second: " + std::to_string(t->GetFPS());
 		font->Write(r->GetRenderer(), fps.c_str(), SDL_Color{ 0, 0, 255 }, SDL_Point{ 0, 0 });
 
+		rt->Stop();
+		r->SetDrawColor(Color(0, 0, 0, 255));
+		r->ClearScreen();
+		rt->Render(t->GetDeltaTime());
+
 		SDL_RenderPresent(r->GetRenderer());
 		t->CapFPS();
 	}
 
+	delete rt;
 	delete SpriteAnim::Pool;
 	delete SpriteSheet::Pool;
 	
