@@ -71,6 +71,11 @@ void GameController::RunGame()
 
 
 
+		SDL_PollEvent(&m_sdlEvent);
+
+		/*std::string s = "Frame number: " + std::to_string(sheet->GetCurrentClip(EN_AN_IDLE));
+		font->Write(r->GetRenderer(), s.c_str(), SDL_Color{ 0, 255, 0 }, SDL_Point{ 250, 50 });
+
 	//	/*r->SetDrawColor(Color(0, 128, 0, 255));
 	//	r->ClearScreen();
 
