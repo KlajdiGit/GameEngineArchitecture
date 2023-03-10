@@ -17,7 +17,7 @@ GameController::~GameController()
 
 void GameController::RunGame()
 {
-	//AssetController::Instance().Initialize(10000000); //Allocate 10MB
+	AssetController::Instance().Initialize(10000000); //Allocate 10MB
 	Renderer* r = &Renderer::Instance();
 	Timing* t = &Timing::Instance();
 	r->Initialize();
@@ -28,14 +28,14 @@ void GameController::RunGame()
 	
 	//Point ws = r->GetWindowSize();
 
-	//SpriteSheet::Pool = new ObjectPool<SpriteSheet>();
-	//SpriteAnim::Pool = new ObjectPool<SpriteAnim>();
-	//SpriteSheet* sheet = SpriteSheet::Pool->GetResource();
-	//sheet->Load("../Assets/Textures/Warrior.tga");
-	//sheet->SetSize(17, 6, 69, 44);
-	//sheet->AddAnimation(EN_AN_IDLE, 0, 6, 6.0f);
-	//sheet->AddAnimation(EN_AN_RUN, 6, 8, 6.0f);
-	///*sheet->SetBlendMode(SDL_BLENDMODE_BLEND);
+	SpriteSheet::Pool = new ObjectPool<SpriteSheet>();
+	SpriteAnim::Pool = new ObjectPool<SpriteAnim>();
+	SpriteSheet* sheet = SpriteSheet::Pool->GetResource();
+	sheet->Load("../Assets/Textures/Warrior.tga");
+	sheet->SetSize(17, 6, 69, 44);
+	sheet->AddAnimation(EN_AN_IDLE, 0, 6, 6.0f);
+	sheet->AddAnimation(EN_AN_RUN, 6, 8, 6.0f);
+	//*sheet->SetBlendMode(SDL_BLENDMODE_BLEND);
 	//sheet->SetBlendAlpha(128);*/
 	//RenderTarget* rt = new RenderTarget();
 	//rt->Create(ws.X, ws.Y);
@@ -43,17 +43,11 @@ void GameController::RunGame()
 	while (m_sdlEvent.type != SDL_QUIT)
 	{
 		t->Tick();
+	
 		r->SetDrawColor(Color(255, 255, 255, 255));
 		r->ClearScreen();
-
-
-		//rt->Start();
-
-		//SDL_PollEvent(&m_sdlEvent);
-	/*	r->SetDrawColor(Color(255, 255, 255, 255));
-		r->ClearScreen();
-		r->RenderTexture(sheet, sheet->Update(EN_AN_IDLE, t->GetDeltaTime()), Rect(0, 0, 69*3, 44 * 3));
-		r->RenderTexture(sheet, sheet->Update(EN_AN_RUN, t->GetDeltaTime()), Rect(0, 150, 69 * 3, 150 + 44 * 3));*/
+		//r->RenderTexture(sheet, sheet->Update(EN_AN_IDLE, t->GetDeltaTime()), Rect(0, 0, 69*3, 44 * 3));
+		r->RenderTexture(sheet, sheet->Update(EN_AN_RUN, t->GetDeltaTime()), Rect(0, 150, 69 * 3, 150 + 44 * 3));
 
 		/*std::string s = "Frame number: " + std::to_string(sheet->GetCurrentClip(EN_AN_IDLE));
 		font->Write(r->GetRenderer(), s.c_str(), SDL_Color{ 0, 255, 0 }, SDL_Point{ 250, 50 });
@@ -63,15 +57,11 @@ void GameController::RunGame()
 
 		std::string fps = "Frames Per Second: " + std::to_string(t->GetFPS());
 		font->Write(r->GetRenderer(), fps.c_str(), SDL_Color{ 0, 0, 255 }, SDL_Point{ 0, 0 });
+		
+		std::string s = "Frame number: " + std::to_string(sheet->GetCurrentClip(EN_AN_RUN));
+		font->Write(r->GetRenderer(), s.c_str(), SDL_Color{ 0, 255, 0 }, SDL_Point{ 250, 50 });
 
-		vector<SDL_DisplayMode> modes = r->GetResolutions();
-		for (int count = 0; count < modes.size(); count++)
-		{
-			stringstream s;
-			s << modes[count].w << "x" << modes[count].h << " " << modes[count].refresh_rate << "hz";
-			font->Write(r->GetRenderer(), s.str(), SDL_Color{ 255, 128, 0 }, SDL_Point{ 0, 2 - +count * 20 });
-
-		}
+		
 
 
 		/*rt->Stop();
@@ -84,9 +74,9 @@ void GameController::RunGame()
 	}
 
 	//delete rt;
-	//delete SpriteAnim::Pool;
-	//delete SpriteSheet::Pool;
-	//
+	delete SpriteAnim::Pool;
+	delete SpriteSheet::Pool;
+	
 	font->Shutdown();
 	r->Shutdown();
 }

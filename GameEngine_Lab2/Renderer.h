@@ -23,6 +23,7 @@ public:
 	 //Methods
 	 //void Initialize(int _xresolution, int _yResolution);
 	 void Initialize();
+	 void ChangeDisplayMode(SDL_DisplayMode* _mode);
 	 void EnumerateDisplayModes();
 	 Point GetWindowSize();
 	 void SetDrawColor(Color _color);
