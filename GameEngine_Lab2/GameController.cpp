@@ -67,7 +67,6 @@ void GameController::RunGame()
 		vector<SDL_DisplayMode> modes = r->GetResolutions();
 		for (int count = 0; count < modes.size(); count++)
 		{
-			//stringstream s;
 			stringstream s;
 			s << modes[count].w << "x" << modes[count].h << " " << modes[count].refresh_rate << "hz";
 			font->Write(r->GetRenderer(), s.str(), SDL_Color{ 255, 128, 0 }, SDL_Point{ 0, 2 - +count * 20 });
