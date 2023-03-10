@@ -22,7 +22,7 @@ void GameController::RunGame()
 	Timing* t = &Timing::Instance();
 	r->Initialize();
 	r->EnumerateDisplayModes();
-	r->ChangeDisplayMode(&r->GetResolutions()[30]);
+	r->ChangeDisplayMode(&r->GetResolutions()[30]); //800x600
     //r->Initialize(1200, 1000);  
 
 	TTFont* font = new TTFont();
@@ -37,15 +37,16 @@ void GameController::RunGame()
 	sheet->SetSize(17, 6, 69, 44);
 	sheet->AddAnimation(EN_AN_IDLE, 0, 6, 6.0f);
 	sheet->AddAnimation(EN_AN_RUN, 6, 8, 6.0f);
-	//*sheet->SetBlendMode(SDL_BLENDMODE_BLEND);
-	//sheet->SetBlendAlpha(128);*/
-	//RenderTarget* rt = new RenderTarget();
-	//rt->Create(ws.X, ws.Y);
+	
+	RenderTarget* rt = new RenderTarget();
+	rt->Create(NATIVE_XRES, NATIVE_YRES); //Set to game's native resolution
+
+
 
 	while (m_sdlEvent.type != SDL_QUIT)
 	{
 		t->Tick();
-	
+		rt->Start();
 		r->SetDrawColor(Color(255, 255, 255, 255));
 		r->ClearScreen();
 		//r->RenderTexture(sheet, sheet->Update(EN_AN_IDLE, t->GetDeltaTime()), Rect(0, 0, 69*3, 44 * 3));
@@ -66,16 +67,16 @@ void GameController::RunGame()
 		
 
 
-		/*rt->Stop();
+		rt->Stop();
 		r->SetDrawColor(Color(0, 0, 0, 255));
 		r->ClearScreen();
-		rt->Render(t->GetDeltaTime());*/
+		rt->Render(t->GetDeltaTime());
 
 		SDL_RenderPresent(r->GetRenderer());
 		t->CapFPS();
 	}
 
-	//delete rt;
+	delete rt;
 	delete SpriteAnim::Pool;
 	delete SpriteSheet::Pool;
 	
