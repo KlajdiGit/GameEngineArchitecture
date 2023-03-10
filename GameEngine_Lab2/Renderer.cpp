@@ -62,15 +62,33 @@ void Renderer::RenderTexture(Texture* _texture, Rect _rect)
 
 }
 
-void Renderer::Initialize(int x_Resolution, int _yResolution)
+void Renderer::Initialize()
 {
 	M_ASSERT((SDL_Init(SDL_INIT_EVERYTHING) >= 0), "");
+	SDL_GetDisplayBounds(0, &m_srcRect);
 	m_window = SDL_CreateWindow("SDL Window", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
-                        		x_Resolution, _yResolution, SDL_WINDOW_SHOWN);
+		m_srcRect.w, m_srcRect.y, SDL_WINDOW_FULLSCREEN);
 
 	M_ASSERT(m_window != nullptr, "Failed to initialize SDL window.");
 	m_renderer = SDL_CreateRenderer(Renderer::Instance().GetWindow(), -1, 0);
 	M_ASSERT(m_renderer != nullptr, "Failed to initialize SDL renderer.");
+}
+
+void Renderer::EnumerateDisplayModes()
+{
+	int display_count = SDL_GetNumVideoDisplays();
+	for (int display_index = 0; display_index <= display_count; display_index++)
+	{
+		int modes_count = SDL_GetNumDisplayModes(display_index);
+		for (int mode_index = 0; mode_index <= modes_count; mode_index++)
+		{
+			SDL_DisplayMode mode = { SDL_PIXELFORMAT_UNKNOWN, 0, 0, 0, 0 };
+			if (SDL_GetDisplayMode(display_index, mode_index, &mode) == 0)
+			{
+				m_resolutions.push_back(mode);
+			}
+		}
+	}
 }
 
 void Renderer::Shutdown()
