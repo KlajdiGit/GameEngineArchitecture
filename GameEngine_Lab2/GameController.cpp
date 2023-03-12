@@ -22,7 +22,7 @@ void GameController::RunGame()
 	Timing* t = &Timing::Instance();
 	r->Initialize();
 	r->EnumerateDisplayModes();
-	r->ChangeDisplayMode(&r->GetResolutions()[30]); //800x600
+	r->ChangeDisplayMode(&r->GetResolutions()[40]); //800x600
     //r->Initialize(1200, 1000);  
 
 	TTFont* font = new TTFont();
@@ -62,7 +62,7 @@ void GameController::RunGame()
 		font->Write(r->GetRenderer(), fps.c_str(), SDL_Color{ 0, 0, 255 }, SDL_Point{ 0, 0 });
 		
 		std::string s = "Frame number: " + std::to_string(sheet->GetCurrentClip(EN_AN_RUN));
-		font->Write(r->GetRenderer(), s.c_str(), SDL_Color{ 0, 255, 0 }, SDL_Point{ 250, 50 });
+		font->Write(r->GetRenderer(), s.c_str(), SDL_Color{ 0, 255, 0 }, SDL_Point{ 250, 200 });
 
 		
 
