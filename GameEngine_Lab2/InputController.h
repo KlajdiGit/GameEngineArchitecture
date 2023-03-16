@@ -5,6 +5,7 @@
 
 class Keyboard;
 class Mouse;
+
 class InputController : public Singleton<InputController>
 {
 public:
