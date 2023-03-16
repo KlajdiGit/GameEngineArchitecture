@@ -84,6 +84,9 @@
     <ClCompile Include="InputController.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Mouse.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="StandardIncludes.h">
@@ -156,6 +159,9 @@
       <Filter>Header Files\Input Headers</Filter>
     </ClInclude>
     <ClInclude Include="InputController.h">
+      <Filter>Header Files\Input Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="Mouse.h">
       <Filter>Header Files\Input Headers</Filter>
     </ClInclude>
   </ItemGroup>
