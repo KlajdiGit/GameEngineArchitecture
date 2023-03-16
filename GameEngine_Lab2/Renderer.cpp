@@ -106,11 +106,13 @@ void Renderer::Shutdown()
 	if (m_renderer != nullptr)
 	{
 		SDL_DestroyRenderer(m_renderer);
+		m_renderer = nullptr;
 	}
 
 	if (m_window != nullptr)
 	{
 		SDL_DestroyWindow(m_window);
+		m_window = nullptr;
 	}
 	SDL_Quit(); //Quit SDL subsystems
 }

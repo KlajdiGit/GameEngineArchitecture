@@ -7,6 +7,11 @@ TTFont::TTFont()
 	destRect = { };
 }
 
+TTFont::~TTFont()
+{
+	Shutdown();
+}
+
 void TTFont::Initialize(int _pointSize)
 {
 	M_ASSERT((TTF_Init() >= 0), "Unable to initialize SDLL TTF");
@@ -21,6 +26,9 @@ void TTFont::Shutdown()
 
 void TTFont::Write(SDL_Renderer* _renderer, const char* _text, SDL_Color _color, SDL_Point _pos)
 {
+
+	if (strlen(_text) == 0) return;
+
 	SDL_Surface* surface;
 	surface = TTF_RenderUTF8_Blended(m_font, _text, _color);
 

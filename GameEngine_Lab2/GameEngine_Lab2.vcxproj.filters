@@ -19,6 +19,9 @@
     <Filter Include="Header Files\Graphics">
       <UniqueIdentifier>{978616c0-40c1-4307-8d1c-f6aa7573de22}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Input Headers">
+      <UniqueIdentifier>{3c69bcef-8e8c-43ff-bc35-f1c69dc974b1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="GameEngine_Lab2.cpp">
@@ -73,6 +76,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="RenderTarget.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Keyboard.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="InputController.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -142,6 +151,12 @@
     </ClInclude>
     <ClInclude Include="RenderTarget.h">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Keyboard.h">
+      <Filter>Header Files\Input Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="InputController.h">
+      <Filter>Header Files\Input Headers</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
