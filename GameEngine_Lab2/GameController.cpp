@@ -1,30 +1,13 @@
 #include "GameController.h"
 #include "Renderer.h"
-//#include "SpriteSheet.h"
-//#include "SpriteAnim.h"
-//#include "Timing.h"
-//#include "RenderTarget.h"
 #include "TTFont.h"
 #include "InputController.h"
 #include "Keyboard.h"
 #include "Mouse.h"
+#include "Controller.h"
 
 
-struct Point
-{
-	Point()
-	{
 
-	}
-	Point(unsigned int _x, unsigned int _y)
-	{
-		X = _x;
-		Y = _y;
-	}
-
-	unsigned int X;
-	unsigned int Y;
-};
 
 GameController::GameController()
 {
@@ -36,6 +19,7 @@ GameController::GameController()
 	m_text = "";
 	m_smPos = "";
 	m_mPos = { };
+	m_ctInfo = "";
 
 }
 
@@ -60,6 +44,12 @@ void GameController::HandleInput(SDL_Event _event)
 		m_smPos = "Mouse Position [" + to_string(m_mPos.X) +
 			";" + to_string(m_mPos.Y) + "]";
 	}
+	else if ((m_input->CT()->Added(m_sdlEvent)) ||
+		(m_input->CT()->Removed(m_sdlEvent)))
+	{
+		m_ctInfo = m_input->CT()->ToString();
+	}
+
 	else m_input->MS()->ProcessButtons(_event);
 }
 
@@ -101,7 +91,7 @@ void GameController::RunGame()
 		m_fArial20->Write(m_renderer->GetRenderer(), ("Left: " + to_string(m_input->MS()->GetButLDown())).c_str(), SDL_Color{0, 0, 255}, SDL_Point{250, 240});
 		m_fArial20->Write(m_renderer->GetRenderer(), ("Middle: " + to_string(m_input->MS()->GetButMDown())).c_str(), SDL_Color{ 0, 0, 255 }, SDL_Point{ 250, 260 });
 		m_fArial20->Write(m_renderer->GetRenderer(), ("Right: " + to_string(m_input->MS()->GetButRDown())).c_str(), SDL_Color{ 0, 0, 255 }, SDL_Point{ 250, 280 });
-
+		m_fArial20->Write(m_renderer->GetRenderer(), m_ctInfo.c_str(), SDL_Color{ 255, 0, 0 }, SDL_Point{ 250, 300 });
 
 
 		SDL_RenderPresent(m_renderer->GetRenderer());
