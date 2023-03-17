@@ -96,6 +96,7 @@ void Renderer::ChangeDisplayMode(SDL_DisplayMode* _mode)
 	M_ASSERT(SDL_SetWindowDisplayMode(m_window, _mode) == 0, "Failed to set resolution");
 	SDL_SetWindowSize(m_window, _mode->w, _mode->h);
 }
+
 void Renderer::Shutdown()
 {
 	for (auto it = m_textures.begin(); it != m_textures.end(); it++)
