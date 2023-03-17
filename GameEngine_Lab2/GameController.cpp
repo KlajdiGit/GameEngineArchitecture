@@ -46,6 +46,7 @@ void GameController::Initialize()
 {
 	m_renderer = &Renderer::Instance();
 	m_renderer->Initialize();
+	m_input = &InputController::Instance();
 	m_fArial20 = new TTFont();
 	m_fArial20->Initialize(20);
 }
