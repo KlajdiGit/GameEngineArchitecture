@@ -10,21 +10,7 @@
 #include "Mouse.h"
 
 
-struct Point
-{
-	Point()
-	{
 
-	}
-	Point(unsigned int _x, unsigned int _y)
-	{
-		X = _x;
-		Y = _y;
-	}
-
-	unsigned int X;
-	unsigned int Y;
-};
 
 GameController::GameController()
 {
