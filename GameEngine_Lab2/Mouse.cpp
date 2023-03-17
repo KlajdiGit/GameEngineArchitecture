@@ -1,5 +1,22 @@
 #include "Mouse.h"
 //#include "BasicStructs.h"
+
+struct Point
+{
+	Point()
+	{
+
+	}
+	Point(unsigned int _x, unsigned int _y)
+	{
+		X = _x;
+		Y = _y;
+	}
+
+	unsigned int X;
+	unsigned int Y;
+};
+
 Mouse::Mouse()
 {
 	m_pos = Point();
