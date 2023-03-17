@@ -68,7 +68,7 @@ bool Controller::Removed(SDL_Event _event)
 
 bool Controller::ProcessButtons(SDL_Event _event)
 {
-	if (_event.type == SDL_CONTROLLERBUTTONDOWS)
+	if (_event.type == SDL_CONTROLLERBUTTONDOWN)
 	{
 		for (unsigned int count = 0; count < m_controllers.size(); count++)
 		{
