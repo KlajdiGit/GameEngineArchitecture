@@ -2,10 +2,10 @@
 #define CONTROLLER_H
 
 #include "StandardIncludes.h"
-class Controller
+struct ControllerInfo
 {
 	//Members
-	SDL_Joystick ID = -1;
+	SDL_JoystickID ID = -1;
 	SDL_GameController* Controller = nullptr;
 	string Name;
 };
