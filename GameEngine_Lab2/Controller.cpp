@@ -26,7 +26,7 @@ void Controller::Add(SDL_GameController* _controller, int _controllerID)
 	if (_controller == nullptr) return;
 
 	SDL_Joystick* j = SDL_GameControllerGetJoystick(_controller);
-	SDL_Joystick jID = SDL_JoystickInstanceID(j); // _controllerID is not to be used as a unique ID
+	SDL_JoystickID jID = SDL_JoystickInstanceID(j); // _controllerID is not to be used as a unique ID
 	for (ControllerInfo c : m_controllers) 
 	{
 		if (c.ID == jID) return;
@@ -66,6 +66,42 @@ bool Controller::Removed(SDL_Event _event)
 	return true;
 }
 
+bool Controller::ProcessButtons(SDL_Event _event)
+{
+	if (_event.type == SDL_CONTROLLERBUTTONDOWS)
+	{
+		for (unsigned int count = 0; count < m_controllers.size(); count++)
+		{
+			if (m_controllers[count].ID != _event.cdevice.which) continue;
+			auto v = m_controllers[count].Buttons;
+			if (std::find(v.begin(), v.end(), _event.cbutton.button) == v.end())
+			{
+				m_controllers[count].Buttons.push_back(SDL_GameControllerButton(_event.cbutton.button));
+
+			}
+			break;
+		}
+		return true;
+	}
+	else if (_event.type == SDL_CONTROLLERBUTTONUP)
+	{
+		for (unsigned int count = 0; count < m_controllers.size(); count++)
+		{
+			vector<SDL_GameControllerButton>* v = &m_controllers[count].Buttons;
+			for (unsigned int button = 0; button < v->size(); button++)
+			{
+				if ((*v)[button] == _event.cbutton.button)
+				{
+					v->erase(v->begin() + button);
+					break;
+				}
+			}
+		}
+		return true;
+	}
+	return false;
+}
+
 string Controller::ToString()
 {
 	int cc = 0;
@@ -74,6 +110,7 @@ string Controller::ToString()
 	{
 		cc++;
 		s += to_string(cc) + " - " + c.Name + ": ";
+		s += c.ToString();
 	}
 	return s;
 }

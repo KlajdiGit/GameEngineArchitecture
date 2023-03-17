@@ -45,7 +45,8 @@ void GameController::HandleInput(SDL_Event _event)
 			";" + to_string(m_mPos.Y) + "]";
 	}
 	else if ((m_input->CT()->Added(m_sdlEvent)) ||
-		(m_input->CT()->Removed(m_sdlEvent)))
+		(m_input->CT()->Removed(m_sdlEvent)) ||
+		(m_input->CT()->ProcessButtons(m_sdlEvent)))
 	{
 		m_ctInfo = m_input->CT()->ToString();
 	}
