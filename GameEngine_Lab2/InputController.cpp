@@ -1,11 +1,14 @@
 #include "InputController.h"
 #include "Keyboard.h"
 #include "Mouse.h"
+#include "Controller.h"
 
 InputController::InputController()
 {
 	m_keyboard = new Keyboard();
 	m_mouse = new Mouse();
+	m_controller = new Controller();
+
 }
 
 InputController::~InputController()

@@ -121,7 +121,7 @@ bool Controller::ProcessMotion(SDL_Event _event)
 			}
 			else if (_event.caxis.axis == 1) //Y axis motion
 			{
-				m_controllers[count].LeftAxis.X = _event.caxis.value;
+				m_controllers[count].LeftAxis.Y = _event.caxis.value;
 			}
 		
 			//Right Analog Stick
@@ -132,7 +132,7 @@ bool Controller::ProcessMotion(SDL_Event _event)
 			}
 			else if (_event.caxis.axis == 3) //Y axis motion
 			{
-				m_controllers[count].RightAxis.X = _event.caxis.value;
+				m_controllers[count].RightAxis.Y = _event.caxis.value;
 			}
 	    }
 		return true;
