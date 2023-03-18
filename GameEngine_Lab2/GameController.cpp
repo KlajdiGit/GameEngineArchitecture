@@ -51,7 +51,7 @@ void GameController::HandleInput(SDL_Event _event)
 		m_ctInfo = m_input->CT()->ToString();
 	}
 
-	else m_input->MS()->ProcessButtons(_event);
+     m_input->MS()->ProcessButtons(_event);
 }
 
 GameController::~GameController()
