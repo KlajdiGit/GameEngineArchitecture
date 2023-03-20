@@ -137,6 +137,7 @@ copy /Y "$(SolutionDir)External\SDL2_mixer-2.6.3\lib\x86\SDL2_mixer.dll" "$(Targ
   <ItemGroup>
     <ClCompile Include="Asset.cpp" />
     <ClCompile Include="AssetController.cpp" />
+    <ClCompile Include="AudioController.cpp" />
     <ClCompile Include="Controller.cpp" />
     <ClCompile Include="FileController.cpp" />
     <ClCompile Include="GameController.cpp" />
@@ -162,6 +163,7 @@ copy /Y "$(SolutionDir)External\SDL2_mixer-2.6.3\lib\x86\SDL2_mixer.dll" "$(Targ
   <ItemGroup>
     <ClInclude Include="Asset.h" />
     <ClInclude Include="AssetController.h" />
+    <ClInclude Include="AudioController.h" />
     <ClInclude Include="BasicStructs.h" />
     <ClInclude Include="Controller.h" />
     <ClInclude Include="FileController.h" />
