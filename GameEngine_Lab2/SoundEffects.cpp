@@ -11,9 +11,9 @@ SoundEffects::~SoundEffects()
 {
 }
 
-void SoundEffects::AssignNonDefaultValues()
+void SoundEffects::Load(string _guid)
 {
-	m_effect = AssetController::Instance().GetAsset("SoundEffect.wav");	
+	m_effect = AssetController::Instance().GetAsset(_guid);	
 }
 
 void SoundEffects::Serialize(std::ostream& _stream)

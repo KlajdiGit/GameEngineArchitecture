@@ -148,6 +148,7 @@ copy /Y "$(SolutionDir)External\SDL2_mixer-2.6.3\lib\x86\SDL2_mixer.dll" "$(Targ
     <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="RenderTarget.cpp" />
     <ClCompile Include="Resource.cpp" />
+    <ClCompile Include="Song.cpp" />
     <ClCompile Include="SoundEffects.cpp" />
     <ClCompile Include="SpriteAnim.cpp" />
     <ClCompile Include="SpriteSheet.cpp" />
@@ -175,6 +176,7 @@ copy /Y "$(SolutionDir)External\SDL2_mixer-2.6.3\lib\x86\SDL2_mixer.dll" "$(Targ
     <ClInclude Include="Resource.h" />
     <ClInclude Include="Serializable.h" />
     <ClInclude Include="Singleton.h" />
+    <ClInclude Include="Song.h" />
     <ClInclude Include="SoundEffects.h" />
     <ClInclude Include="SpriteAnim.h" />
     <ClInclude Include="SpriteSheet.h" />

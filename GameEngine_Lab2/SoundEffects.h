@@ -2,7 +2,7 @@
 #define SOUND_EFFECT_H
 
 #include "Resource.h"
-#include "Asset.h"
+class Asset;
 
 class SoundEffects:public Resource
 {
@@ -11,11 +11,15 @@ public:
 	SoundEffects();
 	virtual ~SoundEffects();
 
+	//Accessors
+	Asset* GetData() { return m_effect; }
+
+
 	//Methods
 	void Serialize(std::ostream& _stream) override;
 	void Deserialize(std::istream& _stream) override;
 	void ToString() override;
-	void AssignNonDefaultValues() override;
+	void Load(string _guid);
 
 	//Members
 	static ObjectPool<SoundEffects>* Pool;
