@@ -2,7 +2,7 @@
 #define AUDIOCONTROLLER_H
 
 #include "StandardIncludes.h"
-class SoundEffect;
+class SoundEffects;
 class Song;
 
 class AudioController : public Singleton<AudioController>
@@ -20,7 +20,7 @@ public:
 	//Methods
 	SoundEffects* LoadEffect(string _guid);
 	Song* LoadSong(string _guid);
-	void Play(SoundEffect* _effect);
+	void Play(SoundEffects* _effect);
 	void Play(Song* _effect);
 	void StopMusic();
 	void PauseMusic();
@@ -32,7 +32,7 @@ public:
 
 private:
 	//Methods
-	Mix_Chunk* GetSDLWav(SoundEffect* _effect);
+	Mix_Chunk* GetSDLWav(SoundEffects* _effect);
 	Mix_Music* GetSDLMP3(Song* _song);
 
 	//Members
