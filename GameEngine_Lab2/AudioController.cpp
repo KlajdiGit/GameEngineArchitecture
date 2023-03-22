@@ -30,17 +30,18 @@ Song* AudioController::LoadSong(string _guid)
 
 void AudioController::Play(SoundEffects* _effect)
 {
-	M_ASSERT(Mix_PlayChannel(-1, GetSDLWav(_effect), 0) != -1, "Failed to play SFX");
-	m_currentEffect = _effect->GetData()->GetGUID();
+	int channel;
+	channel = Mix_PlayChannel(-1, GetSDLSFX(_effect), 0);
+	if (channel == -1) return;
 	Mix_ChannelFinished(AudioController::CatchChannelDone);
 }
 
 void AudioController::CatchChannelDone(int _channel)
 {
-	AudioController::Instance().m_currentEffect = "";
+	AudioController::Instance().m_currentEffects[_channel] = "";
 }
 
-Mix_Chunk* AudioController::GetSDLWav(SoundEffects* _effect)
+Mix_Chunk* AudioController::GetSDLSFX(SoundEffects* _effect)
 {
 	Asset* asset = _effect->GetData();
 	string guid = asset->GetGUID();
@@ -57,13 +58,13 @@ Mix_Chunk* AudioController::GetSDLWav(SoundEffects* _effect)
 
 void AudioController::Play(Song* _song)
 {
-	m_currentSong = GetSDLMP3(_song);
+	m_currentSong = GetSDLMusic(_song);
 	M_ASSERT(Mix_PlayMusic(m_currentSong, -1) != -1, "Failed to play Song");
 	m_musicTitle = string(Mix_GetMusicTitle(m_currentSong));
 	m_musicLength = to_string((int)Mix_MusicDuration(m_currentSong));
 }
 
-Mix_Music* AudioController::GetSDLMP3(Song* _song)
+Mix_Music* AudioController::GetSDLMusic(Song* _song)
 {
 	Asset* asset = _song->GetData();
 	string guid = asset->GetGUID();

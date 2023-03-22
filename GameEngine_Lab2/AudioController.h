@@ -2,6 +2,9 @@
 #define AUDIOCONTROLLER_H
 
 #include "StandardIncludes.h"
+
+constexpr int MaxEffectChannels = 16;
+
 class SoundEffects;
 class Song;
 
@@ -13,6 +16,7 @@ public:
 	virtual ~AudioController();
 
 	//Accessors
+	string* GetCurrentEffects() { return m_currentEffects; }
 	string GetCurrentEffect() { return m_currentEffect; }
 	string GetMusicTitle() { return m_musicTitle; }
 	string GetMusicLength() { return m_musicLength; }
@@ -32,14 +36,15 @@ public:
 
 private:
 	//Methods
-	Mix_Chunk* GetSDLWav(SoundEffects* _effect);
-	Mix_Music* GetSDLMP3(Song* _song);
+	Mix_Chunk* GetSDLSFX(SoundEffects* _effect);
+	Mix_Music* GetSDLMusic(Song* _song);
 
 	//Members
 	map<string, Mix_Chunk*> m_effects;
 	map<string, Mix_Music*> m_songs;
 	string m_currentEffect;
 	string m_musicLength;
+	string m_currentEffects[MaxEffectChannels];
 	string m_musicTitle;
 	Mix_Music* m_currentSong;
 };
