@@ -108,6 +108,9 @@
     <ClCompile Include="InputController.cpp">
       <Filter>Source Files\Input</Filter>
     </ClCompile>
+    <ClCompile Include="WavDraw.cpp">
+      <Filter>Source Files\Audio</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="StandardIncludes.h">
@@ -192,6 +195,9 @@
       <Filter>Header Files\Audio Headers</Filter>
     </ClInclude>
     <ClInclude Include="SoundEffects.h">
+      <Filter>Header Files\Audio Headers</Filter>
+    </ClInclude>
+    <ClInclude Include="WavDraw.h">
       <Filter>Header Files\Audio Headers</Filter>
     </ClInclude>
   </ItemGroup>
