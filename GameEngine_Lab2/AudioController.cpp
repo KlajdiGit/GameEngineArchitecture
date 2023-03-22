@@ -5,6 +5,7 @@
 AudioController::AudioController()
 {
 	M_ASSERT((Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) >= 0), "Failed to initialize Mix Audio");
+	Mix_AllocateChannels(MaxEffectChannels);
 	SoundEffects::Pool = new ObjectPool<SoundEffects>();
 	m_currentSong = nullptr;
 }
