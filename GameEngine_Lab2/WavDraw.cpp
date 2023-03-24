@@ -67,10 +67,10 @@ void WavDraw::DrawWave(Asset* _rawWav, Renderer* _renderer, float _yZoom)
 	m_xPos = 0;
 	for (int count = 0; count < m_header.DataBytes; count += m_stepSize)
 	{
-		int leftYPos = *(m_wavData + count); //Left channel sample
-		leftYPos = (int)(((m_wSize.Y / 4) + (float)leftYPos / m_wSize.Y * -1 * _yZoom));
+		int leftYPos = *(m_wavData + count); //Left channel sample. The height of a single sample
+		leftYPos = (int)(((m_wSize.Y / 4) + (float)leftYPos / m_wSize.Y * -1 * _yZoom)); //scale the amplitude so it can be visible to our screen
 		int rightYPos = *(m_wavData + count + 1); //Right channel sample
-		rightYPos = (int)(((m_wSize.Y * 3 / 4) + (float)rightYPos / m_wSize.Y * -1 * _yZoom));
+		rightYPos = (int)(((m_wSize.Y * 3 / 4) + (float)rightYPos / m_wSize.Y * -1 * _yZoom)); //axis in SDL are inveerted. So we multiply by -1
 		if (count > 0)
 		{
 			_renderer->SetDrawColor(Color(255, 0, 0, 255));

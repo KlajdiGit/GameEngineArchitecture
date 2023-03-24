@@ -6,28 +6,31 @@
 class Renderer;
 class Asset;
 
-#pragma pack (push,1)
+#pragma pack (push,1) //Enable memory packing 
 
 typedef struct
 {
-	char RIFFHeader[4];
-	unsigned int WavSize;
-	char WavHeader[4];
+	//RIFF Header
+	char RIFFHeader[4]; //Contains "RIFF"
+	unsigned int WavSize; //Size of the wav portion of the file, which follows the first 8 bytes. File size -8
+	char WavHeader[4]; //Contains "WAVE
 
-	char FMTHeader[4];
-	unsigned int FMTChunkSize;
-	unsigned short AudioFormat;
-	unsigned short NumChannels;
-	unsigned int SampleRate;
-	unsigned int ByteRate;
-	unsigned short SampleAlignment;
-	unsigned short BitDepth;
+	//Format header
+	char FMTHeader[4]; //Contains "fmt" (includes trailing space)
+	unsigned int FMTChunkSize; //Should be 16 for PCM
+	unsigned short AudioFormat; //Should be 1 for PCM. 3 for IEEE float
+	unsigned short NumChannels; //1 - Mono, 2 - Stereo
+	unsigned int SampleRate;    //E.g., 44100 samples per second
+	unsigned int ByteRate;      // Number of bytes per second. SampleRate * NUmChannels * (BitDepth / 8)
+	unsigned short SampleAlignment; //num_channels * Bytes Per Sample
+	unsigned short BitDepth;        //NUmber of bits per sample  
 
-	char DataHeader[4];
-	unsigned int DataBytes;
+	//Data
+	char DataHeader[4]; //Contains "data"
+	unsigned int DataBytes; ///Number of bytes in date. NUmber of samples * num_xhannels * sample byte size 
 }WAVHeader;
 
-#pragma pack(pop)
+#pragma pack(pop) //Disable memory packing
 
 class WavDraw
 {
