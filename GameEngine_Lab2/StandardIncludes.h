@@ -6,6 +6,11 @@
 #define NATIVE_XRES 1920
 #define NATIVE_YRES 1080
 
+// Glm Headers
+
+#define GLM_ENABLE_EXPERIMENTAL
+#include <glm.hpp>
+#include <ext.hpp>
 
 //Include standard headers
 #include <string>
