@@ -103,19 +103,22 @@ void Level::RunLevel()
 	TTFont* font = new TTFont();
 	font->Initialize(20);
 
-	//Point ws = r->GetWindowSize();
+	Point ws = r->GetWindowSize();
 
 	SpriteSheet::Pool = new ObjectPool<SpriteSheet>();
 	SpriteAnim::Pool = new ObjectPool<SpriteAnim>();
 	SpriteSheet* sheet = SpriteSheet::Pool->GetResource();
 	sheet->Load("../Assets/Textures/Warrior.tga");
 	sheet->SetSize(17, 6, 69, 44);
-	sheet->AddAnimation(EN_AN_IDLE, 0, 6, 1.0f);
+	sheet->AddAnimation(EN_AN_IDLE, 0, 6, 6.0f);
 
 	RenderTarget* rt = new RenderTarget();
 	rt->Create(NATIVE_XRES, NATIVE_YRES); //Set to game's native resolution
 
 
+	
+
+	
 	SDL_Event m_sdlEvent = {};
 	while (m_sdlEvent.type != SDL_QUIT)
 	{
@@ -124,7 +127,8 @@ void Level::RunLevel()
 		rt->Start();
 		r->SetDrawColor(Color(255, 255, 255, 255));
 		r->ClearScreen();
-		r->RenderTexture(sheet, sheet->Update(EN_AN_IDLE, t->GetDeltaTime()), Rect(200,150, 69 * 3, 150 + 44 * 3));
+		//r->RenderTexture(sheet, sheet->Update(EN_AN_IDLE, t->GetDeltaTime()), Rect(ws.X / 2, ws.Y / 2, 69 , (ws.Y / 2) + 44 ));
+		r->RenderTexture(sheet, sheet->Update(EN_AN_IDLE, t->GetDeltaTime()), Rect(ws.X /2, ws.Y/2, ws.X / 2 + 69, ws.Y / 2 + 44));
 
 		
 		std::string guide = "[D]ecrease speed [I]ncrease speed [S]ave [L]oad [ESC] Quit ";
