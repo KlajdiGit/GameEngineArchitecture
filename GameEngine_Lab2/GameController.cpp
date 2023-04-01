@@ -77,12 +77,13 @@ void GameController::RunGame()
 {
 	Initialize();
 	Level* l1 = new Level();
-	
+
 	while (!m_quit)
 	{
 
 		m_renderer->SetDrawColor(Color(255, 255, 255, 255));
 		m_renderer->ClearScreen();
+		l1->RunLevel();
 
 		while (SDL_PollEvent(&m_sdlEvent) != 0)
 		{
@@ -90,9 +91,10 @@ void GameController::RunGame()
 			HandleInput(m_sdlEvent);
 		}
 
-		delete l1;
 		SDL_RenderPresent(m_renderer->GetRenderer());
 	}
+	delete l1;
+
 }
 
 
