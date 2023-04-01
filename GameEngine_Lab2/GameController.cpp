@@ -9,6 +9,7 @@
 #include "SoundEffects.h"
 #include "Song.h"
 #include "WavDraw.h"
+#include "Level.h"
 
 
 
@@ -75,6 +76,7 @@ void GameController::HandleInput(SDL_Event _event)
 void GameController::RunGame()
 {
 	Initialize();
+	Level* l1 = new Level();
 	
 	while (!m_quit)
 	{
@@ -84,11 +86,11 @@ void GameController::RunGame()
 
 		while (SDL_PollEvent(&m_sdlEvent) != 0)
 		{
+			l1->RunLevel();
 			HandleInput(m_sdlEvent);
 		}
 
-		m_wavDraw->DrawWave(m_effects[0]->GetData(), m_renderer, m_zoomY);
-		
+		delete l1;
 		SDL_RenderPresent(m_renderer->GetRenderer());
 	}
 }

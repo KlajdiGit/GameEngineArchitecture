@@ -3,6 +3,8 @@
 #include "TTFont.h"
 #include "SpriteAnim.h"
 #include "SpriteSheet.h"
+#include "Timing.h"
+#include "RenderTarget.h"
 
 Level::Level()
 {
@@ -90,75 +92,65 @@ void RunLevel()
 {
 
 	AssetController::Instance().Initialize(10000000); //Allocate 10MB
-	r->Initialize(1920, 1080);
+	Renderer* r = &Renderer::Instance();
+	Timing* t = &Timing::Instance();
+	r->Initialize();
+	r->EnumerateDisplayModes();
+	r->ChangeDisplayMode(&r->GetResolutions()[0]); 
+
 	TTFont* font = new TTFont();
 	font->Initialize(20);
 
-	Point ws = r->GetWindowSize();
+	//Point ws = r->GetWindowSize();
 
 	SpriteSheet::Pool = new ObjectPool<SpriteSheet>();
 	SpriteAnim::Pool = new ObjectPool<SpriteAnim>();
 	SpriteSheet* sheet = SpriteSheet::Pool->GetResource();
 	sheet->Load("../Assets/Textures/Warrior.tga");
 	sheet->SetSize(17, 6, 69, 44);
-	sheet->AddAnimation(EN_AN_RUN, 6, 8, 4.8f);
+	sheet->AddAnimation(EN_AN_IDLE, 0, 6, 6.0f);
+	sheet->AddAnimation(EN_AN_RUN, 6, 8, 6.0f);
 
-	unsigned int xPos = 1;
-	unsigned int saveTime;
+	RenderTarget* rt = new RenderTarget();
+	rt->Create(NATIVE_XRES, NATIVE_YRES); //Set to game's native resolution
 
-	while (xPos < 1920)
-	{
+
+
+	//while (m_sdlEvent.type != SDL_QUIT)
+	//{
+	//	SDL_PollEvent(&m_sdlEvent);
 		t->Tick();
-		srand(time(0)); // part of my idea to randomize the speed
-
-		r->SetDrawColor(Color(128, 128, 128, 255));
+		rt->Start();
+		r->SetDrawColor(Color(255, 255, 255, 255));
 		r->ClearScreen();
-		for (unsigned int count = 0; count < 10; count++)
-		{
+		//r->RenderTexture(sheet, sheet->Update(EN_AN_IDLE, t->GetDeltaTime()), Rect(0, 0, 69*3, 44 * 3));
+		r->RenderTexture(sheet, sheet->Update(EN_AN_IDLE, t->GetDeltaTime()), Rect(0, 150, 69 * 3, 150 + 44 * 3));
 
-			unsigned int yPos = 10 + count * 100;
-			// my idea of making randomized speed. Assuming the normal walk speed is ((((int)SDL_GetTicks()) -xPos) /1000)
-			// which is then multiplied by a speed coefficient 
-			//xPos = ((rand() % 21) + 80) *((((int)SDL_GetTicks()) -xPos) /1000) ;
-			// 80 will just be in this case the miniaml speed coefficient
-			xPos = 80 * (SDL_GetTicks() - xPos) / 1000.0f;
+		/*std::string s = "Frame number: " + std::to_string(sheet->GetCurrentClip(EN_AN_IDLE));
+		font->Write(r->GetRenderer(), s.c_str(), SDL_Color{ 0, 255, 0 }, SDL_Point{ 250, 50 });
 
-			r->RenderTexture(sheet, sheet->Update(EN_AN_RUN, t->GetDeltaTime()), Rect(xPos, yPos, 69 * 1.8 + xPos, yPos + 44 * 1.8));
-		}
+		s = "Frame number: " + std::to_string(sheet->GetCurrentClip(EN_AN_RUN));
+		font->Write(r->GetRenderer(), s.c_str(), SDL_Color{ 0, 255, 0 }, SDL_Point{ 250, 200 });*/
 
+		std::string fps = "Frames Per Second: " + std::to_string(t->GetFPS());
+		font->Write(r->GetRenderer(), fps.c_str(), SDL_Color{ 0, 0, 255 }, SDL_Point{ 0, 0 });
 
-
-
-		std::string s = "Frames Per Second: " + std::to_string(t->GetFPS());
-		font->Write(r->GetRenderer(), s.c_str(), SDL_Color{ 0, 0, 255 }, SDL_Point{ 0, 0 });
-
-		saveTime = SDL_GetTicks() / 1000;
-
-		s = "Game Time: " + std::to_string(saveTime);
-		font->Write(r->GetRenderer(), s.c_str(), SDL_Color{ 0, 0, 255 }, SDL_Point{ 250, 0 });
-		s = "Auto Save: ";
-		if (saveTime >= 5)
-		{
-			ofstream writeStream("level1.bin", ios::out | ios::binary);
-			Level::Serialize(writeStream);
-			sheet->Serialize(writeStream);
-			writeStream.close();
-			//sheet->Load("level1.bin");
-
-			s += " Yes";
-		}
-		else {
-			s += " No";
-		}
-		font->Write(r->GetRenderer(), s.c_str(), SDL_Color{ 0, 0, 255 }, SDL_Point{ 400, 0 });
+		std::string s = "Frame number: " + std::to_string(sheet->GetCurrentClip(EN_AN_RUN));
+		font->Write(r->GetRenderer(), s.c_str(), SDL_Color{ 0, 255, 0 }, SDL_Point{ 250, 200 });
 
 
+
+
+		rt->Stop();
+		r->SetDrawColor(Color(0, 0, 0, 255));
+		r->ClearScreen();
+		rt->Render(t->GetDeltaTime());
 
 		SDL_RenderPresent(r->GetRenderer());
-	}
+		t->CapFPS();
+	//}
 
-	Level::RunLevel2(saveTime);
-
+	delete rt;
 	delete SpriteAnim::Pool;
 	delete SpriteSheet::Pool;
 

@@ -4,7 +4,7 @@
 
 int main()
 {
-	//GameController::Instance().RunGame();
+	GameController::Instance().RunGame();
 
 	return 0;
 }
