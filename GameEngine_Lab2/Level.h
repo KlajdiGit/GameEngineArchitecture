@@ -15,9 +15,10 @@ public:
 	void Deserialize(std::istream& _stream) override;
 	void ToString() override;
 	void AssignNonDefaultValues() override;
-
+	void RunLevel();
 private:
 	//Members
+	SDL_Event m_sdlEvent;
 	int m_mapSizeX;
 	int m_mapSizeY;
 	float m_gameTime;
