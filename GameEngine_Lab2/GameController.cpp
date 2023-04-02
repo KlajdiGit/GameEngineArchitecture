@@ -86,10 +86,12 @@ void GameController::RunGame()
 		while (SDL_PollEvent(&m_sdlEvent) != 0)
 		{
 			HandleInput(m_sdlEvent);
+			m_level->RunLevel();
+
 		}
 
 		//m_wavDraw->DrawWave(m_effects[0]->GetData(), m_renderer, m_zoomY);
-		m_level->RunLevel();
+		//m_level->RunLevel();
 
 		SDL_RenderPresent(m_renderer->GetRenderer());
 	}
