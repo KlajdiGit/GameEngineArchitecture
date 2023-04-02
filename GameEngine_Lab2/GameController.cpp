@@ -51,6 +51,8 @@ void GameController::ShutDown()
 {
 	delete m_fArial20;
 	delete m_wavDraw;
+	if (m_level != nullptr)
+		 delete m_level;
 }
 
 void GameController::HandleInput(SDL_Event _event)
