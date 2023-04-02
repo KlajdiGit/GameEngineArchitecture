@@ -88,6 +88,7 @@ void GameController::RunGame()
 		}
 
 		m_wavDraw->DrawWave(m_effects[0]->GetData(), m_renderer, m_zoomY);
+        
 		
 		SDL_RenderPresent(m_renderer->GetRenderer());
 	}
