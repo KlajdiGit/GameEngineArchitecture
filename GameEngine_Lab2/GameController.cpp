@@ -61,8 +61,8 @@ void GameController::HandleInput(SDL_Event _event)
 	if ((m_sdlEvent.type == SDL_QUIT) ||
 		(m_input->KB()->KeyUp(m_sdlEvent, SDLK_ESCAPE)))
 	{
-		//m_quit = true;
-		exit(0);
+		m_quit = true;
+		//exit(0);
 	}
 		
 	m_input->MS()->ProcessButtons(_event);
