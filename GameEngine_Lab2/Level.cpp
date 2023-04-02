@@ -37,6 +37,8 @@ void Level::AssignNonDefaultValues()
 	m_mapSizeX = 128;
 	m_mapSizeX = 256;
 	m_gameTime = 101.5f;
+	m_input = &InputController::Instance();
+
 	for (int count = 0; count < 5; count++)
 	{
 		Unit* unit = Unit::Pool->GetResource();
@@ -144,10 +146,13 @@ void Level::RunLevel()
 		//HandleInput(m_sdlEvent);
 	while(1)
 	{
+
 		t->Tick();
 		rt->Start();
 		r->SetDrawColor(Color(255, 255, 255, 255));
 		r->ClearScreen();
+
+
 		//r->RenderTexture(sheet, sheet->Update(EN_AN_IDLE, t->GetDeltaTime()), Rect(ws.X / 2, ws.Y / 2, 69 , (ws.Y / 2) + 44 ));
 		r->RenderTexture(sheet, sheet->Update(EN_AN_IDLE, t->GetDeltaTime()), Rect(ws.X / 2, ws.Y / 2, ws.X / 2 + 69, ws.Y / 2 + 44));
 

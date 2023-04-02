@@ -75,8 +75,8 @@ void GameController::RunGame()
 	while (!m_quit)
 	{
 
-		m_renderer->SetDrawColor(Color(255, 255, 255, 255));
-		m_renderer->ClearScreen();
+		/*m_renderer->SetDrawColor(Color(255, 255, 255, 255));
+		m_renderer->ClearScreen();*/
 
 		while (SDL_PollEvent(&m_sdlEvent) != 0)
 		{
@@ -86,6 +86,7 @@ void GameController::RunGame()
 
 		//m_wavDraw->DrawWave(m_effects[0]->GetData(), m_renderer, m_zoomY);
 		m_level->RunLevel();
+
 
 		SDL_RenderPresent(m_renderer->GetRenderer());
 	}
