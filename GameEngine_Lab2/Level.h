@@ -15,7 +15,7 @@ public:
 	void Deserialize(std::istream& _stream) override;
 	void ToString() override;
 	void AssignNonDefaultValues() override;
-
+	void RunLevel();
 private:
 	//Members
 	int m_mapSizeX;

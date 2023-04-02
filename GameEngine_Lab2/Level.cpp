@@ -1,4 +1,10 @@
 #include "Level.h"
+#include "Renderer.h"
+#include "TTFont.h"
+#include "SpriteAnim.h"
+#include "SpriteSheet.h"
+#include "RenderTarget.h"
+#include "Timing.h"
 
 Level::Level()
 {
@@ -81,3 +87,66 @@ void Level::ToString()
 	Resource::ToString();
 }
 
+
+void Level::RunLevel()
+{
+
+	AssetController::Instance().Initialize(10000000); //Allocate 10MB
+	Renderer* r = &Renderer::Instance();
+	Timing* t = &Timing::Instance();
+	r->Initialize();
+	r->EnumerateDisplayModes();
+	r->ChangeDisplayMode(&r->GetResolutions()[0]);
+
+	TTFont* font = new TTFont();
+	font->Initialize(20);
+
+	Point ws = r->GetWindowSize();
+
+	SpriteSheet::Pool = new ObjectPool<SpriteSheet>();
+	SpriteAnim::Pool = new ObjectPool<SpriteAnim>();
+	SpriteSheet* sheet = SpriteSheet::Pool->GetResource();
+	sheet->Load("../Assets/Textures/Warrior.tga");
+	sheet->SetSize(17, 6, 69, 44);
+	sheet->AddAnimation(EN_AN_IDLE, 0, 6, 6.0f);
+
+	RenderTarget* rt = new RenderTarget();
+	rt->Create(NATIVE_XRES, NATIVE_YRES); //Set to game's native resolution
+
+	t->Tick();
+	rt->Start();
+	r->SetDrawColor(Color(255, 255, 255, 255));
+	r->ClearScreen();
+	//r->RenderTexture(sheet, sheet->Update(EN_AN_IDLE, t->GetDeltaTime()), Rect(ws.X / 2, ws.Y / 2, 69 , (ws.Y / 2) + 44 ));
+	r->RenderTexture(sheet, sheet->Update(EN_AN_IDLE, t->GetDeltaTime()), Rect(ws.X / 2, ws.Y / 2, ws.X / 2 + 69, ws.Y / 2 + 44));
+
+
+	std::string guide = "[D]ecrease speed [I]ncrease speed [S]ave [L]oad [ESC] Quit ";
+	font->Write(r->GetRenderer(), guide.c_str(), SDL_Color{ 0, 0, 255 }, SDL_Point{ 0, 0 });
+
+	std::string speed = "Player Speed: ";
+	font->Write(r->GetRenderer(), speed.c_str(), SDL_Color{ 0, 0, 255 }, SDL_Point{ 0, 20 });
+
+	std::string enemySpeed = "Enemy Speed: ";
+	font->Write(r->GetRenderer(), enemySpeed.c_str(), SDL_Color{ 0, 255, 0 }, SDL_Point{ 0, 40 });
+
+	std::string enemyTag = "Enemies tagged: ";
+	font->Write(r->GetRenderer(), enemyTag.c_str(), SDL_Color{ 0, 255, 0 }, SDL_Point{ 0, 60 });
+
+
+	rt->Stop();
+	r->SetDrawColor(Color(0, 0, 0, 255));
+	r->ClearScreen();
+	rt->Render(t->GetDeltaTime());
+
+	SDL_RenderPresent(r->GetRenderer());
+	t->CapFPS();
+
+
+	delete rt;
+	delete SpriteAnim::Pool;
+	delete SpriteSheet::Pool;
+
+	font->Shutdown();
+	r->Shutdown();
+}

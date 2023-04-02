@@ -9,7 +9,7 @@
 #include "SoundEffects.h"
 #include "Song.h"
 #include "WavDraw.h"
-
+#include "Level.h"
 
 
 
@@ -26,6 +26,7 @@ GameController::GameController()
 	m_wavDraw = nullptr;
 	memset(m_effects, 0, sizeof(SoundEffects*) * MaxEffectChannels);
 	m_zoomY = 5;
+	m_level = nullptr;
 }
 
 GameController::~GameController()
@@ -87,8 +88,9 @@ void GameController::RunGame()
 			HandleInput(m_sdlEvent);
 		}
 
-		m_wavDraw->DrawWave(m_effects[0]->GetData(), m_renderer, m_zoomY);
-		
+		//m_wavDraw->DrawWave(m_effects[0]->GetData(), m_renderer, m_zoomY);
+		m_level->RunLevel();
+
 		SDL_RenderPresent(m_renderer->GetRenderer());
 	}
 }
