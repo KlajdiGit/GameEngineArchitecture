@@ -5,6 +5,9 @@
 #include "SpriteSheet.h"
 #include "RenderTarget.h"
 #include "Timing.h"
+#include "Keyboard.h"
+#include "InputController.h"
+#include "Mouse.h"
 
 Level::Level()
 {
@@ -16,6 +19,9 @@ Level::Level()
 	m_mapSizeY = 0;
 	m_gameTime = 0.0f;
 	m_units.clear();
+	m_sdlEvent = { };
+	m_quit = false;
+	m_input = nullptr;
 }
 
 Level::~Level()
@@ -88,6 +94,25 @@ void Level::ToString()
 }
 
 
+void Level::HandleInput(SDL_Event _event)
+{
+	string temp;
+	if ((m_sdlEvent.type == SDL_QUIT) ||
+		(m_input->KB()->KeyUp(m_sdlEvent, SDLK_ESCAPE)))
+	{
+		m_quit = true;
+	}
+	else if (m_input->KB()->KeyUp(m_sdlEvent, SDLK_a))
+	{
+	}
+	else if (m_input->KB()->KeyUp(m_sdlEvent, SDLK_s))
+	{
+	}
+
+	m_input->MS()->ProcessButtons(_event);
+}
+
+
 void Level::RunLevel()
 {
 
@@ -113,7 +138,11 @@ void Level::RunLevel()
 	RenderTarget* rt = new RenderTarget();
 	rt->Create(NATIVE_XRES, NATIVE_YRES); //Set to game's native resolution
 
-	while (1)
+	//while (m_sdlEvent.type != SDL_QUIT)
+	//{
+		//SDL_PollEvent(&m_sdlEvent);
+		//HandleInput(m_sdlEvent);
+	while(1)
 	{
 		t->Tick();
 		rt->Start();

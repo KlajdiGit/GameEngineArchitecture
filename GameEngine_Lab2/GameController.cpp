@@ -61,17 +61,10 @@ void GameController::HandleInput(SDL_Event _event)
 	if ((m_sdlEvent.type == SDL_QUIT) ||
 		(m_input->KB()->KeyUp(m_sdlEvent, SDLK_ESCAPE)))
 	{
-		m_quit = true;
+		//m_quit = true;
+		exit(0);
 	}
-	else if (m_input->KB()->KeyUp(m_sdlEvent, SDLK_a))
-	{
-		m_zoomY += 0.5f;
-	}
-	else if (m_input->KB()->KeyUp(m_sdlEvent, SDLK_s))
-	{
-		m_zoomY -= 0.5f;
-	}
-	
+		
 	m_input->MS()->ProcessButtons(_event);
 }
 
@@ -87,13 +80,12 @@ void GameController::RunGame()
 
 		while (SDL_PollEvent(&m_sdlEvent) != 0)
 		{
-			HandleInput(m_sdlEvent);
-			m_level->RunLevel();
-
+			 HandleInput(m_sdlEvent);
+			//m_level->RunLevel(m_sdlEvent);
 		}
 
 		//m_wavDraw->DrawWave(m_effects[0]->GetData(), m_renderer, m_zoomY);
-		//m_level->RunLevel();
+		m_level->RunLevel();
 
 		SDL_RenderPresent(m_renderer->GetRenderer());
 	}
