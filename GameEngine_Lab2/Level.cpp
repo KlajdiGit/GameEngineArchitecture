@@ -1,4 +1,6 @@
 #include "Level.h"
+#include "Renderer.h"
+#include "TTFont.h"
 
 Level::Level()
 {
@@ -81,3 +83,10 @@ void Level::ToString()
 	Resource::ToString();
 }
 
+void Level::RunLevel(Renderer* _renderer)
+{
+	TTFont* font = new TTFont();
+	font->Initialize(20);
+	std::string s = "Frames Per Second:  You will make it";
+	font->Write(_renderer->GetRenderer(), s.c_str(), SDL_Color{ 0, 0, 255 }, SDL_Point{ 0, 0 });
+}

@@ -2,6 +2,7 @@
 #define LEVEL_H
 
 #include "Unit.h"
+class Renderer;
 
 class Level : public Resource
 {
@@ -15,7 +16,7 @@ public:
 	void Deserialize(std::istream& _stream) override;
 	void ToString() override;
 	void AssignNonDefaultValues() override;
-
+	void RunLevel(Renderer* _renderer);
 private:
 	//Members
 	int m_mapSizeX;
