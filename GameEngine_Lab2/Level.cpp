@@ -89,4 +89,15 @@ void Level::RunLevel(Renderer* _renderer)
 	font->Initialize(20);
 	std::string s = "Frames Per Second:  You will make it";
 	font->Write(_renderer->GetRenderer(), s.c_str(), SDL_Color{ 0, 0, 255 }, SDL_Point{ 0, 0 });
+
+	//Point ws = r->GetWindowSize();
+
+	//SpriteSheet::Pool = new ObjectPool<SpriteSheet>();
+	//SpriteAnim::Pool = new ObjectPool<SpriteAnim>();
+	//SpriteSheet* sheet = SpriteSheet::Pool->GetResource();
+	//sheet->Load("../Assets/Textures/Warrior.tga");
+	//sheet->SetSize(17, 6, 69, 44);
+	//sheet->AddAnimation(EN_AN_RUN, 6, 8, 4.8f);
+	//	t->Tick();
+
 }
