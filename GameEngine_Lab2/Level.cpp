@@ -87,66 +87,66 @@ void Level::ToString()
 	Resource::ToString();
 }
 
-void Level::RunLevel(Renderer* _renderer, Point _p)
-{
-
-	Timing* t = &Timing::Instance();
-	_renderer->EnumerateDisplayModes();
-	_renderer->ChangeDisplayMode(&_renderer->GetResolutions()[0]);
-
-	TTFont* font = new TTFont();
-	font->Initialize(20);
-
-	Point ws = _renderer->GetWindowSize();
-
-	SpriteSheet::Pool = new ObjectPool<SpriteSheet>();
-	SpriteAnim::Pool = new ObjectPool<SpriteAnim>();
-	SpriteSheet* sheet = SpriteSheet::Pool->GetResource();
-	sheet->Load("../Assets/Textures/Warrior.tga");
-	sheet->SetSize(17, 6, 69, 44);
-	sheet->AddAnimation(EN_AN_IDLE, 0, 6, 6.0f);
-
-	SpriteSheet* sheet2 = SpriteSheet::Pool->GetResource();
-	sheet2->Load("../Assets/Textures/Warrior.tga");
-	sheet2->SetSize(17, 6, 69, 44);
-	sheet2->AddAnimation(EN_AN_RUN, 6, 8, 2.0f);
-
-
-	RenderTarget* rt = new RenderTarget();
-	rt->Create(NATIVE_XRES, NATIVE_YRES); //Set to game's native resolution
-
-	//while (m_sdlEvent.type != SDL_QUIT)
-	//{
-		//SDL_PollEvent(&m_sdlEvent);
-		//HandleInput(m_sdlEvent);
-	t->Tick();
-	//rt->Start();
-   // _renderer->SetDrawColor(Color(255, 255, 255, 255));
-	//_renderer->ClearScreen();
-
-
-		//r->RenderTexture(sheet, sheet->Update(EN_AN_IDLE, t->GetDeltaTime()), Rect(ws.X / 2, ws.Y / 2, 69 , (ws.Y / 2) + 44 ));
-	    if ( ws.X / 2 == 1920/2 && ws.Y == 1080 /2)
-		 _renderer->RenderTexture(sheet, sheet->Update(EN_AN_IDLE, t->GetDeltaTime()), Rect(ws.X / 2, ws.Y / 2, ws.X / 2 + 69, ws.Y / 2 + 44));
-		else
-		 _renderer->RenderTexture(sheet2, sheet2->Update(EN_AN_RUN, t->GetDeltaTime()), Rect(ws.X / 2, ws.Y / 2, ws.X / 2 + 69, ws.Y / 2 + 44));
-
-
-		std::string guide = "[D]ecrease speed [I]ncrease speed [S]ave [L]oad [ESC] Quit ";
-
-		font->Write(_renderer->GetRenderer(), guide.c_str(), SDL_Color{ 0, 0, 255 }, SDL_Point{ 0, 0 });
-
-		std::string speed = "Player Speed: ";
-		font->Write(_renderer->GetRenderer(), speed.c_str(), SDL_Color{ 0, 0, 255 }, SDL_Point{ 0, 20 });
-
-		std::string enemySpeed = "Enemy Speed: ";
-		font->Write(_renderer->GetRenderer(), enemySpeed.c_str(), SDL_Color{ 0, 255, 0 }, SDL_Point{ 0, 40 });
-
-		std::string enemyTag = "Enemies tagged: ";
-		font->Write(_renderer->GetRenderer(), enemyTag.c_str(), SDL_Color{ 0, 255, 0 }, SDL_Point{ 0, 60 });
-
-		
-		ws.X += _p.X;
-		ws.Y += _p.Y;
-	}
+//void Level::RunLevel(Renderer* _renderer, Point _p)
+//{
+//
+//	Timing* t = &Timing::Instance();
+//	_renderer->EnumerateDisplayModes();
+//	_renderer->ChangeDisplayMode(&_renderer->GetResolutions()[0]);
+//
+//	TTFont* font = new TTFont();
+//	font->Initialize(20);
+//
+//	Point ws = _renderer->GetWindowSize();
+//
+//	SpriteSheet::Pool = new ObjectPool<SpriteSheet>();
+//	SpriteAnim::Pool = new ObjectPool<SpriteAnim>();
+//	SpriteSheet* sheet = SpriteSheet::Pool->GetResource();
+//	sheet->Load("../Assets/Textures/Warrior.tga");
+//	sheet->SetSize(17, 6, 69, 44);
+//	sheet->AddAnimation(EN_AN_IDLE, 0, 6, 6.0f);
+//
+//	SpriteSheet* sheet2 = SpriteSheet::Pool->GetResource();
+//	sheet2->Load("../Assets/Textures/Warrior.tga");
+//	sheet2->SetSize(17, 6, 69, 44);
+//	sheet2->AddAnimation(EN_AN_RUN, 6, 8, 2.0f);
+//
+//
+//	RenderTarget* rt = new RenderTarget();
+//	rt->Create(NATIVE_XRES, NATIVE_YRES); //Set to game's native resolution
+//
+//	//while (m_sdlEvent.type != SDL_QUIT)
+//	//{
+//		//SDL_PollEvent(&m_sdlEvent);
+//		//HandleInput(m_sdlEvent);
+//	t->Tick();
+//	//rt->Start();
+//   // _renderer->SetDrawColor(Color(255, 255, 255, 255));
+//	//_renderer->ClearScreen();
+//
+//
+//		//r->RenderTexture(sheet, sheet->Update(EN_AN_IDLE, t->GetDeltaTime()), Rect(ws.X / 2, ws.Y / 2, 69 , (ws.Y / 2) + 44 ));
+//	    if ( ws.X / 2 == 1920/2 && ws.Y == 1080 /2)
+//		 _renderer->RenderTexture(sheet, sheet->Update(EN_AN_IDLE, t->GetDeltaTime()), Rect(ws.X / 2, ws.Y / 2, ws.X / 2 + 69, ws.Y / 2 + 44));
+//		else
+//		 _renderer->RenderTexture(sheet2, sheet2->Update(EN_AN_RUN, t->GetDeltaTime()), Rect(ws.X / 2, ws.Y / 2, ws.X / 2 + 69, ws.Y / 2 + 44));
+//
+//
+//		std::string guide = "[D]ecrease speed [I]ncrease speed [S]ave [L]oad [ESC] Quit ";
+//
+//		font->Write(_renderer->GetRenderer(), guide.c_str(), SDL_Color{ 0, 0, 255 }, SDL_Point{ 0, 0 });
+//
+//		std::string speed = "Player Speed: ";
+//		font->Write(_renderer->GetRenderer(), speed.c_str(), SDL_Color{ 0, 0, 255 }, SDL_Point{ 0, 20 });
+//
+//		std::string enemySpeed = "Enemy Speed: ";
+//		font->Write(_renderer->GetRenderer(), enemySpeed.c_str(), SDL_Color{ 0, 255, 0 }, SDL_Point{ 0, 40 });
+//
+//		std::string enemyTag = "Enemies tagged: ";
+//		font->Write(_renderer->GetRenderer(), enemyTag.c_str(), SDL_Color{ 0, 255, 0 }, SDL_Point{ 0, 60 });
+//
+//		
+//		ws.X += _p.X;
+//		ws.Y += _p.Y;
+//	}
 

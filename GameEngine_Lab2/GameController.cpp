@@ -10,6 +10,9 @@
 #include "Song.h"
 #include "WavDraw.h"
 #include "Level.h"
+#include "Timing.h"
+#include "SpriteAnim.h"
+#include "SpriteSheet.h"
 
 
 
@@ -78,6 +81,21 @@ void GameController::HandleInput(SDL_Event _event)
 void GameController::RunGame()
 {
 	Initialize();
+	Timing* t = &Timing::Instance();
+	m_renderer->EnumerateDisplayModes();
+	m_renderer->ChangeDisplayMode(&m_renderer->GetResolutions()[0]);
+
+	TTFont* font = new TTFont();
+	font->Initialize(20);
+
+	Point ws = m_renderer->GetWindowSize();
+
+	SpriteSheet::Pool = new ObjectPool<SpriteSheet>();
+	SpriteAnim::Pool = new ObjectPool<SpriteAnim>();
+	SpriteSheet* sheet = SpriteSheet::Pool->GetResource();
+	sheet->Load("../Assets/Textures/Warrior.tga");
+	sheet->SetSize(17, 6, 69, 44);
+	sheet->AddAnimation(EN_AN_IDLE, 0, 6, 6.0f);
 	
 	while (!m_quit)
 	{
@@ -90,94 +108,67 @@ void GameController::RunGame()
 			HandleInput(m_sdlEvent);
 		}
 
-		//m_wavDraw->DrawWave(m_effects[0]->GetData(), m_renderer, m_zoomY);
-        
-		m_lv->RunLevel(m_renderer, m_kPos);
+		/*Timing* t = &Timing::Instance();
+		m_renderer->EnumerateDisplayModes();
+		m_renderer->ChangeDisplayMode(&m_renderer->GetResolutions()[0]);
 
-		//AssetController::Instance().Initialize(10000000); //Allocate 10MB
-		//Timing* t = &Timing::Instance();
-		//r->Initialize(1920, 1080);
-		//font->Initialize(20);
+		TTFont* font = new TTFont();
+		font->Initialize(20);
 
-		//Point ws = r->GetWindowSize();
+		Point ws = m_renderer->GetWindowSize();
 
-		//SpriteSheet::Pool = new ObjectPool<SpriteSheet>();
-		//SpriteAnim::Pool = new ObjectPool<SpriteAnim>();
-		//SpriteSheet* sheet = SpriteSheet::Pool->GetResource();
-		//sheet->Load("../Assets/Textures/Warrior.tga");
-		//sheet->SetSize(17, 6, 69, 44);
-		//sheet->AddAnimation(EN_AN_RUN, 6, 8, 4.8f);
+		SpriteSheet::Pool = new ObjectPool<SpriteSheet>();
+		SpriteAnim::Pool = new ObjectPool<SpriteAnim>();
+		SpriteSheet* sheet = SpriteSheet::Pool->GetResource();
+		sheet->Load("../Assets/Textures/Warrior.tga");
+		sheet->SetSize(17, 6, 69, 44);
+		sheet->AddAnimation(EN_AN_IDLE, 0, 6, 6.0f);*/
 
-		//unsigned int xPos = 1;
-		//unsigned int saveTime;
+		/*SpriteSheet* sheet2 = SpriteSheet::Pool->GetResource();
+		sheet2->Load("../Assets/Textures/Warrior.tga");
+		sheet2->SetSize(17, 6, 69, 44);
+		sheet2->AddAnimation(EN_AN_RUN, 6, 8, 2.0f);*/
 
-		//while (xPos < 1920)
+
+		 //Set to game's native resolution
+
+		//while (m_sdlEvent.type != SDL_QUIT)
 		//{
-		//	t->Tick();
-		//	srand(time(0)); // part of my idea to randomize the speed
-
-		//	r->SetDrawColor(Color(128, 128, 128, 255));
-		//	r->ClearScreen();
-		//	for (unsigned int count = 0; count < 10; count++)
-		//	{
-
-		//		unsigned int yPos = 10 + count * 100;
-		//		// my idea of making randomized speed. Assuming the normal walk speed is ((((int)SDL_GetTicks()) -xPos) /1000)
-		//		// which is then multiplied by a speed coefficient 
-		//		//xPos = ((rand() % 21) + 80) *((((int)SDL_GetTicks()) -xPos) /1000) ;
-		//		// 80 will just be in this case the miniaml speed coefficient
-		//		xPos = 80 * (SDL_GetTicks() - xPos) / 1000.0f;
-
-		//		r->RenderTexture(sheet, sheet->Update(EN_AN_RUN, t->GetDeltaTime()), Rect(xPos, yPos, 69 * 1.8 + xPos, yPos + 44 * 1.8));
-		//	}
+			//SDL_PollEvent(&m_sdlEvent);
+			//HandleInput(m_sdlEvent);
+		t->Tick();
+		//rt->Start();
+	   // _renderer->SetDrawColor(Color(255, 255, 255, 255));
+		//_renderer->ClearScreen();
 
 
+			//r->RenderTexture(sheet, sheet->Update(EN_AN_IDLE, t->GetDeltaTime()), Rect(ws.X / 2, ws.Y / 2, 69 , (ws.Y / 2) + 44 ));
+		//if (ws.X / 2 == 1920 / 2 && ws.Y == 1080 / 2)
+		m_renderer->RenderTexture(sheet, sheet->Update(EN_AN_IDLE, t->GetDeltaTime()), Rect(ws.X / 2, ws.Y / 2, ws.X / 2 + 69, ws.Y / 2 + 44));
+		//else
+		//	_renderer->RenderTexture(sheet2, sheet2->Update(EN_AN_RUN, t->GetDeltaTime()), Rect(ws.X / 2, ws.Y / 2, ws.X / 2 + 69, ws.Y / 2 + 44));
 
 
-	//		std::string s = "Frames Per Second: " + std::to_string(t->GetFPS());
-	//		font->Write(r->GetRenderer(), s.c_str(), SDL_Color{ 0, 0, 255 }, SDL_Point{ 0, 0 });
+		std::string guide = "[D]ecrease speed [I]ncrease speed [S]ave [L]oad [ESC] Quit ";
 
-	//		saveTime = SDL_GetTicks() / 1000;
+		font->Write(m_renderer->GetRenderer(), guide.c_str(), SDL_Color{ 0, 0, 255 }, SDL_Point{ 0, 0 });
 
-	//		s = "Game Time: " + std::to_string(saveTime);
-	//		font->Write(r->GetRenderer(), s.c_str(), SDL_Color{ 0, 0, 255 }, SDL_Point{ 250, 0 });
-	//		s = "Auto Save: ";
-	//		if (saveTime >= 5)
-	//		{
-	//			ofstream writeStream("level1.bin", ios::out | ios::binary);
-	//			Level::Serialize(writeStream);
-	//			sheet->Serialize(writeStream);
-	//			writeStream.close();
-	//			//sheet->Load("level1.bin");
+		std::string speed = "Player Speed: ";
+		font->Write(m_renderer->GetRenderer(), speed.c_str(), SDL_Color{ 0, 0, 255 }, SDL_Point{ 0, 20 });
 
-	//			s += " Yes";
-	//		}
-	//		else {
-	//			s += " No";
-	//		}
-	//		font->Write(r->GetRenderer(), s.c_str(), SDL_Color{ 0, 0, 255 }, SDL_Point{ 400, 0 });
+		std::string enemySpeed = "Enemy Speed: ";
+		font->Write(m_renderer->GetRenderer(), enemySpeed.c_str(), SDL_Color{ 0, 255, 0 }, SDL_Point{ 0, 40 });
 
+		std::string enemyTag = "Enemies tagged: ";
+		font->Write(m_renderer->GetRenderer(), enemyTag.c_str(), SDL_Color{ 0, 255, 0 }, SDL_Point{ 0, 60 });
 
-
-	//		SDL_RenderPresent(r->GetRenderer());
-	//	}
-
-	//	Level::RunLevel2(saveTime);
-
-	//	delete SpriteAnim::Pool;
-	//	delete SpriteSheet::Pool;
-
-	//	font->Shutdown();
-	//	r->Shutdown();
-	//}
-
-		/*std::string s = "Frames Per Second:  You will make it";
-		font->Write(m_renderer->GetRenderer(), s.c_str(), SDL_Color{ 0, 0, 255 }, SDL_Point{ 0, 0 });*/
 
 		SDL_RenderPresent(m_renderer->GetRenderer());
 	}
-		//font->Shutdown();
-
+	delete SpriteAnim::Pool;
+	delete SpriteSheet::Pool;
+	font->Shutdown();
+	//m_renderer->ShutDown();
 }
 
 
