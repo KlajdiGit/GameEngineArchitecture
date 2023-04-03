@@ -106,6 +106,12 @@ void Level::RunLevel(Renderer* _renderer, Point _p)
 	sheet->SetSize(17, 6, 69, 44);
 	sheet->AddAnimation(EN_AN_IDLE, 0, 6, 6.0f);
 
+	SpriteSheet* sheet2 = SpriteSheet::Pool->GetResource();
+	sheet2->Load("../Assets/Textures/Warrior.tga");
+	sheet2->SetSize(17, 6, 69, 44);
+	sheet2->AddAnimation(EN_AN_RUN, 6, 8, 2.0f);
+
+
 	RenderTarget* rt = new RenderTarget();
 	rt->Create(NATIVE_XRES, NATIVE_YRES); //Set to game's native resolution
 
@@ -120,7 +126,11 @@ void Level::RunLevel(Renderer* _renderer, Point _p)
 
 
 		//r->RenderTexture(sheet, sheet->Update(EN_AN_IDLE, t->GetDeltaTime()), Rect(ws.X / 2, ws.Y / 2, 69 , (ws.Y / 2) + 44 ));
-		_renderer->RenderTexture(sheet, sheet->Update(EN_AN_IDLE, t->GetDeltaTime()), Rect(ws.X / 2, ws.Y / 2, ws.X / 2 + 69, ws.Y / 2 + 44));
+	    if ( ws.X / 2 == 1920/2 && ws.Y == 1080 /2)
+		 _renderer->RenderTexture(sheet, sheet->Update(EN_AN_IDLE, t->GetDeltaTime()), Rect(ws.X / 2, ws.Y / 2, ws.X / 2 + 69, ws.Y / 2 + 44));
+		else
+		 _renderer->RenderTexture(sheet2, sheet2->Update(EN_AN_RUN, t->GetDeltaTime()), Rect(ws.X / 2, ws.Y / 2, ws.X / 2 + 69, ws.Y / 2 + 44));
+
 
 		std::string guide = "[D]ecrease speed [I]ncrease speed [S]ave [L]oad [ESC] Quit ";
 

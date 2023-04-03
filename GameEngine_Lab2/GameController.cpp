@@ -69,7 +69,7 @@ void GameController::HandleInput(SDL_Event _event)
 	}
 	else if (m_input->KB()->KeyUp(m_sdlEvent, SDLK_s))
 	{
-		m_kPos.X += 80;
+		m_kPos.Y -= 80;
 	}
 	
 	m_input->MS()->ProcessButtons(_event);
