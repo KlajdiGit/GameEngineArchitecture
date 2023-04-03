@@ -87,7 +87,7 @@ void Level::ToString()
 	Resource::ToString();
 }
 
-void Level::RunLevel(Renderer* _renderer)
+void Level::RunLevel(Renderer* _renderer, Point _p)
 {
 
 	Timing* t = &Timing::Instance();
@@ -135,7 +135,8 @@ void Level::RunLevel(Renderer* _renderer)
 		std::string enemyTag = "Enemies tagged: ";
 		font->Write(_renderer->GetRenderer(), enemyTag.c_str(), SDL_Color{ 0, 255, 0 }, SDL_Point{ 0, 60 });
 
-
 		
+		ws.X += _p.X;
+		ws.Y += _p.Y;
 	}
 

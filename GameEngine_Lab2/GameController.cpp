@@ -27,6 +27,7 @@ GameController::GameController()
 	memset(m_effects, 0, sizeof(SoundEffects*) * MaxEffectChannels);
 	m_zoomY = 5;
 	m_lv = nullptr;
+	m_kPos = { };
 }
 
 GameController::~GameController()
@@ -62,13 +63,13 @@ void GameController::HandleInput(SDL_Event _event)
 	{
 		m_quit = true;
 	}
-	else if (m_input->KB()->KeyUp(m_sdlEvent, SDLK_a))
+	else if (m_input->KB()->KeyUp(m_sdlEvent, SDLK_w))
 	{
-		m_zoomY += 0.5f;
+		m_kPos.Y += 80;
 	}
 	else if (m_input->KB()->KeyUp(m_sdlEvent, SDLK_s))
 	{
-		m_zoomY -= 0.5f;
+		m_kPos.X += 80;
 	}
 	
 	m_input->MS()->ProcessButtons(_event);
@@ -91,7 +92,7 @@ void GameController::RunGame()
 
 		//m_wavDraw->DrawWave(m_effects[0]->GetData(), m_renderer, m_zoomY);
         
-		m_lv->RunLevel(m_renderer);
+		m_lv->RunLevel(m_renderer, m_kPos);
 
 		//AssetController::Instance().Initialize(10000000); //Allocate 10MB
 		//Timing* t = &Timing::Instance();
