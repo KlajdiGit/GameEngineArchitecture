@@ -32,7 +32,8 @@ GameController::GameController()
 	m_zoomY = 5;
 	m_lv = nullptr;
 	m_kPos = {0,0};
-	m_right = true;
+	
+	//m_right = true;
 }
 
 GameController::~GameController()
@@ -107,7 +108,7 @@ void GameController::HandleInput(SDL_Event _event)
 	else if (m_input->KB()->KeyDown(_event, SDLK_LEFT))
 	{
 		m_kPos.x = -100;
-		m_right = false;
+		//m_right = false;
 	}
 	else if (m_input->KB()->KeyDown(_event, SDLK_RIGHT))
 	{
@@ -147,6 +148,8 @@ void GameController::RunGame()
 	int posX = 1;
 	int posY = 1;
 	
+	
+
 	while (!m_quit)
 	{
 		//TTFont* font = new TTFont();
@@ -157,6 +160,15 @@ void GameController::RunGame()
 		{
 			HandleInput(m_sdlEvent);
 		}
+
+	/*	unsigned int count = 100;
+		for (int i = 0; i < 10; i++) {
+			m_rect[i] = Rect{ count, count, count + 69, count + 44 };
+			m_renderer->RenderTexture(sheet2, sheet2->Update(EN_AN_RUN, t->GetDeltaTime()), m_rect[i]);
+			m_rect[i].X2 *= 1.25;
+			m_rect[i].Y2 *= 1.25;
+			count += 100;
+		}*/
 
 		/*Timing* t = &Timing::Instance();
 		m_renderer->EnumerateDisplayModes();
@@ -194,6 +206,9 @@ void GameController::RunGame()
 
 			//r->RenderTexture(sheet, sheet->Update(EN_AN_IDLE, t->GetDeltaTime()), Rect(ws.X / 2, ws.Y / 2, 69 , (ws.Y / 2) + 44 ));
 		//if (ws.X / 2 == 1920 / 2 && ws.Y == 1080 / 2)
+
+		
+
 		posX += m_kPos.x * t->GetDeltaTime();
 		posY += m_kPos.y * t->GetDeltaTime();
 		if (m_kPos.x == 0 && m_kPos.y == 0)
@@ -201,10 +216,21 @@ void GameController::RunGame()
 			                                            ws.X / 2 + posX + 69 * 1.25 , ws.Y / 2 + posY + 44 * 1.25));
 		else
 		{
-			 
+			if (m_kPos.x == -100)
+
+				/*m_renderer->RenderTexture(sheet2, sheet2->Update(EN_AN_RUN, t->GetDeltaTime()), Rect(ws.X / 2 + posX, ws.Y / 2 + posY,
+					-1 * (ws.X / 2 + posX + 69 * 1.25),  -1 * (ws.Y / 2 + posY + 44 * 1.25)));*/
+				m_renderer->RenderTexture(sheet2, sheet2->Update(EN_AN_RUN, t->GetDeltaTime()), Rect(ws.X / 2 + posX + 69 * 1.25, ws.Y / 2 + posY,
+					ws.X / 2 + posX , ws.Y / 2 + posY + 44 * 1.25));
+			else
 				m_renderer->RenderTexture(sheet2, sheet2->Update(EN_AN_RUN, t->GetDeltaTime()), Rect(ws.X / 2 + posX, ws.Y / 2 + posY,
 					ws.X / 2 + posX + 69 * 1.25, ws.Y / 2 + posY + 44 * 1.25));
+
 		}
+
+		/*m_renderer->RenderTexture(sheet2, sheet2->Update(EN_AN_RUN, t->GetDeltaTime()), Rect(ws.X / 2 + posX, ws.Y / 2 + posY,
+			ws.X / 2 + posX + 69 * 1.25, ws.Y / 2 + posY + 44 * 1.25));*/
+
 			/*m_renderer->RenderTexture(sheet2, sheet2->Update(EN_AN_RUN, t->GetDeltaTime()), Rect(ws.X / 2 + posX, ws.Y / 2 + posY,
 				ws.X / 2 + posX + 69 * 1.25, ws.Y / 2 + posY + 44 * 1.25));*/
 
@@ -218,7 +244,13 @@ void GameController::RunGame()
 
 		font->Write(m_renderer->GetRenderer(), guide.c_str(), SDL_Color{ 0, 0, 255 }, SDL_Point{ 0, 0 });
 
-		std::string speed = "Player Speed: ";
+		std::string speed;
+		if( m_kPos.x != 0 || m_kPos.y != 0)
+		    speed = "Player Speed: 100";
+		else
+		    speed = "Player Speed: ";
+
+		//std::string speed = "Player Speed: ";
 		font->Write(m_renderer->GetRenderer(), speed.c_str(), SDL_Color{ 0, 0, 255 }, SDL_Point{ 0, 20 });
 
 		std::string enemySpeed = "Enemy Speed: ";

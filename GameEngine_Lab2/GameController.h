@@ -40,7 +40,8 @@ private:
 	float m_zoomY;
 	Level* m_lv;
 	glm::vec2 m_kPos;
-	bool m_right;
+	//bool m_right;
+	Rect m_rect [10];
 };
 
 #endif //GAME_CONTROLLER_H
