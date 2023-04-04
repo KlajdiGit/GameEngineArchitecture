@@ -101,22 +101,22 @@ void GameController::HandleInput(SDL_Event _event)
 	else if (m_input->KB()->KeyDown(_event, SDLK_UP))
 	{
 		m_kPos.y = -100;
-		m_npcPos.y = -90;
+		m_npcPos.y = -60;
 	}
 	else if (m_input->KB()->KeyDown(_event, SDLK_DOWN))
 	{
 		m_kPos.y = 100;
-		m_npcPos.y = 90;
+		m_npcPos.y = 60;
 	}
 	else if (m_input->KB()->KeyDown(_event, SDLK_LEFT))
 	{
 		m_kPos.x = -100;
-		m_npcPos.x = -90;
+		m_npcPos.x = -60;
 	}
 	else if (m_input->KB()->KeyDown(_event, SDLK_RIGHT))
 	{
 		m_kPos.x = 100;
-		m_npcPos.x = 90;
+		m_npcPos.x = 60;
 	}
 	else {
 		m_kPos = { 0,0 };
