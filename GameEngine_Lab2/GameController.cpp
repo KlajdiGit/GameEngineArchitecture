@@ -32,6 +32,7 @@ GameController::GameController()
 	m_zoomY = 5;
 	m_lv = nullptr;
 	m_kPos = {0,0};
+	m_right = true;
 }
 
 GameController::~GameController()
@@ -106,12 +107,14 @@ void GameController::HandleInput(SDL_Event _event)
 	else if (m_input->KB()->KeyDown(_event, SDLK_LEFT))
 	{
 		m_kPos.x = -100;
+		m_right = false;
 	}
 	else if (m_input->KB()->KeyDown(_event, SDLK_RIGHT))
 	{
 		m_kPos.x = 100;
 	}
-
+	else
+		m_kPos = { 0,0 };
 	m_input->MS()->ProcessButtons(_event);
 }
 
@@ -135,6 +138,12 @@ void GameController::RunGame()
 	sheet->Load("../Assets/Textures/Warrior.tga");
 	sheet->SetSize(17, 6, 69, 44);
 	sheet->AddAnimation(EN_AN_IDLE, 0, 6, 6.0f);
+
+	SpriteSheet* sheet2 = SpriteSheet::Pool->GetResource();
+	sheet2->Load("../Assets/Textures/Warrior.tga");
+	sheet2->SetSize(17, 6, 69, 44);
+	sheet2->AddAnimation(EN_AN_RUN, 6, 8, 6.0f);
+
 	int posX = 1;
 	int posY = 1;
 	
@@ -187,11 +196,17 @@ void GameController::RunGame()
 		//if (ws.X / 2 == 1920 / 2 && ws.Y == 1080 / 2)
 		posX += m_kPos.x * t->GetDeltaTime();
 		posY += m_kPos.y * t->GetDeltaTime();
+		if (m_kPos.x == 0 && m_kPos.y == 0)
 		m_renderer->RenderTexture(sheet, sheet->Update(EN_AN_IDLE, t->GetDeltaTime()), Rect(ws.X / 2 + posX, ws.Y / 2 + posY,
 			                                            ws.X / 2 + posX + 69 * 1.25 , ws.Y / 2 + posY + 44 * 1.25));
-		//else
-		//	_renderer->RenderTexture(sheet2, sheet2->Update(EN_AN_RUN, t->GetDeltaTime()), Rect(ws.X / 2, ws.Y / 2, ws.X / 2 + 69, ws.Y / 2 + 44));
-
+		else
+		{
+			 
+				m_renderer->RenderTexture(sheet2, sheet2->Update(EN_AN_RUN, t->GetDeltaTime()), Rect(ws.X / 2 + posX, ws.Y / 2 + posY,
+					ws.X / 2 + posX + 69 * 1.25, ws.Y / 2 + posY + 44 * 1.25));
+		}
+			/*m_renderer->RenderTexture(sheet2, sheet2->Update(EN_AN_RUN, t->GetDeltaTime()), Rect(ws.X / 2 + posX, ws.Y / 2 + posY,
+				ws.X / 2 + posX + 69 * 1.25, ws.Y / 2 + posY + 44 * 1.25));*/
 
 		/*
 		xPos = 80 * (SDL_GetTicks() - xPos) / 1000.0f; 
