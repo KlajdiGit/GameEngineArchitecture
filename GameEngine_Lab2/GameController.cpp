@@ -161,21 +161,36 @@ void GameController::RunGame()
 			HandleInput(m_sdlEvent);
 		}
 
-	/*	unsigned int count = 100;
-		for (int i = 0; i < 10; i++) {
-			m_rect[i] = Rect{ count, count, count + 69, count + 44 };
-			m_renderer->RenderTexture(sheet2, sheet2->Update(EN_AN_RUN, t->GetDeltaTime()), m_rect[i]);
-			m_rect[i].X2 *= 1.25;
-			m_rect[i].Y2 *= 1.25;
-			count += 100;
-		}*/
+		
 
 		
+
 		
 		t->Tick();
 
 		posX += m_kPos.x * t->GetDeltaTime();
 		posY += m_kPos.y * t->GetDeltaTime();
+		//int away = rand() % 150;
+
+		for (int i = 0; i < 10; i++) {
+			unsigned int away = rand() % 251;
+			//m_rect[i] = Rect{ ws.X /2 + posX + away, ws.Y / 2 + posY + away, ws.X / 2 + posX +  away + 69 * 1.25, ws.Y / 2 + posY + away + 44 * 1.25 };
+			
+			m_rect[i] = Rect{ static_cast<unsigned int>(ws.X / 2 + posX + away), static_cast<unsigned int>(ws.Y / 2 + posY + away),
+				static_cast<unsigned int>(ws.X / 2 + posX + away + 69 * 1.25), static_cast<unsigned int>(ws.Y / 2 + posY + away + 44 * 1.25) };
+
+
+			/*m_rect[i].X2 *= 1.25;
+			m_rect[i].Y2 *= 1.25;*/
+			m_renderer->RenderTexture(sheet, sheet->Update(EN_AN_IDLE, t->GetDeltaTime()), m_rect[i]);
+
+		}
+
+		/*for (int i = 0; i < 10; i++) {
+			m_renderer->RenderTexture(sheet, sheet->Update(EN_AN_IDLE, t->GetDeltaTime()), m_rect[i]);
+		}*/
+		
+
 		if (m_kPos.x == 0 && m_kPos.y == 0)
 		m_renderer->RenderTexture(sheet, sheet->Update(EN_AN_IDLE, t->GetDeltaTime()), Rect(ws.X / 2 + posX, ws.Y / 2 + posY,
 			                                            ws.X / 2 + posX + 69 * 1.25 , ws.Y / 2 + posY + 44 * 1.25));
