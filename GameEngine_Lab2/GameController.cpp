@@ -101,22 +101,22 @@ void GameController::HandleInput(SDL_Event _event)
 	else if (m_input->KB()->KeyDown(_event, SDLK_UP))
 	{
 		m_kPos.y = -100;
-		m_npcPos.y = -60;
+		m_npcPos.y = -90;
 	}
 	else if (m_input->KB()->KeyDown(_event, SDLK_DOWN))
 	{
 		m_kPos.y = 100;
-		m_npcPos.y = 60;
+		m_npcPos.y = 90;
 	}
 	else if (m_input->KB()->KeyDown(_event, SDLK_LEFT))
 	{
 		m_kPos.x = -100;
-		m_npcPos.x = -60;
+		m_npcPos.x = -90;
 	}
 	else if (m_input->KB()->KeyDown(_event, SDLK_RIGHT))
 	{
 		m_kPos.x = 100;
-		m_npcPos.x = 60;
+		m_npcPos.x = 90;
 	}
 	else {
 		m_kPos = { 0,0 };
@@ -156,6 +156,17 @@ void GameController::RunGame()
 	
 	int posNpcX = 1;
 	int posNpcY = 1;
+	srand(time(nullptr));
+
+	for (int i = 0; i < 10; i++) {
+		int x1 = rand() % 301 - 150;
+		int x2 = rand() % 301 - 150;
+		m_rect[i] = Rect{ static_cast<unsigned int>(ws.X / 2 + x1), static_cast<unsigned int>(ws.Y / 2 + x2),
+				static_cast<unsigned int>(ws.X / 2 + x1 + 69 * 1.25), static_cast<unsigned int>(ws.Y / 2 + x2 + 44 * 1.25) };
+
+		//std::cout << "x1: " << x1 << " x2: " << x2 << std::endl;
+	}
+
 	
 
 	while (!m_quit)
@@ -181,8 +192,8 @@ void GameController::RunGame()
 		
 
 		
-		posNpcX += m_npcPos.x  * t->GetDeltaTime();
-		posNpcY += m_npcPos.y  * t->GetDeltaTime();
+		posNpcX +=  (m_kPos.x - m_npcPos.x)  * t->GetDeltaTime();
+		posNpcY += (m_kPos.y - m_npcPos.y) * t->GetDeltaTime();
 
 		//int away = rand() % 150;
 
@@ -190,13 +201,19 @@ void GameController::RunGame()
 		//	unsigned int away = rand() % 251;
 			//m_rect[i] = Rect{ ws.X /2 + posX + away, ws.Y / 2 + posY + away, ws.X / 2 + posX +  away + 69 * 1.25, ws.Y / 2 + posY + away + 44 * 1.25 };
 			
-			m_rect[0] = Rect{ static_cast<unsigned int>(ws.X / 2 + posNpcX), static_cast<unsigned int>(ws.Y / 2 + posNpcY),
-				static_cast<unsigned int>(ws.X / 2 + posNpcX + 69 * 1.25), static_cast<unsigned int>(ws.Y / 2 + posNpcY + 44 * 1.25) };
+			//m_rect[0] = Rect{ static_cast<unsigned int>(ws.X / 2 + posNpcX), static_cast<unsigned int>(ws.Y / 2 + posNpcY),
+				//static_cast<unsigned int>(ws.X / 2 + posNpcX + 69 * 1.25), static_cast<unsigned int>(ws.Y / 2 + posNpcY + 44 * 1.25) };
 
-			m_renderer->RenderTexture(sheet, sheet->Update(EN_AN_IDLE, t->GetDeltaTime()), m_rect[0]);
+			//m_renderer->RenderTexture(sheet, sheet->Update(EN_AN_IDLE, t->GetDeltaTime()), m_rect[0]);
 
 
 		//}
+
+
+		for (int i = 0; i < 10; i++)
+			m_renderer->RenderTexture(sheet, sheet->Update(EN_AN_IDLE, t->GetDeltaTime()), m_rect[i]);
+
+		
 
 		/*for (int i = 0; i < 10; i++) {
 			m_renderer->RenderTexture(sheet, sheet->Update(EN_AN_IDLE, t->GetDeltaTime()), m_rect[i]);
