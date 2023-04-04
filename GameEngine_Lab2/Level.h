@@ -3,6 +3,8 @@
 
 #include "Unit.h"
 class Renderer;
+class InputController;
+
 
 class Level : public Resource
 {
@@ -16,7 +18,8 @@ public:
 	void Deserialize(std::istream& _stream) override;
 	void ToString() override;
 	void AssignNonDefaultValues() override;
-	//void RunLevel(Renderer* _renderer, Point _p);
+	void RunLevel(Renderer* _renderer);
+	void HandleInput(SDL_Event _event);
 
 private:
 	//Members
@@ -25,6 +28,10 @@ private:
 	float m_gameTime;
 	vector<Unit*> m_units;
 	Point m_point;
+	glm::vec2 m_kPos;
+	SDL_Event m_sdlEvent;
+	InputController* m_input;
+	bool m_quit;
 };
 
 #endif //LEVEL_H
