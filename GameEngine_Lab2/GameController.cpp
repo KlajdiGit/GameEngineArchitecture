@@ -16,6 +16,7 @@
 
 
 
+
 GameController::GameController()
 {
 	m_quit = false;
@@ -96,19 +97,19 @@ void GameController::HandleInput(SDL_Event _event)
 	}
 	else if (m_input->KB()->KeyDown(_event, SDLK_UP))
 	{
-		m_kPos.Y -= 100;
+		m_kPos.y = -100;
 	}
 	else if (m_input->KB()->KeyDown(_event, SDLK_DOWN))
 	{
-		m_kPos.Y += 100;
+		m_kPos.y = 100;
 	}
 	else if (m_input->KB()->KeyDown(_event, SDLK_LEFT))
 	{
-		m_kPos.X -= 100;
+		m_kPos.x = -100;
 	}
 	else if (m_input->KB()->KeyDown(_event, SDLK_RIGHT))
 	{
-		m_kPos.X += 100;
+		m_kPos.x = 100;
 	}
 
 	m_input->MS()->ProcessButtons(_event);
@@ -184,8 +185,8 @@ void GameController::RunGame()
 
 			//r->RenderTexture(sheet, sheet->Update(EN_AN_IDLE, t->GetDeltaTime()), Rect(ws.X / 2, ws.Y / 2, 69 , (ws.Y / 2) + 44 ));
 		//if (ws.X / 2 == 1920 / 2 && ws.Y == 1080 / 2)
-		posX += m_kPos.X * t->GetDeltaTime() * 0.00001f;
-		posY += m_kPos.Y * t->GetDeltaTime()  * 0.00001f;
+		posX += m_kPos.x * t->GetDeltaTime();
+		posY += m_kPos.y * t->GetDeltaTime();
 		m_renderer->RenderTexture(sheet, sheet->Update(EN_AN_IDLE, t->GetDeltaTime()), Rect(ws.X / 2 + posX, ws.Y / 2 + posY,
 			                                            ws.X / 2 + posX + 69 * 1.25 , ws.Y / 2 + posY + 44 * 1.25));
 		//else
