@@ -32,6 +32,7 @@ GameController::GameController()
 	m_zoomY = 5;
 	m_lv = nullptr;
 	m_kPos = {0,0};
+	m_npcPos = { 0,0 };
 	
 	//m_right = true;
 }
@@ -100,22 +101,27 @@ void GameController::HandleInput(SDL_Event _event)
 	else if (m_input->KB()->KeyDown(_event, SDLK_UP))
 	{
 		m_kPos.y = -100;
+		m_npcPos.y = -60;
 	}
 	else if (m_input->KB()->KeyDown(_event, SDLK_DOWN))
 	{
 		m_kPos.y = 100;
+		m_npcPos.y = 60;
 	}
 	else if (m_input->KB()->KeyDown(_event, SDLK_LEFT))
 	{
 		m_kPos.x = -100;
-		//m_right = false;
+		m_npcPos.x = -60;
 	}
 	else if (m_input->KB()->KeyDown(_event, SDLK_RIGHT))
 	{
 		m_kPos.x = 100;
+		m_npcPos.x = 60;
 	}
-	else
+	else {
 		m_kPos = { 0,0 };
+		m_npcPos = { 0,0 };
+	}
 	m_input->MS()->ProcessButtons(_event);
 }
 
@@ -148,6 +154,8 @@ void GameController::RunGame()
 	int posX = 1;
 	int posY = 1;
 	
+	int posNpcX = 1;
+	int posNpcY = 1;
 	
 
 	while (!m_quit)
@@ -170,21 +178,25 @@ void GameController::RunGame()
 
 		posX += m_kPos.x * t->GetDeltaTime();
 		posY += m_kPos.y * t->GetDeltaTime();
+		
+
+		
+		posNpcX += m_npcPos.x  * t->GetDeltaTime();
+		posNpcY += m_npcPos.y  * t->GetDeltaTime();
+
 		//int away = rand() % 150;
 
-		for (int i = 0; i < 10; i++) {
-			unsigned int away = rand() % 251;
+		//for (int i = 0; i < 10; i++) {
+		//	unsigned int away = rand() % 251;
 			//m_rect[i] = Rect{ ws.X /2 + posX + away, ws.Y / 2 + posY + away, ws.X / 2 + posX +  away + 69 * 1.25, ws.Y / 2 + posY + away + 44 * 1.25 };
 			
-			m_rect[i] = Rect{ static_cast<unsigned int>(ws.X / 2 + posX + away), static_cast<unsigned int>(ws.Y / 2 + posY + away),
-				static_cast<unsigned int>(ws.X / 2 + posX + away + 69 * 1.25), static_cast<unsigned int>(ws.Y / 2 + posY + away + 44 * 1.25) };
+			m_rect[0] = Rect{ static_cast<unsigned int>(ws.X / 2 + posNpcX), static_cast<unsigned int>(ws.Y / 2 + posNpcY),
+				static_cast<unsigned int>(ws.X / 2 + posNpcX + 69 * 1.25), static_cast<unsigned int>(ws.Y / 2 + posNpcY + 44 * 1.25) };
+
+			m_renderer->RenderTexture(sheet, sheet->Update(EN_AN_IDLE, t->GetDeltaTime()), m_rect[0]);
 
 
-			/*m_rect[i].X2 *= 1.25;
-			m_rect[i].Y2 *= 1.25;*/
-			m_renderer->RenderTexture(sheet, sheet->Update(EN_AN_IDLE, t->GetDeltaTime()), m_rect[i]);
-
-		}
+		//}
 
 		/*for (int i = 0; i < 10; i++) {
 			m_renderer->RenderTexture(sheet, sheet->Update(EN_AN_IDLE, t->GetDeltaTime()), m_rect[i]);
@@ -217,7 +229,16 @@ void GameController::RunGame()
 
 		font->Write(m_renderer->GetRenderer(), speed.c_str(), SDL_Color{ 0, 0, 255 }, SDL_Point{ 0, 20 });
 
-		std::string enemySpeed = "Enemy Speed: ";
+
+
+
+		std::string enemySpeed;
+
+		if (m_kPos.x != 0 || m_kPos.y != 0)
+			enemySpeed = "Enemy Speed: " + to_string(abs((static_cast<int>(m_npcPos.x + m_npcPos.y))));
+		else
+			enemySpeed = "Enemy Speed: ";
+
 		font->Write(m_renderer->GetRenderer(), enemySpeed.c_str(), SDL_Color{ 0, 255, 0 }, SDL_Point{ 0, 40 });
 
 		std::string enemyTag = "Enemies tagged: ";
