@@ -134,6 +134,7 @@ void GameController::RunGame()
 	sheet->Load("../Assets/Textures/Warrior.tga");
 	sheet->SetSize(17, 6, 69, 44);
 	sheet->AddAnimation(EN_AN_IDLE, 0, 6, 6.0f);
+
 	
 	while (!m_quit)
 	{
@@ -182,6 +183,8 @@ void GameController::RunGame()
 
 			//r->RenderTexture(sheet, sheet->Update(EN_AN_IDLE, t->GetDeltaTime()), Rect(ws.X / 2, ws.Y / 2, 69 , (ws.Y / 2) + 44 ));
 		//if (ws.X / 2 == 1920 / 2 && ws.Y == 1080 / 2)
+		int posX += m_kPos.X * t->GetDeltaTime();
+		int posY += m_kPos.Y * t->GetDeltaTime();
 		m_renderer->RenderTexture(sheet, sheet->Update(EN_AN_IDLE, t->GetDeltaTime()), Rect(ws.X / 2 + m_kPos.X * t->GetDeltaTime(), ws.Y / 2 + m_kPos.Y * t->GetDeltaTime(),
 			                                            ws.X / 2 + m_kPos.X * t->GetDeltaTime() + 69 , ws.Y / 2 + m_kPos.Y * t->GetDeltaTime() + 44));
 		//else
