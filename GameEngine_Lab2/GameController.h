@@ -39,7 +39,7 @@ private:
 	SoundEffects* m_effects[MaxEffectChannels];
 	float m_zoomY;
 	Level* m_lv;
-	Point m_kPos;
+	gml::vec2 m_kPos;
 };
 
 #endif //GAME_CONTROLLER_H

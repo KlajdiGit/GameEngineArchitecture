@@ -9,7 +9,7 @@ Timing::Timing()
 	m_currentTime = SDL_GetTicks();
 	m_lastTime = m_currentTime;
 	m_fpsStart = m_currentTime;
-	SetFPS(60);
+	SetFPS(80);
 }
 
 void Timing::Tick()
