@@ -30,7 +30,7 @@ GameController::GameController()
 	memset(m_effects, 0, sizeof(SoundEffects*) * MaxEffectChannels);
 	m_zoomY = 5;
 	m_lv = nullptr;
-	m_kPos = { };
+	m_kPos = {0,0};
 }
 
 GameController::~GameController()
@@ -58,25 +58,63 @@ void GameController::ShutDown()
 	delete m_wavDraw;
 }
 
+//void GameController::HandleInput(SDL_Event _event)
+//{
+//	string temp;
+//	if ((m_sdlEvent.type == SDL_QUIT) ||
+//		(m_input->KB()->KeyUp(m_sdlEvent, SDLK_ESCAPE)))
+//	{
+//		m_quit = true;
+//	}
+//	else if (m_input->KB()->KeyDown(m_sdlEvent, SDLK_UP))
+//	{
+//		m_kPos.Y -= 100 * Timing::Instance().GetDeltaTime();
+//	}
+//	else if (m_input->KB()->KeyDown(m_sdlEvent, SDLK_DOWN))
+//	{
+//		m_kPos.Y += 100 * Timing::Instance().GetDeltaTime();
+//	}
+//	else if (m_input->KB()->KeyDown(m_sdlEvent, SDLK_LEFT))
+//	{
+//		m_kPos.X -= 100 * Timing::Instance().GetDeltaTime();
+//	}
+//	else if (m_input->KB()->KeyDown(m_sdlEvent, SDLK_RIGHT))
+//	{
+//		m_kPos.X += 100 * Timing::Instance().GetDeltaTime();
+//	}
+//	
+//	m_input->MS()->ProcessButtons(_event);
+//}
+
 void GameController::HandleInput(SDL_Event _event)
 {
 	string temp;
-	if ((m_sdlEvent.type == SDL_QUIT) ||
-		(m_input->KB()->KeyUp(m_sdlEvent, SDLK_ESCAPE)))
+	if ((_event.type == SDL_QUIT) ||
+		(m_input->KB()->KeyUp(_event, SDLK_ESCAPE)))
 	{
 		m_quit = true;
 	}
-	else if (m_input->KB()->KeyUp(m_sdlEvent, SDLK_w))
+	else if (m_input->KB()->KeyDown(_event, SDLK_UP))
 	{
-		m_kPos.Y += 80;
+		m_kPos.Y -= 100;
 	}
-	else if (m_input->KB()->KeyUp(m_sdlEvent, SDLK_s))
+	else if (m_input->KB()->KeyDown(_event, SDLK_DOWN))
 	{
-		m_kPos.Y -= 80;
+		m_kPos.Y += 100;
 	}
-	
+	else if (m_input->KB()->KeyDown(_event, SDLK_LEFT))
+	{
+		m_kPos.X -= 100;
+	}
+	else if (m_input->KB()->KeyDown(_event, SDLK_RIGHT))
+	{
+		m_kPos.X += 100;
+	}
+
 	m_input->MS()->ProcessButtons(_event);
 }
+
+
 
 void GameController::RunGame()
 {
@@ -144,10 +182,17 @@ void GameController::RunGame()
 
 			//r->RenderTexture(sheet, sheet->Update(EN_AN_IDLE, t->GetDeltaTime()), Rect(ws.X / 2, ws.Y / 2, 69 , (ws.Y / 2) + 44 ));
 		//if (ws.X / 2 == 1920 / 2 && ws.Y == 1080 / 2)
-		m_renderer->RenderTexture(sheet, sheet->Update(EN_AN_IDLE, t->GetDeltaTime()), Rect(ws.X / 2, ws.Y / 2, ws.X / 2 + 69, ws.Y / 2 + 44));
+		m_renderer->RenderTexture(sheet, sheet->Update(EN_AN_IDLE, t->GetDeltaTime()), Rect(ws.X / 2 + m_kPos.X * t->GetDeltaTime(), ws.Y / 2 + m_kPos.Y * t->GetDeltaTime(),
+			                                            ws.X / 2 + m_kPos.X * t->GetDeltaTime() + 69 , ws.Y / 2 + m_kPos.Y * t->GetDeltaTime() + 44));
 		//else
 		//	_renderer->RenderTexture(sheet2, sheet2->Update(EN_AN_RUN, t->GetDeltaTime()), Rect(ws.X / 2, ws.Y / 2, ws.X / 2 + 69, ws.Y / 2 + 44));
 
+
+		/*
+		xPos = 80 * (SDL_GetTicks() - xPos) / 1000.0f; 
+
+		r->RenderTexture(sheet, sheet->Update(EN_AN_RUN, t->GetDeltaTime()), Rect(xPos, yPos, 69 * 1.8 + xPos, yPos + 44 * 1.8));
+		*/
 
 		std::string guide = "[D]ecrease speed [I]ncrease speed [S]ave [L]oad [ESC] Quit ";
 
