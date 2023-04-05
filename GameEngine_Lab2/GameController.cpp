@@ -32,7 +32,7 @@ GameController::GameController()
 	m_zoomY = 5;
 	m_lv = nullptr;
 	m_kPos = {0,0};
-	m_npcPos = { 0,0 };
+	m_npcPos = { 0, 0 };
 	
 	//m_right = true;
 }
@@ -119,8 +119,8 @@ void GameController::HandleInput(SDL_Event _event)
 		m_npcPos.x = 60;
 	}
 	else {
-		m_kPos = { 0,0 };
-		m_npcPos = { 0,0 };
+		m_kPos = { 0, 0 };
+		m_npcPos = { 0, 0 };
 	}
 	m_input->MS()->ProcessButtons(_event);
 }
@@ -179,60 +179,85 @@ void GameController::RunGame()
 		{
 			HandleInput(m_sdlEvent);
 		}
-
-		
-
-		
-
 		
 		t->Tick();
 
 		posX += m_kPos.x * t->GetDeltaTime();
 		posY += m_kPos.y * t->GetDeltaTime();
-		
-
-		
-		posNpcX +=  (m_kPos.x - m_npcPos.x)  * t->GetDeltaTime();
-		posNpcY += (m_kPos.y - m_npcPos.y) * t->GetDeltaTime();
-
-		//int away = rand() % 150;
-
-		//for (int i = 0; i < 10; i++) {
-		//	unsigned int away = rand() % 251;
-			//m_rect[i] = Rect{ ws.X /2 + posX + away, ws.Y / 2 + posY + away, ws.X / 2 + posX +  away + 69 * 1.25, ws.Y / 2 + posY + away + 44 * 1.25 };
-			
-			//m_rect[0] = Rect{ static_cast<unsigned int>(ws.X / 2 + posNpcX), static_cast<unsigned int>(ws.Y / 2 + posNpcY),
-				//static_cast<unsigned int>(ws.X / 2 + posNpcX + 69 * 1.25), static_cast<unsigned int>(ws.Y / 2 + posNpcY + 44 * 1.25) };
-
-			//m_renderer->RenderTexture(sheet, sheet->Update(EN_AN_IDLE, t->GetDeltaTime()), m_rect[0]);
-
-
-		//}
-
-
-		for (int i = 0; i < 10; i++)
-			m_renderer->RenderTexture(sheet, sheet->Update(EN_AN_IDLE, t->GetDeltaTime()), m_rect[i]);
+				
+		posNpcX += m_npcPos.x * t->GetDeltaTime();
+		posNpcY += m_npcPos.y * t->GetDeltaTime();
 
 		
 
-		/*for (int i = 0; i < 10; i++) {
-			m_renderer->RenderTexture(sheet, sheet->Update(EN_AN_IDLE, t->GetDeltaTime()), m_rect[i]);
-		}*/
+
+		Rect warriorRect = Rect{ static_cast<unsigned int>(ws.X / 2 + posX), static_cast<unsigned int>(ws.Y / 2 + posY),
+				static_cast<unsigned int>(ws.X / 2 + posX + 69 * 1.25), static_cast<unsigned int>(ws.Y / 2 + posY + 44 * 1.25)};
+
 		
 
 		if (m_kPos.x == 0 && m_kPos.y == 0)
-		m_renderer->RenderTexture(sheet, sheet->Update(EN_AN_IDLE, t->GetDeltaTime()), Rect(ws.X / 2 + posX, ws.Y / 2 + posY,
-			                                            ws.X / 2 + posX + 69 * 1.25 , ws.Y / 2 + posY + 44 * 1.25));
+		    /*m_renderer->RenderTexture(sheet, sheet->Update(EN_AN_IDLE, t->GetDeltaTime()), Rect(ws.X / 2 + posX, ws.Y / 2 + posY,
+			                                            ws.X / 2 + posX + 69 * 1.25 , ws.Y / 2 + posY + 44 * 1.25));*/
+			m_renderer->RenderTexture(sheet, sheet->Update(EN_AN_IDLE, t->GetDeltaTime()), warriorRect);
 		else
 		{
 			if (m_kPos.x == -100)
-				m_renderer->RenderTexture(sheet2, sheet2->Update(EN_AN_RUN, t->GetDeltaTime()), Rect(ws.X / 2 + posX + 69 * 1.25, ws.Y / 2 + posY,
-					ws.X / 2 + posX , ws.Y / 2 + posY + 44 * 1.25));
+			{
+				warriorRect = Rect{ static_cast<unsigned int>(ws.X / 2 + posX + 69 * 1.25), static_cast<unsigned int>(ws.Y / 2 + posY),
+				static_cast<unsigned int>(ws.X / 2 + posX), static_cast<unsigned int>(ws.Y / 2 + posY + 44 * 1.25)};
+				m_renderer->RenderTexture(sheet2, sheet2->Update(EN_AN_RUN, t->GetDeltaTime()), warriorRect);
+				/*m_renderer->RenderTexture(sheet2, sheet2->Update(EN_AN_RUN, t->GetDeltaTime()), Rect(ws.X / 2 + posX + 69 * 1.25, ws.Y / 2 + posY,
+					ws.X / 2 + posX , ws.Y / 2 + posY + 44 * 1.25));*/
+			}
+
+				
 			else
-				m_renderer->RenderTexture(sheet2, sheet2->Update(EN_AN_RUN, t->GetDeltaTime()), Rect(ws.X / 2 + posX, ws.Y / 2 + posY,
-					ws.X / 2 + posX + 69 * 1.25, ws.Y / 2 + posY + 44 * 1.25));
+				m_renderer->RenderTexture(sheet2, sheet2->Update(EN_AN_RUN, t->GetDeltaTime()), warriorRect);
 
 		}
+
+		/*for (int i = 0; i < 10; i++)
+		{
+			
+			m_renderer->RenderTexture(sheet, sheet->Update(EN_AN_IDLE, t->GetDeltaTime()), m_rect[i]);
+
+		}*/
+
+		
+
+		for (int i = 0; i < 10; i++)
+		{
+			glm::vec2 v = { warriorRect.X1, m_rect[i].X1 };
+			if (glm::length(v) < 140)
+			{
+            	while (glm::length(v) < 140)
+				{
+					m_renderer->RenderTexture(sheet2, sheet2->Update(EN_AN_RUN, t->GetDeltaTime()), m_rect[i]);
+					m_rect[i].X1 += posNpcX;
+					m_rect[i].X2 += posNpcX;
+					m_rect[i].Y1 += posNpcY;
+					m_rect[i].Y2 += posNpcY;
+
+				}
+			}
+			else if ( glm::length(v) > 160)
+			{
+				m_renderer->RenderTexture(sheet2, sheet2->Update(EN_AN_RUN, t->GetDeltaTime()), m_rect[i]);
+				m_rect[i].X1 += posNpcX;
+				m_rect[i].X2 += posNpcX;
+				m_rect[i].Y1 += posNpcY;
+				m_rect[i].Y2 += posNpcY;
+			}
+
+			else if (glm::length(v) >= 140 && glm::length(v) < 160)
+     			m_renderer->RenderTexture(sheet, sheet->Update(EN_AN_IDLE, t->GetDeltaTime()), m_rect[i]);
+			else
+				m_renderer->RenderTexture(sheet, sheet->Update(EN_AN_IDLE, t->GetDeltaTime()), m_rect[i]);
+
+		}
+		//m_renderer->RenderTexture(sheet, sheet->Update(EN_AN_IDLE, t->GetDeltaTime()), m_rect[0]);
+
 
 		std::string guide = "[D]ecrease speed [I]ncrease speed [S]ave [L]oad [ESC] Quit ";
 
@@ -247,16 +272,14 @@ void GameController::RunGame()
 		font->Write(m_renderer->GetRenderer(), speed.c_str(), SDL_Color{ 0, 0, 255 }, SDL_Point{ 0, 20 });
 
 
-
-
 		std::string enemySpeed;
-
 		if (m_kPos.x != 0 || m_kPos.y != 0)
 			enemySpeed = "Enemy Speed: " + to_string(abs((static_cast<int>(m_npcPos.x + m_npcPos.y))));
 		else
 			enemySpeed = "Enemy Speed: ";
 
 		font->Write(m_renderer->GetRenderer(), enemySpeed.c_str(), SDL_Color{ 0, 255, 0 }, SDL_Point{ 0, 40 });
+
 
 		std::string enemyTag = "Enemies tagged: ";
 		font->Write(m_renderer->GetRenderer(), enemyTag.c_str(), SDL_Color{ 0, 255, 0 }, SDL_Point{ 0, 60 });
