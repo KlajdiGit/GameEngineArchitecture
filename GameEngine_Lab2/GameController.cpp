@@ -145,11 +145,14 @@ void GameController::RunGame()
 	sheet->Load("../Assets/Textures/Warrior.tga");
 	sheet->SetSize(17, 6, 69, 44);
 	sheet->AddAnimation(EN_AN_IDLE, 0, 6, 6.0f);
+	
+
 
 	SpriteSheet* sheet2 = SpriteSheet::Pool->GetResource();
 	sheet2->Load("../Assets/Textures/Warrior.tga");
 	sheet2->SetSize(17, 6, 69, 44);
 	sheet2->AddAnimation(EN_AN_RUN, 6, 8, 6.0f);
+	
 
 	int posX = 1;
 	int posY = 1;
@@ -171,7 +174,6 @@ void GameController::RunGame()
 
 	while (!m_quit)
 	{
-		//TTFont* font = new TTFont();
 		m_renderer->SetDrawColor(Color(255, 255, 255, 255));
 		m_renderer->ClearScreen();
 
@@ -225,8 +227,35 @@ void GameController::RunGame()
 		}*/
 
 		
+		glm::vec2 v = { warriorRect.X1, m_rect[0].X1 };
 
-		for (int i = 0; i < 10; i++)
+		if (glm::length(v) < 140)
+		{
+			while (glm::length(v) < 140)
+			{
+				m_renderer->RenderTexture(sheet2, sheet2->Update(EN_AN_RUN, t->GetDeltaTime()), m_rect[0]);
+				m_rect[0].X1 += posNpcX;
+				m_rect[0].X2 += posNpcX;
+				m_rect[0].Y1 += posNpcY;
+				m_rect[0].Y2 += posNpcY;
+				v = { warriorRect.X1, m_rect[0].X1 };
+			}
+		}
+		else if (glm::length(v) > 160)
+		{
+			m_renderer->RenderTexture(sheet2, sheet2->Update(EN_AN_RUN, t->GetDeltaTime()), m_rect[0]);
+			m_rect[0].X1 -= posNpcX ;
+			m_rect[0].X2 -= posNpcX ;
+			m_rect[0].Y1 -= posNpcY ;
+			m_rect[0].Y2 -= posNpcY ;
+			v = { warriorRect.X1, m_rect[0].X1 };
+		}
+		else
+			m_renderer->RenderTexture(sheet, sheet->Update(EN_AN_IDLE, t->GetDeltaTime()), m_rect[0]);
+
+		
+
+		/*for (int i = 0; i < 10; i++)
 		{
 			glm::vec2 v = { warriorRect.X1, m_rect[i].X1 };
 			if (glm::length(v) < 140)
@@ -255,7 +284,7 @@ void GameController::RunGame()
 			else
 				m_renderer->RenderTexture(sheet, sheet->Update(EN_AN_IDLE, t->GetDeltaTime()), m_rect[i]);
 
-		}
+		}*/
 		//m_renderer->RenderTexture(sheet, sheet->Update(EN_AN_IDLE, t->GetDeltaTime()), m_rect[0]);
 
 

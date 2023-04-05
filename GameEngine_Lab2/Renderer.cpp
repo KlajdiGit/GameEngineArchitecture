@@ -205,3 +205,25 @@ void Renderer::RenderTexture(SDL_Texture* _texture, Rect _srcRect, Rect _destRec
 	M_ASSERT(((SDL_RenderCopyEx(m_renderer, _texture,
 		&m_srcRect, &m_destRect, _angle, NULL, SDL_FLIP_NONE)) >= 0), "Could not render texture");
 }
+
+
+void Renderer::RenderTexture(Texture* _texture, Rect _srcRect, Rect _destRect, byte _r, byte _g, byte _b)
+{
+
+	m_destRect.x = _destRect.X1;
+	m_destRect.y = _destRect.Y1;
+	m_destRect.w = _destRect.X2 - _destRect.X1;
+	m_destRect.h = _destRect.Y2 - _destRect.Y1;
+
+	m_srcRect.x = _srcRect.X1;
+	m_srcRect.y = _texture->GetImageInfo()->Height - _srcRect.Y2;
+	m_srcRect.w = _srcRect.X2 - _srcRect.X1;
+	m_srcRect.h = _srcRect.Y2 - _srcRect.Y1;
+
+	SDL_SetRenderDrawColor(m_renderer, _r, _g, _b, 255); // (R, G, B, A)
+
+
+	M_ASSERT(((SDL_RenderCopyEx(m_renderer, GetSDLTexture(_texture),
+		&m_srcRect, &m_destRect, 0, NULL, SDL_FLIP_VERTICAL)) >= 0), "Could not render texture");
+	
+}

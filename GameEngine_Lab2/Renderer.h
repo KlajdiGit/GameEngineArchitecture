@@ -37,6 +37,7 @@ public:
 	 void RenderTexture(Texture* _texture, Rect _rect);
 	 void RenderTexture(Texture* _texture, Rect _srcRect, Rect _destRect);
 	 void RenderTexture(SDL_Texture* _texture, Rect _srcRect, Rect _destRect, double _angle);
+	 void RenderTexture(Texture* _texture, Rect _srcRect, Rect _destRect, byte _r, byte _g, byte _b);
 
 	 void Shutdown();
 
