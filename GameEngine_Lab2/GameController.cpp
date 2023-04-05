@@ -62,33 +62,6 @@ void GameController::ShutDown()
 	delete m_wavDraw;
 }
 
-//void GameController::HandleInput(SDL_Event _event)
-//{
-//	string temp;
-//	if ((m_sdlEvent.type == SDL_QUIT) ||
-//		(m_input->KB()->KeyUp(m_sdlEvent, SDLK_ESCAPE)))
-//	{
-//		m_quit = true;
-//	}
-//	else if (m_input->KB()->KeyDown(m_sdlEvent, SDLK_UP))
-//	{
-//		m_kPos.Y -= 100 * Timing::Instance().GetDeltaTime();
-//	}
-//	else if (m_input->KB()->KeyDown(m_sdlEvent, SDLK_DOWN))
-//	{
-//		m_kPos.Y += 100 * Timing::Instance().GetDeltaTime();
-//	}
-//	else if (m_input->KB()->KeyDown(m_sdlEvent, SDLK_LEFT))
-//	{
-//		m_kPos.X -= 100 * Timing::Instance().GetDeltaTime();
-//	}
-//	else if (m_input->KB()->KeyDown(m_sdlEvent, SDLK_RIGHT))
-//	{
-//		m_kPos.X += 100 * Timing::Instance().GetDeltaTime();
-//	}
-//	
-//	m_input->MS()->ProcessButtons(_event);
-//}
 
 void GameController::HandleInput(SDL_Event _event)
 {
@@ -162,10 +135,10 @@ void GameController::RunGame()
 	srand(time(nullptr));
 
 	for (int i = 0; i < 10; i++) {
-		int x1 = rand() % 301 - 150;
-		int x2 = rand() % 301 - 150;
-		m_rect[i] = Rect{ static_cast<unsigned int>(ws.X / 2 + x1), static_cast<unsigned int>(ws.Y / 2 + x2),
-				static_cast<unsigned int>(ws.X / 2 + x1 + 69 * 1.25), static_cast<unsigned int>(ws.Y / 2 + x2 + 44 * 1.25) };
+		int x1 = rand() % 300 - 150;
+		int x2 = rand() % 300 - 150;
+		m_rect[i] = Rect{ static_cast<unsigned int>(ws.X / 2 + x1 + posNpcX), static_cast<unsigned int>(ws.Y / 2 + x2 + posNpcY),
+				static_cast<unsigned int>(ws.X / 2 + x1 + posNpcX + 69 * 1.25), static_cast<unsigned int>(ws.Y / 2 + x2 + posNpcY + 44 * 1.25) };
 
 		//std::cout << "x1: " << x1 << " x2: " << x2 << std::endl;
 	}
@@ -226,6 +199,18 @@ void GameController::RunGame()
 
 		}*/
 
+
+		//if (m_npcPos.x < 0)
+		//{
+		//	m_rect[i] = Rect{ static_cast<unsigned int>(ws.X / 2 + posNpcX + 69 * 1.25), static_cast<unsigned int>(ws.Y / 2 + posNpcY),
+		//	static_cast<unsigned int>(ws.X / 2 + posNpcX), static_cast<unsigned int>(ws.Y / 2 + posNpcY + 44 * 1.25) };
+		//	m_renderer->RenderTexture(sheet2, sheet2->Update(EN_AN_RUN, t->GetDeltaTime()), m_rect[i], 0, 255, 0);
+		//	/*m_renderer->RenderTexture(sheet2, sheet2->Update(EN_AN_RUN, t->GetDeltaTime()), Rect(ws.X / 2 + posX + 69 * 1.25, ws.Y / 2 + posY,
+		//		ws.X / 2 + posX , ws.Y / 2 + posY + 44 * 1.25));*/
+		//}
+		//else
+		//	m_renderer->RenderTexture(sheet2, sheet2->Update(EN_AN_RUN, t->GetDeltaTime()), m_rect[i], 0, 255, 0);
+
 		
 		for (int i = 0; i < 10; i++)
 		{
@@ -233,10 +218,26 @@ void GameController::RunGame()
 		glm::vec2 playerPos = { warriorRect.X1, warriorRect.Y1 };
 		glm::vec2 npcPos = { m_rect[i].X1, m_rect[i].Y1 };
 		float distance = glm::length(playerPos - npcPos);
+		
+		if (glm::length(distance) < 30)
+		{
+			m_audio->Play(m_effects[0]);
+		}
+		
 		if (glm::length(distance) < 140)
 		{		
-				m_renderer->RenderTexture(sheet2, sheet2->Update(EN_AN_RUN, t->GetDeltaTime()), m_rect[i], 0, 255, 0);
-				glm::vec2 direction = glm::normalize(playerPos - npcPos);
+			//if (m_npcPos.x < 0)
+		 //   {
+			//m_rect[i] = Rect{ static_cast<unsigned int>(ws.X / 2 + posNpcX + 69 * 1.25), static_cast<unsigned int>(ws.Y / 2 + posNpcY),
+			//static_cast<unsigned int>(ws.X / 2 + posNpcX), static_cast<unsigned int>(ws.Y / 2 + posNpcY + 44 * 1.25) };
+			//m_renderer->RenderTexture(sheet2, sheet2->Update(EN_AN_RUN, t->GetDeltaTime()), m_rect[i], 0, 255, 0);
+			///*m_renderer->RenderTexture(sheet2, sheet2->Update(EN_AN_RUN, t->GetDeltaTime()), Rect(ws.X / 2 + posX + 69 * 1.25, ws.Y / 2 + posY,
+			//	ws.X / 2 + posX , ws.Y / 2 + posY + 44 * 1.25));*/
+   //  		}
+	  //   	else
+			    m_renderer->RenderTexture(sheet2, sheet2->Update(EN_AN_RUN, t->GetDeltaTime()), m_rect[i], 0, 255, 0);
+				
+			glm::vec2 direction = glm::normalize(playerPos - npcPos);
 				m_rect[i].X1 -= direction.x * posNpcX;
 				m_rect[i].X2 -= direction.x * posNpcX;
 				m_rect[i].Y1 -= direction.y * posNpcY;
@@ -245,7 +246,17 @@ void GameController::RunGame()
 		}
 		else if (glm::length(distance) > 160)
 		{
-			m_renderer->RenderTexture(sheet2, sheet2->Update(EN_AN_RUN, t->GetDeltaTime()), m_rect[i], 0, 255, 0);
+
+			//if (m_npcPos.x < 0)
+			//{
+			//	m_rect[i] = Rect{ static_cast<unsigned int>(ws.X / 2 + posNpcX + 69 * 1.25), static_cast<unsigned int>(ws.Y / 2 + posNpcY),
+			//	static_cast<unsigned int>(ws.X / 2 + posNpcX), static_cast<unsigned int>(ws.Y / 2 + posNpcY + 44 * 1.25) };
+			//	m_renderer->RenderTexture(sheet2, sheet2->Update(EN_AN_RUN, t->GetDeltaTime()), m_rect[i], 0, 255, 0);
+			//	/*m_renderer->RenderTexture(sheet2, sheet2->Update(EN_AN_RUN, t->GetDeltaTime()), Rect(ws.X / 2 + posX + 69 * 1.25, ws.Y / 2 + posY,
+			//		ws.X / 2 + posX , ws.Y / 2 + posY + 44 * 1.25));*/
+			//}
+			//else
+		    m_renderer->RenderTexture(sheet2, sheet2->Update(EN_AN_RUN, t->GetDeltaTime()), m_rect[i], 0, 255, 0);
 			glm::vec2 direction = glm::normalize(playerPos - npcPos);
 			m_rect[i].X1 += direction.x * posNpcX ;
 			m_rect[i].X2 += direction.x * posNpcX ;
