@@ -222,6 +222,7 @@ void GameController::RunGame()
 		if (glm::length(distance) < 30)
 		{
 			m_audio->Play(m_effects[0]);
+			//delete m_rect[i];
 		}
 		
 		if (glm::length(distance) < 140)
