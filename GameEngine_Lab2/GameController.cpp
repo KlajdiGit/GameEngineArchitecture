@@ -201,21 +201,21 @@ void GameController::RunGame()
 		if (m_kPos.x == 0 && m_kPos.y == 0)
 		    /*m_renderer->RenderTexture(sheet, sheet->Update(EN_AN_IDLE, t->GetDeltaTime()), Rect(ws.X / 2 + posX, ws.Y / 2 + posY,
 			                                            ws.X / 2 + posX + 69 * 1.25 , ws.Y / 2 + posY + 44 * 1.25));*/
-			m_renderer->RenderTexture(sheet, sheet->Update(EN_AN_IDLE, t->GetDeltaTime()), warriorRect);
+			m_renderer->RenderTexture(sheet, sheet->Update(EN_AN_IDLE, t->GetDeltaTime()), warriorRect, 0, 0, 255);
 		else
 		{
 			if (m_kPos.x == -100)
 			{
 				warriorRect = Rect{ static_cast<unsigned int>(ws.X / 2 + posX + 69 * 1.25), static_cast<unsigned int>(ws.Y / 2 + posY),
 				static_cast<unsigned int>(ws.X / 2 + posX), static_cast<unsigned int>(ws.Y / 2 + posY + 44 * 1.25)};
-				m_renderer->RenderTexture(sheet2, sheet2->Update(EN_AN_RUN, t->GetDeltaTime()), warriorRect);
+				m_renderer->RenderTexture(sheet2, sheet2->Update(EN_AN_RUN, t->GetDeltaTime()), warriorRect, 0, 0, 255);
 				/*m_renderer->RenderTexture(sheet2, sheet2->Update(EN_AN_RUN, t->GetDeltaTime()), Rect(ws.X / 2 + posX + 69 * 1.25, ws.Y / 2 + posY,
 					ws.X / 2 + posX , ws.Y / 2 + posY + 44 * 1.25));*/
 			}
 
 				
 			else
-				m_renderer->RenderTexture(sheet2, sheet2->Update(EN_AN_RUN, t->GetDeltaTime()), warriorRect);
+				m_renderer->RenderTexture(sheet2, sheet2->Update(EN_AN_RUN, t->GetDeltaTime()), warriorRect, 0, 0, 255);
 
 		}
 
@@ -227,67 +227,37 @@ void GameController::RunGame()
 		}*/
 
 		
+		for (int i = 0; i < 10; i++)
+		{
+
 		glm::vec2 playerPos = { warriorRect.X1, warriorRect.Y1 };
-		glm::vec2 npcPos = { m_rect[0].X1, m_rect[0].Y1 };
+		glm::vec2 npcPos = { m_rect[i].X1, m_rect[i].Y1 };
 		float distance = glm::length(playerPos - npcPos);
-
-
 		if (glm::length(distance) < 140)
 		{		
-				m_renderer->RenderTexture(sheet2, sheet2->Update(EN_AN_RUN, t->GetDeltaTime()), m_rect[0]);
+				m_renderer->RenderTexture(sheet2, sheet2->Update(EN_AN_RUN, t->GetDeltaTime()), m_rect[i], 0, 255, 0);
 				glm::vec2 direction = glm::normalize(playerPos - npcPos);
-				m_rect[0].X1 -= direction.x * posNpcX;
-				m_rect[0].X2 -= direction.x * posNpcX;
-				m_rect[0].Y1 -= direction.y * posNpcY;
-				m_rect[0].Y2 -= direction.y * posNpcY;
+				m_rect[i].X1 -= direction.x * posNpcX;
+				m_rect[i].X2 -= direction.x * posNpcX;
+				m_rect[i].Y1 -= direction.y * posNpcY;
+				m_rect[i].Y2 -= direction.y * posNpcY;
 			
 		}
 		else if (glm::length(distance) > 160)
 		{
-			m_renderer->RenderTexture(sheet2, sheet2->Update(EN_AN_RUN, t->GetDeltaTime()), m_rect[0]);
+			m_renderer->RenderTexture(sheet2, sheet2->Update(EN_AN_RUN, t->GetDeltaTime()), m_rect[i], 0, 255, 0);
 			glm::vec2 direction = glm::normalize(playerPos - npcPos);
-			m_rect[0].X1 += direction.x * posNpcX ;
-			m_rect[0].X2 += direction.x * posNpcX ;
-			m_rect[0].Y1 += direction.y * posNpcY ;
-			m_rect[0].Y2 += direction.y * posNpcY ;
+			m_rect[i].X1 += direction.x * posNpcX ;
+			m_rect[i].X2 += direction.x * posNpcX ;
+			m_rect[i].Y1 += direction.y * posNpcY ;
+			m_rect[i].Y2 += direction.y * posNpcY ;
 		}
 		else
-			m_renderer->RenderTexture(sheet, sheet->Update(EN_AN_IDLE, t->GetDeltaTime()), m_rect[0]);
+			m_renderer->RenderTexture(sheet, sheet->Update(EN_AN_IDLE, t->GetDeltaTime()), m_rect[i], 0, 255, 0);
+
+		}
 
 		
-
-		/*for (int i = 0; i < 10; i++)
-		{
-			glm::vec2 v = { warriorRect.X1, m_rect[i].X1 };
-			if (glm::length(v) < 140)
-			{
-            	while (glm::length(v) < 140)
-				{
-					m_renderer->RenderTexture(sheet2, sheet2->Update(EN_AN_RUN, t->GetDeltaTime()), m_rect[i]);
-					m_rect[i].X1 += posNpcX;
-					m_rect[i].X2 += posNpcX;
-					m_rect[i].Y1 += posNpcY;
-					m_rect[i].Y2 += posNpcY;
-
-				}
-			}
-			else if ( glm::length(v) > 160)
-			{
-				m_renderer->RenderTexture(sheet2, sheet2->Update(EN_AN_RUN, t->GetDeltaTime()), m_rect[i]);
-				m_rect[i].X1 += posNpcX;
-				m_rect[i].X2 += posNpcX;
-				m_rect[i].Y1 += posNpcY;
-				m_rect[i].Y2 += posNpcY;
-			}
-
-			else if (glm::length(v) >= 140 && glm::length(v) < 160)
-     			m_renderer->RenderTexture(sheet, sheet->Update(EN_AN_IDLE, t->GetDeltaTime()), m_rect[i]);
-			else
-				m_renderer->RenderTexture(sheet, sheet->Update(EN_AN_IDLE, t->GetDeltaTime()), m_rect[i]);
-
-		}*/
-		//m_renderer->RenderTexture(sheet, sheet->Update(EN_AN_IDLE, t->GetDeltaTime()), m_rect[0]);
-
 
 		std::string guide = "[D]ecrease speed [I]ncrease speed [S]ave [L]oad [ESC] Quit ";
 

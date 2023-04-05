@@ -220,7 +220,8 @@ void Renderer::RenderTexture(Texture* _texture, Rect _srcRect, Rect _destRect, b
 	m_srcRect.w = _srcRect.X2 - _srcRect.X1;
 	m_srcRect.h = _srcRect.Y2 - _srcRect.Y1;
 
-	SDL_SetRenderDrawColor(m_renderer, _r, _g, _b, 255); // (R, G, B, A)
+
+	SDL_SetTextureColorMod(GetSDLTexture(_texture), _r, _g, _b);
 
 
 	M_ASSERT(((SDL_RenderCopyEx(m_renderer, GetSDLTexture(_texture),
