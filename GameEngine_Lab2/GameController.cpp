@@ -233,17 +233,14 @@ void GameController::RunGame()
 
 
 		if (glm::length(distance) < 140)
-		{
-			//while (glm::length(v) < 140)
-			//{
+		{		
 				m_renderer->RenderTexture(sheet2, sheet2->Update(EN_AN_RUN, t->GetDeltaTime()), m_rect[0]);
 				glm::vec2 direction = glm::normalize(playerPos - npcPos);
 				m_rect[0].X1 -= direction.x * posNpcX;
 				m_rect[0].X2 -= direction.x * posNpcX;
 				m_rect[0].Y1 -= direction.y * posNpcY;
 				m_rect[0].Y2 -= direction.y * posNpcY;
-			//	v = { warriorRect.X1, m_rect[0].X1 };
-			//}
+			
 		}
 		else if (glm::length(distance) > 160)
 		{
@@ -253,7 +250,6 @@ void GameController::RunGame()
 			m_rect[0].X2 += direction.x * posNpcX ;
 			m_rect[0].Y1 += direction.y * posNpcY ;
 			m_rect[0].Y2 += direction.y * posNpcY ;
-			//v = { warriorRect.X1, m_rect[0].X1 };
 		}
 		else
 			m_renderer->RenderTexture(sheet, sheet->Update(EN_AN_IDLE, t->GetDeltaTime()), m_rect[0]);
