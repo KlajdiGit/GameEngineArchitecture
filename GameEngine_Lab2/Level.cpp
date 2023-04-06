@@ -152,6 +152,22 @@ void Level::HandleInput(SDL_Event _event)
 			speedNpc +=10;
 
 	}
+	else if (m_input->KB()->KeyUp(_event, SDLK_s))
+	{
+		ofstream writeStream("level.bin", ios::out | ios::binary);
+		Serialize(writeStream);
+		writeStream.close();
+		ToString();
+	}
+
+	else if (m_input->KB()->KeyUp(_event, SDLK_l))
+	{
+		ifstream readStream("level.bin", ios::in, ios::binary);
+		Deserialize(readStream);
+		readStream.close();
+		ToString();
+
+	}
 
 	else
 	{
