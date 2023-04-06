@@ -21,6 +21,8 @@ public:
 	void AssignNonDefaultValues() override;
 	void RunLevel(Renderer* _renderer);
 	void HandleInput(SDL_Event _event);
+	//void RunLevel1(Renderer* _renderer, glm::vec2 m_kPos, glm::vec2 m_npcPos);
+
 
 private:
 	//Members

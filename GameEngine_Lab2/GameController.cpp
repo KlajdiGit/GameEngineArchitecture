@@ -109,6 +109,10 @@ void GameController::RunGame()
 
 	m_lv->RunLevel(m_renderer);
 
+
+
+
+
 	//TTFont* font = new TTFont();
 	//font->Initialize(20);
 
