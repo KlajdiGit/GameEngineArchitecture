@@ -28,8 +28,8 @@ Level::Level()
 	m_quit = false;
 	m_audio = &AudioController::Instance();
 	m_effect = nullptr;
-	std::vector<Rect> m_rect(10);
-	m_rect.resize(10);
+	//std::vector<Rect> m_rect(10);
+	//m_rect.resize(10);
 
 
 
@@ -186,11 +186,11 @@ void Level::RunLevel(Renderer* _renderer)
 	for (int i = 0; i < 10; i++) {
 		int x1 = rand() % 300 - 150;
 		int x2 = rand() % 300 - 150;
-		//m_rect[i] = Rect{ static_cast<unsigned int>(ws.X / 2 + x1 + posNpcX), static_cast<unsigned int>(ws.Y / 2 + x2 + posNpcY),
-			//	static_cast<unsigned int>(ws.X / 2 + x1 + posNpcX + 69 * 1.25), static_cast<unsigned int>(ws.Y / 2 + x2 + posNpcY + 44 * 1.25) };
+		m_rect[i] = Rect{ static_cast<unsigned int>(ws.X / 2 + x1 + posNpcX), static_cast<unsigned int>(ws.Y / 2 + x2 + posNpcY),
+				static_cast<unsigned int>(ws.X / 2 + x1 + posNpcX + 69 * 1.25), static_cast<unsigned int>(ws.Y / 2 + x2 + posNpcY + 44 * 1.25) };
 
-		m_rect.push_back( Rect{ static_cast<unsigned int>(ws.X / 2 + x1 + posNpcX), static_cast<unsigned int>(ws.Y / 2 + x2 + posNpcY),
-					static_cast<unsigned int>(ws.X / 2 + x1 + posNpcX + 69 * 1.25), static_cast<unsigned int>(ws.Y / 2 + x2 + posNpcY + 44 * 1.25) });
+		//m_rect.push_back( Rect{ static_cast<unsigned int>(ws.X / 2 + x1 + posNpcX), static_cast<unsigned int>(ws.Y / 2 + x2 + posNpcY),
+			//		static_cast<unsigned int>(ws.X / 2 + x1 + posNpcX + 69 * 1.25), static_cast<unsigned int>(ws.Y / 2 + x2 + posNpcY + 44 * 1.25) });
 
 		//std::cout << "x1: " << x1 << " x2: " << x2 << std::endl;
 	}
@@ -275,7 +275,8 @@ void Level::RunLevel(Renderer* _renderer)
 			if (distance < 30)
 			{
 				m_audio->Play(m_effect);
-				m_rect.erase(m_rect.begin() + i);
+				m_rect[i].X1 = m_rect[i].X2 = m_rect[i].Y1 = m_rect[i].Y2 = 0;
+				//m_rect.erase(m_rect.begin() + i);
 			}
 
 			if (distance < 140)

@@ -36,8 +36,8 @@ private:
 	bool m_quit;
 	AudioController* m_audio;
 	SoundEffects* m_effect;
-	//Rect m_rect[10];
-	vector <Rect> m_rect;
+	Rect m_rect[10];
+	//vector <Rect> m_rect;
 };
 
 #endif //LEVEL_H
