@@ -107,7 +107,7 @@ void Level::ToString()
 
 // the reason of building a HandleInput in the level was that since it that •You must organize your game into a Level
 // and since since the input is an inporant part in this game I should also include this methos in the level.cpp
-
+// Plus for more practice since I wnated to test how much I've memorized the process to create this method.
 int speedNpc = 60;
 
 void Level::HandleInput(SDL_Event _event)
