@@ -203,6 +203,10 @@ void Level::RunLevel(Renderer* _renderer)
 	sheet2->SetSize(17, 6, 69, 44);
 	sheet2->AddAnimation(EN_AN_RUN, 6, 8, 6.0f);
 
+	SpriteSheet* sheet3 = SpriteSheet::Pool->GetResource();
+	sheet3->Load("../Assets/Textures/Warrior.tga");
+	sheet3->SetSize(17, 6, 69, 44);
+	sheet3->AddAnimation(EN_AN_DEATH, 26, 11, 6.0f);
 
 	m_effect = m_audio->LoadEffect("../Assets/Audio/Effects/Whoosh.wav");
 
@@ -307,9 +311,20 @@ void Level::RunLevel(Renderer* _renderer)
 
 			if (distance < 30)
 			{
+				double duration = 5.0f;
+				double startTime = 0.0f;
 				m_audio->Play(m_effect);
-				m_rect[i].X1 = m_rect[i].X2 = m_rect[i].Y1 = m_rect[i].Y2 = 0;
+				//m_rect[i].X1 = m_rect[i].X2 = m_rect[i].Y1 = m_rect[i].Y2 = 0;
 				m_enemyTagged++;
+			    
+				while (startTime < duration)
+				{
+					_renderer->RenderTexture(sheet3, sheet3->Update(EN_AN_DEATH, t->GetDeltaTime()), m_rect[i], 255, 0, 0);
+					startTime += t->GetDeltaTime();
+				}
+				//SDL_Delay(1000);
+				m_rect[i].X1 = m_rect[i].X2 = m_rect[i].Y1 = m_rect[i].Y2 = 0;
+
 			}
 
 			if (distance < 140)
