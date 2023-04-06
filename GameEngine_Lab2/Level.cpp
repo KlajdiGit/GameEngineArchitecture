@@ -22,7 +22,7 @@ Level::Level()
 	m_units.clear();
 	m_warriorPos = { 0,0 };
 	m_npcPos = { 0, 0 };
-
+	m_enemyTagged = 0;
 	m_sdlEvent = { };
 	m_input = &InputController::Instance();
 	m_quit = false;
@@ -105,9 +105,14 @@ void Level::ToString()
 }
 
 
+// the reason of building a HandleInput in the level was that since it that •You must organize your game into a Level
+// and since since the input is an inporant part in this game I should also include this methos in the level.cpp
+
+int speedNpc = 60;
+
 void Level::HandleInput(SDL_Event _event)
 {
-	string temp;
+	
 	if ((_event.type == SDL_QUIT) ||
 		(m_input->KB()->KeyUp(_event, SDLK_ESCAPE)))
 	{
@@ -116,26 +121,38 @@ void Level::HandleInput(SDL_Event _event)
 	else if (m_input->KB()->KeyDown(_event, SDLK_UP))
 	{
 		m_warriorPos.y = -100;
-		m_npcPos.y = -60;
+		m_npcPos.y = -1 * speedNpc;
 
 	}
 	else if (m_input->KB()->KeyDown(_event, SDLK_DOWN))
 	{
 		m_warriorPos.y = 100;
-		m_npcPos.y = 60;
+		m_npcPos.y = speedNpc;
 
 	}
 	else if (m_input->KB()->KeyDown(_event, SDLK_LEFT))
 	{
 		m_warriorPos.x = -100;
-		m_npcPos.x = -60;
+		m_npcPos.x = -1 * speedNpc;
 	}
 	else if (m_input->KB()->KeyDown(_event, SDLK_RIGHT))
 	{
 		m_warriorPos.x = 100;
-		m_npcPos.x = 60;
+		m_npcPos.x = speedNpc;
 
 	}
+	else if (m_input->KB()->KeyUp(_event, SDLK_d))
+	{
+		if (speedNpc > 0)
+	    	speedNpc -= 10;
+	}
+	else if (m_input->KB()->KeyUp(_event, SDLK_i))
+	{
+		if (speedNpc < 60)
+			speedNpc +=10;
+
+	}
+
 	else
 	{
 		m_warriorPos = { 0,0 };
@@ -276,7 +293,7 @@ void Level::RunLevel(Renderer* _renderer)
 			{
 				m_audio->Play(m_effect);
 				m_rect[i].X1 = m_rect[i].X2 = m_rect[i].Y1 = m_rect[i].Y2 = 0;
-				//m_rect.erase(m_rect.begin() + i);
+				m_enemyTagged++;
 			}
 
 			if (distance < 140)
@@ -347,7 +364,11 @@ void Level::RunLevel(Renderer* _renderer)
 		font->Write(_renderer->GetRenderer(), enemySpeed.c_str(), SDL_Color{ 0, 255, 0 }, SDL_Point{ 0, 40 });
 
 
-		std::string enemyTag = "Enemies tagged: ";
+		std::string enemyTag;
+		if (m_enemyTagged > 0)
+			enemyTag = "Enemies tagged: " + to_string(m_enemyTagged);
+		else
+			enemyTag = "Enemies tagged: ";
 		font->Write(_renderer->GetRenderer(), enemyTag.c_str(), SDL_Color{ 0, 255, 0 }, SDL_Point{ 0, 60 });
 
 

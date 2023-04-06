@@ -37,6 +37,7 @@ private:
 	AudioController* m_audio;
 	SoundEffects* m_effect;
 	Rect m_rect[10];
+	int m_enemyTagged;
 	//vector <Rect> m_rect;
 };
 
