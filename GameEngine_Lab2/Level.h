@@ -4,6 +4,7 @@
 #include "Unit.h"
 class Renderer;
 class InputController;
+class AudioController;
 
 
 class Level : public Resource
@@ -28,10 +29,15 @@ private:
 	float m_gameTime;
 	vector<Unit*> m_units;
 	Point m_point;
-	glm::vec2 m_kPos;
+	glm::vec2 m_warriorPos;
+	glm::vec2 m_npcPos;
 	SDL_Event m_sdlEvent;
 	InputController* m_input;
 	bool m_quit;
+	AudioController* m_audio;
+	SoundEffects* m_effect;
+	//Rect m_rect[10];
+	vector <Rect> m_rect;
 };
 
 #endif //LEVEL_H
