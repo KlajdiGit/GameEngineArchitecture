@@ -311,7 +311,7 @@ void Level::RunLevel(Renderer* _renderer)
 
 			if (distance < 30)
 			{
-				double duration = 5.0f;
+				double duration = 2.0f;
 				double startTime = 0.0f;
 				m_audio->Play(m_effect);
 				//m_rect[i].X1 = m_rect[i].X2 = m_rect[i].Y1 = m_rect[i].Y2 = 0;
