@@ -114,7 +114,7 @@ void Level::HandleInput(SDL_Event _event)
 {
 	
 	if ((_event.type == SDL_QUIT) ||
-		(m_input->KB()->KeyUp(_event, SDLK_ESCAPE)))
+		(m_input->KB()->KeyUp(_event, SDLK_ESCAPE)) || m_enemyTagged == 10)
 	{
 		m_quit = true;
 	}
@@ -338,6 +338,7 @@ void Level::RunLevel(Renderer* _renderer)
 				//	ws.X / 2 + posX , ws.Y / 2 + posY + 44 * 1.25));*/
 	   //  		}
 		  //   	else
+				
 				_renderer->RenderTexture(sheet2, sheet2->Update(EN_AN_RUN, t->GetDeltaTime()), m_rect[i], 0, 255, 0);
 
 				glm::vec2 direction = glm::normalize(playerPos - npcPos);
@@ -361,11 +362,13 @@ void Level::RunLevel(Renderer* _renderer)
 				//else
 				_renderer->RenderTexture(sheet2, sheet2->Update(EN_AN_RUN, t->GetDeltaTime()), m_rect[i], 0, 255, 0);
 				glm::vec2 direction = glm::normalize(playerPos - npcPos);
+
 				m_rect[i].X1 += direction.x * posNpcX;
 				m_rect[i].X2 += direction.x * posNpcX;
 				m_rect[i].Y1 += direction.y * posNpcY;
 				m_rect[i].Y2 += direction.y * posNpcY;
 			}
+
 			else
 				_renderer->RenderTexture(sheet, sheet->Update(EN_AN_IDLE, t->GetDeltaTime()), m_rect[i], 0, 255, 0);
 
