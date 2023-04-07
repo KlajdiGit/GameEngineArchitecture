@@ -329,14 +329,12 @@ void Level::RunLevel(Renderer* _renderer)
 				{
 					m_rect[i].X1 -= direction.x * posNpcX;
 					m_rect[i].X2 -= direction.x * posNpcX;
-
 				}
 
 				if (m_warriorPos.x == 0)
 				{
 					m_rect[i].Y1 -= direction.x * posNpcX;
 					m_rect[i].Y2 -= direction.x * posNpcX;
-
 				}
 
 				m_rect[i].X1 -= direction.x * posNpcX;
@@ -371,14 +369,12 @@ void Level::RunLevel(Renderer* _renderer)
 				{
 					m_rect[i].X1 += direction.x * posNpcX;
 					m_rect[i].X2 += direction.x * posNpcX;
-
 				}
 
 				if (m_warriorPos.x == 0)
 				{
 					m_rect[i].Y1 += direction.x * posNpcX;
 					m_rect[i].Y2 += direction.x * posNpcX;
-
 				}
 
 
