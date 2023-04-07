@@ -40,6 +40,8 @@ private:
 	SoundEffects* m_effect;
 	Rect m_rect[10];
 	int m_enemyTagged;
+	int m_speedNpc;
+
 	//vector <Rect> m_rect;
 };
 

@@ -10,11 +10,15 @@
 #include "Keyboard.h"
 #include "AudioController.h"
 
+
+
 Level::Level()
 {
 	AssetController::Instance().Initialize(10000000); //Allocate 10 MB
 	Unit::Pool = new ObjectPool<Unit>();
 	SoundEffects::Pool = new ObjectPool<SoundEffects>();
+	SpriteSheet::Pool = new ObjectPool<SpriteSheet>();
+	SpriteAnim::Pool = new ObjectPool<SpriteAnim>();
 
 	m_mapSizeX = 0;
 	m_mapSizeY = 0;
@@ -28,10 +32,10 @@ Level::Level()
 	m_quit = false;
 	m_audio = &AudioController::Instance();
 	m_effect = nullptr;
+	m_speedNpc = 60;
+
 	//std::vector<Rect> m_rect(10);
 	//m_rect.resize(10);
-
-
 
 }
 
@@ -105,10 +109,14 @@ void Level::ToString()
 }
 
 
+
 // the reason of building a HandleInput in the level was that since it that •You must organize your game into a Level
 // and since since the input is an inporant part in this game I should also include this methos in the level.cpp
 // Plus for more practice since I wnated to test how much I've memorized the process to create this method.
-int speedNpc = 60;
+
+ofstream writeStream("level.bin", ios::out | ios::binary);
+ifstream readStream("level.bin", ios::in, ios::binary);
+
 
 void Level::HandleInput(SDL_Event _event)
 {
@@ -121,50 +129,50 @@ void Level::HandleInput(SDL_Event _event)
 	else if (m_input->KB()->KeyDown(_event, SDLK_UP))
 	{
 		m_warriorPos.y = -100;
-		m_npcPos.y = -1 * speedNpc;
+		m_npcPos.y = -1 * m_speedNpc;
 
 	}
 	else if (m_input->KB()->KeyDown(_event, SDLK_DOWN))
 	{
 		m_warriorPos.y = 100;
-		m_npcPos.y = speedNpc;
+		m_npcPos.y = m_speedNpc;
 
 	}
 	else if (m_input->KB()->KeyDown(_event, SDLK_LEFT))
 	{
 		m_warriorPos.x = -100;
-		m_npcPos.x = -1 * speedNpc;
+		m_npcPos.x = -1 * m_speedNpc;
 	}
 	else if (m_input->KB()->KeyDown(_event, SDLK_RIGHT))
 	{
 		m_warriorPos.x = 100;
-		m_npcPos.x = speedNpc;
+		m_npcPos.x = m_speedNpc;
 
 	}
 	else if (m_input->KB()->KeyUp(_event, SDLK_d))
 	{
-		if (speedNpc > 0)
-	    	speedNpc -= 10;
+		if (m_speedNpc > 0)
+			m_speedNpc -= 10;
 	}
 	else if (m_input->KB()->KeyUp(_event, SDLK_i))
 	{
-		if (speedNpc < 60)
-			speedNpc +=10;
+		if (m_speedNpc < 60)
+			m_speedNpc +=10;
 
 	}
 	else if (m_input->KB()->KeyUp(_event, SDLK_s))
 	{
-		ofstream writeStream("level.bin", ios::out | ios::binary);
+		//ofstream writeStream("level.bin", ios::out | ios::binary);
 		Serialize(writeStream);
-		writeStream.close();
+		//writeStream.close();
 		ToString();
 	}
 
 	else if (m_input->KB()->KeyUp(_event, SDLK_l))
 	{
-		ifstream readStream("level.bin", ios::in, ios::binary);
+		//ifstream readStream("level.bin", ios::in, ios::binary);
 		Deserialize(readStream);
-		readStream.close();
+		//readStream.close();
 		ToString();
 
 	}
@@ -188,13 +196,13 @@ void Level::RunLevel(Renderer* _renderer)
 
 	Point ws = _renderer->GetWindowSize();
 
-	SpriteSheet::Pool = new ObjectPool<SpriteSheet>();
-	SpriteAnim::Pool = new ObjectPool<SpriteAnim>();
+	//SpriteSheet::Pool = new ObjectPool<SpriteSheet>();
+	//SpriteAnim::Pool = new ObjectPool<SpriteAnim>();
+	
 	SpriteSheet* sheet = SpriteSheet::Pool->GetResource();
 	sheet->Load("../Assets/Textures/Warrior.tga");
 	sheet->SetSize(17, 6, 69, 44);
 	sheet->AddAnimation(EN_AN_IDLE, 0, 6, 6.0f);
-	//std::vector<Rect> m_rect;
 
 
 	SpriteSheet* sheet2 = SpriteSheet::Pool->GetResource();
@@ -206,7 +214,7 @@ void Level::RunLevel(Renderer* _renderer)
 	sheet3->Load("../Assets/Textures/Warrior.tga");
 	sheet3->SetSize(17, 6, 69, 44);
 	sheet3->AddAnimation(EN_AN_DEATH, 26, 11, 6.0f);
-
+	
 	m_effect = m_audio->LoadEffect("../Assets/Audio/Effects/Whoosh.wav");
 
 
@@ -224,11 +232,6 @@ void Level::RunLevel(Renderer* _renderer)
 		int x2 = rand() % 300 - 150;
 		m_rect[i] = Rect{ static_cast<unsigned int>(ws.X / 2 + x1 + posNpcX), static_cast<unsigned int>(ws.Y / 2 + x2 + posNpcY),
 				static_cast<unsigned int>(ws.X / 2 + x1 + posNpcX + 69 * 1.25), static_cast<unsigned int>(ws.Y / 2 + x2 + posNpcY + 44 * 1.25) };
-
-		//m_rect.push_back( Rect{ static_cast<unsigned int>(ws.X / 2 + x1 + posNpcX), static_cast<unsigned int>(ws.Y / 2 + x2 + posNpcY),
-			//		static_cast<unsigned int>(ws.X / 2 + x1 + posNpcX + 69 * 1.25), static_cast<unsigned int>(ws.Y / 2 + x2 + posNpcY + 44 * 1.25) });
-
-		//std::cout << "x1: " << x1 << " x2: " << x2 << std::endl;
 	}
 
 
@@ -240,6 +243,32 @@ void Level::RunLevel(Renderer* _renderer)
 
 		while (SDL_PollEvent(&m_sdlEvent) != 0)
 		{
+			if (m_sdlEvent.type == SDL_KEYDOWN && m_sdlEvent.key.keysym.sym == SDLK_s)
+			{
+				sheet->Serialize(writeStream);
+				sheet->ToString();
+				sheet2->Serialize(writeStream);
+				sheet2->ToString();
+				sheet3->Serialize(writeStream);
+				sheet3->ToString();
+
+				writeStream.close();
+				
+			}
+
+			else if (m_sdlEvent.type == SDL_KEYDOWN && m_sdlEvent.key.keysym.sym == SDLK_l)
+			{
+				sheet->Deserialize(readStream);
+				sheet->ToString();
+				sheet2->Deserialize(readStream);
+				sheet2->ToString();
+				sheet3->Deserialize(readStream);
+				sheet3->ToString();
+
+				readStream.close();
+
+			}
+
 			HandleInput(m_sdlEvent);
 		}
 
@@ -260,8 +289,6 @@ void Level::RunLevel(Renderer* _renderer)
 
 
 		if (m_warriorPos.x == 0 && m_warriorPos.y == 0)
-			/*m_renderer->RenderTexture(sheet, sheet->Update(EN_AN_IDLE, t->GetDeltaTime()), Rect(ws.X / 2 + posX, ws.Y / 2 + posY,
-														ws.X / 2 + posX + 69 * 1.25 , ws.Y / 2 + posY + 44 * 1.25));*/
 			_renderer->RenderTexture(sheet, sheet->Update(EN_AN_IDLE, t->GetDeltaTime()), warriorRect, 0, 0, 255);
 		else
 		{
@@ -270,11 +297,7 @@ void Level::RunLevel(Renderer* _renderer)
 				warriorRect = Rect{ static_cast<unsigned int>(ws.X / 2 + posX + 69 * 1.25), static_cast<unsigned int>(ws.Y / 2 + posY),
 				static_cast<unsigned int>(ws.X / 2 + posX), static_cast<unsigned int>(ws.Y / 2 + posY + 44 * 1.25) };
 				_renderer->RenderTexture(sheet2, sheet2->Update(EN_AN_RUN, t->GetDeltaTime()), warriorRect, 0, 0, 255);
-				/*m_renderer->RenderTexture(sheet2, sheet2->Update(EN_AN_RUN, t->GetDeltaTime()), Rect(ws.X / 2 + posX + 69 * 1.25, ws.Y / 2 + posY,
-					ws.X / 2 + posX , ws.Y / 2 + posY + 44 * 1.25));*/
 			}
-
-
 			else
 				_renderer->RenderTexture(sheet2, sheet2->Update(EN_AN_RUN, t->GetDeltaTime()), warriorRect, 0, 0, 255);
 
@@ -329,27 +352,25 @@ void Level::RunLevel(Renderer* _renderer)
 			if (distance < 140)
 			{
 				//if (m_npcPos.x < 0)
-			 //   {
+			    //{
 				//m_rect[i] = Rect{ static_cast<unsigned int>(ws.X / 2 + posNpcX + 69 * 1.25), static_cast<unsigned int>(ws.Y / 2 + posNpcY),
 				//static_cast<unsigned int>(ws.X / 2 + posNpcX), static_cast<unsigned int>(ws.Y / 2 + posNpcY + 44 * 1.25) };
 				//m_renderer->RenderTexture(sheet2, sheet2->Update(EN_AN_RUN, t->GetDeltaTime()), m_rect[i], 0, 255, 0);
 				///*m_renderer->RenderTexture(sheet2, sheet2->Update(EN_AN_RUN, t->GetDeltaTime()), Rect(ws.X / 2 + posX + 69 * 1.25, ws.Y / 2 + posY,
 				//	ws.X / 2 + posX , ws.Y / 2 + posY + 44 * 1.25));*/
-	   //  		}
-		  //   	else
+	     		//}
+		     	//else
 
-
-				
 				_renderer->RenderTexture(sheet2, sheet2->Update(EN_AN_RUN, t->GetDeltaTime()), m_rect[i], 0, 255, 0);
 
 				glm::vec2 direction = glm::normalize(playerPos - npcPos);
 
-				if (m_warriorPos.y == 0)
+				/*if (m_warriorPos.y == 0)
 				{
 					m_rect[i].X1 -= direction.x * posNpcX;
 					m_rect[i].X2 -= direction.x * posNpcX;
 
-				}
+				}*/
 
 				m_rect[i].X1 -= direction.x * posNpcX;
 				m_rect[i].X2 -= direction.x * posNpcX;
@@ -359,16 +380,23 @@ void Level::RunLevel(Renderer* _renderer)
 			}
 			else if (distance > 160)
 			{
+				/*
+				if (m_warriorPos.x == 0) {
+					glm::vec2 direction = glm::normalize(playerPos - npcPos);
+					m_rect[i].X1 += direction.x * posNpcX;
+					m_rect[i].X2 += direction.x * posNpcX;
+					m_rect[i].Y1 -= direction.y * posNpcY;
+					m_rect[i].Y2 -= direction.y * posNpcY;
+				}*/
+				/*
+				if (m_warriorPos.y == 0) {
+					glm::vec2 direction = glm::normalize(playerPos - npcPos);
+					m_rect[i].X1 -= direction.x * posNpcX;
+					m_rect[i].X2 -= direction.x * posNpcX;
+					m_rect[i].Y1 += direction.y * posNpcY;
+					m_rect[i].Y2 += direction.y * posNpcY;
+				}*/
 
-				//if (m_npcPos.x < 0)
-				//{
-				//	m_rect[i] = Rect{ static_cast<unsigned int>(ws.X / 2 + posNpcX + 69 * 1.25), static_cast<unsigned int>(ws.Y / 2 + posNpcY),
-				//	static_cast<unsigned int>(ws.X / 2 + posNpcX), static_cast<unsigned int>(ws.Y / 2 + posNpcY + 44 * 1.25) };
-				//	m_renderer->RenderTexture(sheet2, sheet2->Update(EN_AN_RUN, t->GetDeltaTime()), m_rect[i], 0, 255, 0);
-				//	/*m_renderer->RenderTexture(sheet2, sheet2->Update(EN_AN_RUN, t->GetDeltaTime()), Rect(ws.X / 2 + posX + 69 * 1.25, ws.Y / 2 + posY,
-				//		ws.X / 2 + posX , ws.Y / 2 + posY + 44 * 1.25));*/
-				//}
-				//else
 				_renderer->RenderTexture(sheet2, sheet2->Update(EN_AN_RUN, t->GetDeltaTime()), m_rect[i], 0, 255, 0);
 				glm::vec2 direction = glm::normalize(playerPos - npcPos);
 				m_rect[i].X1 += direction.x * posNpcX;
