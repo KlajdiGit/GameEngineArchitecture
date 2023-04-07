@@ -264,7 +264,6 @@ void Level::RunLevel(Renderer* _renderer)
 				sheet2->ToString();
 				sheet3->Deserialize(readStream);
 				sheet3->ToString();
-
 				readStream.close();
 
 			}
