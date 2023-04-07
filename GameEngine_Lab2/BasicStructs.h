@@ -56,6 +56,18 @@ struct Point
 		Y = _y;
 	}
 
+	Point(int _x, int _y)
+	{
+		X = (unsigned int)_x;
+		Y = (unsigned int)_y;
+	}
+
+	Point(float _x, float _y)
+	{
+		X = (unsigned int)_x;
+		Y = (unsigned int)_y;
+	}
+
 	unsigned int X;
 	unsigned int Y;
 };
