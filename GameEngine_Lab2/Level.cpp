@@ -336,7 +336,8 @@ void Level::RunLevel(Renderer* _renderer)
 				double startTime = 0.0f;
 				m_audio->Play(m_effect);
 				//m_rect[i].X1 = m_rect[i].X2 = m_rect[i].Y1 = m_rect[i].Y2 = 0;
-				m_enemyTagged++;
+				if(m_enemyTagged <10)
+    				m_enemyTagged++;
 
 				while (startTime < duration)
 				{
@@ -364,12 +365,19 @@ void Level::RunLevel(Renderer* _renderer)
 
 				glm::vec2 direction = glm::normalize(playerPos - npcPos);
 
-				/*if (m_warriorPos.y == 0)
+				if (m_warriorPos.y == 0)
 				{
 					m_rect[i].X1 -= direction.x * posNpcX;
 					m_rect[i].X2 -= direction.x * posNpcX;
 
-				}*/
+				}
+
+				if (m_warriorPos.x == 0)
+				{
+					m_rect[i].Y1 -= direction.x * posNpcX;
+					m_rect[i].Y2 -= direction.x * posNpcX;
+
+				}
 
 				m_rect[i].X1 -= direction.x * posNpcX;
 				m_rect[i].X2 -= direction.x * posNpcX;
@@ -398,6 +406,22 @@ void Level::RunLevel(Renderer* _renderer)
 
 				_renderer->RenderTexture(sheet2, sheet2->Update(EN_AN_RUN, t->GetDeltaTime()), m_rect[i], 0, 255, 0);
 				glm::vec2 direction = glm::normalize(playerPos - npcPos);
+
+				if (m_warriorPos.y == 0)
+				{
+					m_rect[i].X1 += direction.x * posNpcX;
+					m_rect[i].X2 += direction.x * posNpcX;
+
+				}
+
+				if (m_warriorPos.x == 0)
+				{
+					m_rect[i].Y1 += direction.x * posNpcX;
+					m_rect[i].Y2 += direction.x * posNpcX;
+
+				}
+
+
 				m_rect[i].X1 += direction.x * posNpcX;
 				m_rect[i].X2 += direction.x * posNpcX;
 				m_rect[i].Y1 += direction.y * posNpcY;
