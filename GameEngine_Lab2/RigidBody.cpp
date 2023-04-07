@@ -15,6 +15,6 @@ void RigidBody::Update(float _deltaTime, glm::vec2 _force)
 	m_velocity.x += acceleration.x * _deltaTime;
 	m_velocity.y += acceleration.y * _deltaTime;
 	m_position.x += m_velocity.x * _deltaTime;
-	m_position.x += m_velocity.y * _deltaTime;
+	m_position.y += m_velocity.y * _deltaTime;
 
 }

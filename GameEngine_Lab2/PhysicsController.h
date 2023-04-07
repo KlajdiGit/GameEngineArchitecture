@@ -18,7 +18,7 @@ public:
 
 	//Methods
 	void Update(float _deltaTime);
-	Particle* Addparticle(glm::vec2 _position, float _lifeTIme);
+	Particle* AddParticle(glm::vec2 _position, float _lifeTIme);
 	string ToString();
 
 private:

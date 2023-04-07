@@ -29,7 +29,7 @@ private:
 	glm::vec2 m_position;
 	glm::vec2 m_velocity;
 	float m_mass;
-	bool m_dead;l
+	bool m_dead;
 };
 
 #endif //RIGIDBODY_H

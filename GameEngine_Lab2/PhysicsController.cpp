@@ -17,7 +17,6 @@ void PhysicsController::Update(float _deltaTime)
 		if (!p->GetDead()) continue;
 		m_particles.erase(m_particles.begin() + count);
 		count--;
-
 	}
 }
 
@@ -29,5 +28,11 @@ Particle* PhysicsController::AddParticle(glm::vec2 _position, float _lifeTime)
 	particle->SetMass(1);
 	m_particles.push_back(particle);
 	return particle;
+}
 
+string PhysicsController::ToString()
+{
+	string retVal = "Particles: ";
+	retVal += to_string(m_particles.size());
+	return retVal;
 }

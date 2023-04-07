@@ -29,4 +29,4 @@ private:
 
 };
 
-#endif PARTICLE_H
+#endif  //PARTICLE_H
