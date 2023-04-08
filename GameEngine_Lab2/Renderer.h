@@ -35,7 +35,7 @@ public:
 	 void RenderFillRectangle(Rect _rect);
 	 void RenderTexture(Texture* _texture, Point _point);
 	 void RenderTexture(Texture* _texture, Rect _rect);
-	 void RenderTexture(Texture* _texture, Rect _srcRect, Rect _destRect);
+	 void RenderTexture(Texture* _texture, Rect _srcRect, Rect _destRect, int _alpha = 255);
 	 void RenderTexture(SDL_Texture* _texture, Rect _srcRect, Rect _destRect, double _angle);
 
 	 void Shutdown();

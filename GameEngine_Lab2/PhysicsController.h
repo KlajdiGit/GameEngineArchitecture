@@ -9,7 +9,7 @@ class PhysicsController : public Singleton<PhysicsController>
 public:
 	//Constructor / Destructor
 	PhysicsController();
-	virtual ~PhysicsController() { }
+	virtual ~PhysicsController();
 
 	//Accessors
 	float GetGravity() { return  m_gravity; }
