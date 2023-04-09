@@ -2,6 +2,7 @@
 #define RIGIDBODY_H
 
 #include <glm.hpp>
+#include "ObjectPool.h"
 
 
 class RigidBody
@@ -34,6 +35,9 @@ public:
 	//Method
 	virtual void Update(float _deltaTime, glm::vec2 _force);
 	virtual void Reset();
+
+	static ObjectPool<RigidBody>* Pool;
+
 
 private:
 	//Members

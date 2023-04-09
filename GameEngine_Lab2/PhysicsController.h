@@ -28,6 +28,8 @@ public:
 	void HandleCollision(RigidBody* _b1, RigidBody* _b2, float _distance);
 	string ToString();
 
+
+	
 private:
 	//Members
 	float m_gravity;

@@ -35,6 +35,7 @@ private:
 	PhysicsController* m_physics;
 	SpriteSheet* m_fire;
 	SpriteSheet* m_smoke;
+	SpriteSheet* m_circle;
 
 	//AudioController* m_audio;
 	//SoundEffects* m_effect;

@@ -1,5 +1,9 @@
 #include "RigidBody.h"
 
+
+ObjectPool<RigidBody>* RigidBody::Pool;
+
+
 RigidBody::RigidBody()
 {
 	
