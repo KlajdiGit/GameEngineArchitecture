@@ -21,6 +21,7 @@ void PhysicsController::Update(float _deltaTime)
 		m_force.y = p->GetMass() * m_gravity;
 		p->Update(_deltaTime, m_force);
 		if (!p->GetDead()) continue;
+		p->Reset();
 		Particle::Pool->ReleaseResource(p);
 		m_particles.erase(m_particles.begin() + count);
 		count--;
