@@ -39,6 +39,8 @@ GameController::~GameController()
 void GameController::Initialize()
 {
 	AssetController::Instance().Initialize(10000000);
+	SpriteSheet::Pool = new ObjectPool<SpriteSheet>();
+	SpriteAnim::Pool = new ObjectPool<SpriteAnim>();
 	m_renderer = &Renderer::Instance();
 	m_renderer->Initialize();
 	m_input = &InputController::Instance();
@@ -46,6 +48,7 @@ void GameController::Initialize()
 	m_fArial20->Initialize(20);
 	m_physics = &PhysicsController::Instance();
 	m_timing = &Timing::Instance();
+
 	m_heroine = new Heroine();
 	
 	//m_audio = &AudioController::Instance();
