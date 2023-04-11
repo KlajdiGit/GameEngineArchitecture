@@ -24,7 +24,7 @@ public:
 	glm::vec2& GetBuyancy() { return m_buoyancy; }
 	void SetBuoyancy(glm::vec2 _buoyancy) { m_buoyancy = _buoyancy; }
 	glm::vec2& GetBuoyancyDecay(glm::vec2 _buoyancyDecay) { m_buoyancyDecay = _buoyancyDecay; }
-	void SetBuoysancyDecay(glm::vec2 _buoyancyDecay) { m_buoyancyDecay = _buoyancyDecay; }
+	void SetBuoyancyDecay(glm::vec2 _buoyancyDecay) { m_buoyancyDecay = _buoyancyDecay; }
 	glm::vec2& GetBuoyancyMin() { return m_buoyancyMin; }
 	void SetBuoyancyMin(glm::vec2 _buoyanvyMin) { m_buoyancyMin = _buoyanvyMin; }
 	glm::vec2& GetWind() { return m_wind; }
