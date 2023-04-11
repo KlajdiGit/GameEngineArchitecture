@@ -10,7 +10,7 @@ class InputController;
 class Timing;
 class PhysicsController;
 class SpriteSheet;
-
+class Heroine;
 
 class GameController : public Singleton<GameController>
 {
@@ -36,6 +36,7 @@ private:
 	SpriteSheet* m_fire;
 	SpriteSheet* m_smoke;
 	SpriteSheet* m_circle;
+	Heroine* m_heroine;
 
 	//AudioController* m_audio;
 	//SoundEffects* m_effect;

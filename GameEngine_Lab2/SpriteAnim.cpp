@@ -11,6 +11,9 @@ SpriteAnim::~SpriteAnim()
 	ClearMemory();
 }
 
+
+
+
 void SpriteAnim::Create(short _clipStart, short _clipCount, float _clipSpeed)
 {
 	m_clipStart = _clipStart;
@@ -26,12 +29,19 @@ void SpriteAnim::ClearMemory()
 	m_clipCurrent = 0;
 }
 
+
+void SpriteAnim::Reset()
+{
+	m_clipCurrent = m_clipStart;
+}
+
 void SpriteAnim::Update(float _deltaTime)
 {
 	m_clipCurrent += m_clipSpeed * _deltaTime;
 	if (m_clipCurrent > m_clipEnd)
 	{
-		m_clipCurrent = m_clipStart;
+		Reset();
+		//m_clipCurrent = m_clipStart;
 	}
 }
 
