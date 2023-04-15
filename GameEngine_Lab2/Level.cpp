@@ -39,7 +39,7 @@ Level::Level()
 	m_song = nullptr;
 	m_fArial20 = nullptr;
 	m_physics = nullptr;
-	m_player = nullptr;
+	m_player = new Player();
 	m_timing = &Timing::Instance();
 
 }
@@ -224,23 +224,12 @@ void Level::HandleInput(SDL_Event _event)
 		}
 
 	}
-
-	m_input->MS()->ProcessButtons(_event);
-}
-
-
-void Level::HandleInputLv2(SDL_Event _event)
-{
-	string temp;
-	if ((_event.type == SDL_QUIT) ||
-		(m_input->KB()->KeyUp(_event, SDLK_ESCAPE)))
-	{
-		m_quit = true;
-	}
-
 	m_player->HandleInput(_event, m_timing->GetDeltaTime());
 	m_input->MS()->ProcessButtons(_event);
 }
+
+
+
 
 
 Timing* t = &Timing::Instance();
@@ -488,33 +477,15 @@ void Level::RunLevel(Renderer* _renderer)
 
 void Level::RunLevel2(Renderer* _renderer)
 {
-
-	_renderer->SetDrawColor(Color(255, 255, 255, 255));
-	_renderer->ClearScreen();
-
-	while (SDL_PollEvent(&m_sdlEvent) != 0)
-	{
-		HandleInputLv2(m_sdlEvent);
-	}
-
-	m_timing->Tick();
-	//_renderer->RenderTexture(sheet, Point{ 0, 0 });
-	m_fArial20->Write(_renderer->GetRenderer(), m_player1Name.c_str(), SDL_Color{ 255, 255, 0 }, SDL_Point{ 50, 50 });
-	m_fArial20->Write(_renderer->GetRenderer(), m_player2Name.c_str(), SDL_Color{ 255, 255, 0 }, SDL_Point{ 50, 200 });
-
-	//m_fArial20->Write(_renderer->GetRenderer(), error.c_str(), SDL_Color{ 255, 0, 0 }, SDL_Point{ 50, 300 });
-
-
-
-
-	//m_renderer->EnumerateDisplayModes();
-	//m_renderer->ChangeDisplayMode(&m_renderer->GetResolutions()[0]);
-
+	
 	while (!m_quit)
 	{
 		m_timing->Tick();
 		_renderer->SetDrawColor(Color(255, 255, 255, 255));
 		_renderer->ClearScreen();
+		m_fArial20->Write(_renderer->GetRenderer(), m_player1Name.c_str(), SDL_Color{ 255, 255, 0 }, SDL_Point{ 50, 50 });
+		m_fArial20->Write(_renderer->GetRenderer(), m_player2Name.c_str(), SDL_Color{ 255, 255, 0 }, SDL_Point{ 50, 200 });
+
 
 		while (SDL_PollEvent(&m_sdlEvent) != 0)
 		{
@@ -525,11 +496,6 @@ void Level::RunLevel2(Renderer* _renderer)
 		m_player->Render(_renderer);
 
 		SDL_RenderPresent(_renderer->GetRenderer());
+
 	}
-
-	//m_lv->RunLevel(m_renderer);
-
-
-
-
 }

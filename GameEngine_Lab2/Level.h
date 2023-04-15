@@ -27,7 +27,6 @@ public:
 	void RunLevel(Renderer* _renderer);
 	void HandleInput(SDL_Event _event);
 	void RunLevel2(Renderer* _renderer);
-	void HandleInputLv2(SDL_Event _event);
 	//void RunLevel1(Renderer* _renderer, glm::vec2 m_kPos, glm::vec2 m_npcPos);
 
 
