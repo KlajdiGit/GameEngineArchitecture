@@ -2,10 +2,14 @@
 #include "SpriteSheet.h"
 #include "Renderer.h"
 #include "PhysicsController.h"
+#include "PhysicsController.h"
 
 Player::Player()
 {
 	m_state = PlayerState::GetIdleState();
+
+	m_rigidBody = PhysicsController::Instance().AddRigidBody(glm::vec2{ 100, 200 }, glm::vec2(0, 0), 40);
+
 	m_animations = SpriteSheet::Pool->GetResource();
 	m_animations->Load("../Assets/Textures/RockPaperScissors.tga");
 	m_animations->SetSize(4, 4, 280, 170);
@@ -33,7 +37,7 @@ void Player::Update(float _deltaTime)
 
 void Player::Render(Renderer* _renderer)
 {
-	glm::vec2 p = { 200, 200 };
+	glm::vec2 p = m_rigidBody->GetPosition();
 	Rect destRect = Rect(p.x, p.y, p.x + 280, p.y + 170);
 	_renderer->RenderTexture(m_animations, m_srcRect, destRect);
 }

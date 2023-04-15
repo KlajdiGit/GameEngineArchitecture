@@ -36,7 +36,7 @@ void RollState::HandleInput(Player* _player, SDL_Event _event)
 	if (InputController::Instance().KB()->KeyUp(_event, SDLK_SPACE))
 	{
 		_player->GetAnimations()->ResetCurrentClip(EN_AN_ROLL);
-		_player->SetState(PlayerState::GetRollState());
+		_player->SetState(PlayerState::GetIdleState());
 	}
 }
 
@@ -51,7 +51,7 @@ void RockState::HandleInput(Player* _player, SDL_Event _event)
 	if (InputController::Instance().KB()->KeyUp(_event, SDLK_SPACE))
 	{
 		_player->GetAnimations()->ResetCurrentClip(EN_AN_ROCK);
-		_player->SetState(PlayerState::GetRockState());
+		_player->SetState(PlayerState::GetIdleState());
 	}
 }
 
