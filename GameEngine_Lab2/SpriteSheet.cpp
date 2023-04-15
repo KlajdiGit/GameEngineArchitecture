@@ -15,7 +15,7 @@ SpriteSheet::~SpriteSheet()
 	m_animations.clear();
 }
 
-void SpriteSheet::SetSize(byte _rows, byte _columns, byte _clipSizeX, byte _clipSizeY)
+void SpriteSheet::SetSize(short _rows, short _columns, short _clipSizeX, short _clipSizeY)
 {
 	m_rows = _rows;
 	m_columns = _columns;

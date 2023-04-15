@@ -58,6 +58,8 @@ void RockState::HandleInput(Player* _player, SDL_Event _event)
 void RockState::Update(Player* _player, float _deltaTime)
 {
 	_player->GetAnimations()->Update(EN_AN_ROCK, _deltaTime, _player->GetSrcRect());
+
+	//if(_player->)
 }
 
 void PaperState::HandleInput(Player* _player, SDL_Event _event)
