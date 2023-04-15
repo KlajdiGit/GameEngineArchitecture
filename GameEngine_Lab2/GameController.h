@@ -11,6 +11,11 @@ class Timing;
 class PhysicsController;
 class SpriteSheet;
 class Heroine;
+class Level;
+
+//class Player;
+
+
 
 class GameController : public Singleton<GameController>
 {
@@ -37,13 +42,15 @@ private:
 	SpriteSheet* m_smoke;
 	SpriteSheet* m_circle;
 	Heroine* m_heroine;
+	Level* m_lv;
+	//	Player* m_player;
 
-	//AudioController* m_audio;
-	//SoundEffects* m_effect;
-	//Song* m_song;
-	//WavDraw* m_wavDraw;
-	//SoundEffects* m_effects[MaxEffectChannels];
-	//float m_zoomY;
 };
 
 #endif //GAME_CONTROLLER_H
+
+
+
+
+
+

@@ -15,6 +15,10 @@
 #include "SpriteSheet.h"
 #include "RigidBody.h"
 #include "Heroine.h"
+#include "Level.h"
+
+//#include "Player.h"
+
 
 GameController::GameController()
 {
@@ -29,6 +33,8 @@ GameController::GameController()
 	m_smoke = nullptr;
 	m_circle = nullptr;
 	m_heroine = nullptr;
+	//	m_player = nullptr;
+
 }
 
 GameController::~GameController()
@@ -48,6 +54,7 @@ void GameController::Initialize()
 	m_fArial20->Initialize(20);
 	m_physics = &PhysicsController::Instance();
 	m_timing = &Timing::Instance();
+	m_lv = new Level();
 
 	m_heroine = new Heroine();
 	
@@ -121,14 +128,18 @@ void GameController::HandleInput(SDL_Event _event)
 	} */
 
 	m_heroine->HandleInput(_event, m_timing->GetDeltaTime());
+	//	m_player->HandleInput(_event, m_timing->GetDeltaTime());
+
 	m_input->MS()->ProcessButtons(_event);
 }
 
 void GameController::RunGame()
 {
 	Initialize();
-	
-	while (!m_quit)
+	m_renderer->EnumerateDisplayModes();
+	m_renderer->ChangeDisplayMode(&m_renderer->GetResolutions()[0]);
+	m_lv->RunLevel(m_renderer);
+	/*while (!m_quit)
 	{
 		m_timing->Tick();
 
@@ -143,7 +154,7 @@ void GameController::RunGame()
 		m_physics->Update(m_timing->GetDeltaTime());
 
 		m_heroine->Update(m_timing->GetDeltaTime());
-		m_heroine->Render(m_renderer);
+		m_heroine->Render(m_renderer); */
 
 		/*Rect r = m_circle->Update(EN_AN_IDLE, m_timing->GetDeltaTime());
 		for (RigidBody* b : m_physics->GetBodies())
@@ -169,8 +180,8 @@ void GameController::RunGame()
 		SDL_RenderPresent(m_renderer->GetRenderer());
 	}
 
-	ShutDown();
-}
+	//ShutDown();
+//}
 
 
 
