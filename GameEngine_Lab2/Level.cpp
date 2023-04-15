@@ -280,6 +280,7 @@ void Level::RunLevel(Renderer* _renderer)
 		if (m_level2 == true)
 		{
 			// call level2
+			RunLevel2(_renderer);
 
 		}
 
@@ -439,4 +440,27 @@ void Level::RunLevel(Renderer* _renderer)
 	delete SpriteAnim::Pool;
 	delete SpriteSheet::Pool;
 	font->Shutdown();
+}
+
+
+void Level::RunLevel2(Renderer* _renderer)
+{
+
+	_renderer->SetDrawColor(Color(255, 255, 255, 255));
+	_renderer->ClearScreen();
+
+	while (SDL_PollEvent(&m_sdlEvent) != 0)
+	{
+		HandleInput(m_sdlEvent);
+	}
+
+	//t->Tick();
+	//_renderer->RenderTexture(sheet, Point{ 0, 0 });
+	m_fArial20->Write(_renderer->GetRenderer(), m_player1Name.c_str(), SDL_Color{ 255, 255, 0 }, SDL_Point{ 50, 50 });
+	m_fArial20->Write(_renderer->GetRenderer(), m_player2Name.c_str(), SDL_Color{ 255, 255, 0 }, SDL_Point{ 50, 200 });
+
+	//m_fArial20->Write(_renderer->GetRenderer(), error.c_str(), SDL_Color{ 255, 0, 0 }, SDL_Point{ 50, 300 });
+
+
+
 }

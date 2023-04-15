@@ -45,8 +45,8 @@ GameController::~GameController()
 void GameController::Initialize()
 {
 	AssetController::Instance().Initialize(10000000);
-	SpriteSheet::Pool = new ObjectPool<SpriteSheet>();
-	SpriteAnim::Pool = new ObjectPool<SpriteAnim>();
+	//SpriteSheet::Pool = new ObjectPool<SpriteSheet>();
+//	SpriteAnim::Pool = new ObjectPool<SpriteAnim>();
 	m_renderer = &Renderer::Instance();
 	m_renderer->Initialize();
 	m_input = &InputController::Instance();
