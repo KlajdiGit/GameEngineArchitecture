@@ -492,10 +492,10 @@ void Level::RunLevel2(Renderer* _renderer)
 	_renderer->SetDrawColor(Color(255, 255, 255, 255));
 	_renderer->ClearScreen();
 
-	/*while (SDL_PollEvent(&m_sdlEvent) != 0)
+	while (SDL_PollEvent(&m_sdlEvent) != 0)
 	{
 		HandleInputLv2(m_sdlEvent);
-	}*/
+	}
 
 	m_timing->Tick();
 	//_renderer->RenderTexture(sheet, Point{ 0, 0 });
@@ -510,7 +510,7 @@ void Level::RunLevel2(Renderer* _renderer)
 	//m_renderer->EnumerateDisplayModes();
 	//m_renderer->ChangeDisplayMode(&m_renderer->GetResolutions()[0]);
 
-	/*while (!m_quit)
+	while (!m_quit)
 	{
 		m_timing->Tick();
 		_renderer->SetDrawColor(Color(255, 255, 255, 255));
@@ -525,7 +525,7 @@ void Level::RunLevel2(Renderer* _renderer)
 		m_player->Render(_renderer);
 
 		SDL_RenderPresent(_renderer->GetRenderer());
-	}*/
+	}
 
 	//m_lv->RunLevel(m_renderer);
 
