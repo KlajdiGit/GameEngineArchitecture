@@ -324,7 +324,7 @@ void Level::RunLevel2(Renderer* _renderer)
 		{
 			HandleInputLvTwo(m_sdlEvent);
 		}
-		m_physics->Update(m_timing->GetDeltaTime());
+		//m_physics->Update(m_timing->GetDeltaTime());
 		m_player->Update(m_timing->GetDeltaTime());
 		m_player->Render(_renderer);
 
