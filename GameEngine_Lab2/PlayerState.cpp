@@ -12,7 +12,7 @@
 • State 5: Rock – clips 12 - 15*/
 
 IdleState PlayerState::m_idleState;
-RollState RollState::m_rollState;
+RollState PlayerState::m_rollState;
 RockState PlayerState::m_rockState;
 PaperState PlayerState::m_paperState;
 ScissorState PlayerState::m_scissorState;
@@ -21,8 +21,8 @@ void IdleState::HandleInput(Player* _player, SDL_Event _event)
 {
 	if (InputController::Instance().KB()->KeyUp(_event, SDLK_SPACE))
 	{
-		_player->GetAnimations()->ResetCurrentClip(EN_AN_IDLE);
-		_player->SetState(PlayerState::GetIdleState());
+		//_player->GetAnimations()->ResetCurrentClip(EN_AN_IDLE);
+		_player->SetState(PlayerState::GetRollState());
 	}
 }
 
@@ -36,7 +36,7 @@ void RollState::HandleInput(Player* _player, SDL_Event _event)
 	if (InputController::Instance().KB()->KeyUp(_event, SDLK_SPACE))
 	{
 		_player->GetAnimations()->ResetCurrentClip(EN_AN_ROLL);
-		_player->SetState(PlayerState::GetIdleState());
+		_player->SetState(PlayerState::GetPaperState());
 	}
 }
 
@@ -59,7 +59,11 @@ void RockState::Update(Player* _player, float _deltaTime)
 {
 	_player->GetAnimations()->Update(EN_AN_ROCK, _deltaTime, _player->GetSrcRect());
 
-	//if(_player->)
+	if (_player->GetAnimations()->GetCurrentClip(EN_AN_ROCK) >= 15.0f)
+	{
+		_player->GetAnimations()->ResetCurrentClip(EN_AN_ROCK);
+		_player->SetState(PlayerState::GetIdleState());
+	}
 }
 
 void PaperState::HandleInput(Player* _player, SDL_Event _event)
@@ -67,13 +71,18 @@ void PaperState::HandleInput(Player* _player, SDL_Event _event)
 	if (InputController::Instance().KB()->KeyUp(_event, SDLK_SPACE))
 	{
 		_player->GetAnimations()->ResetCurrentClip(EN_AN_PAPER);
-		_player->SetState(PlayerState::GetRollState());
+		_player->SetState(PlayerState::GetIdleState());
 	}
 }
 
 void PaperState::Update(Player* _player, float _deltaTime)
 {
 	_player->GetAnimations()->Update(EN_AN_PAPER, _deltaTime, _player->GetSrcRect());
+	if (_player->GetAnimations()->GetCurrentClip(EN_AN_PAPER) >= 7.0f)
+	{
+		_player->GetAnimations()->ResetCurrentClip(EN_AN_PAPER);
+		_player->SetState(PlayerState::GetIdleState());
+	}
 }
 
 void ScissorState::HandleInput(Player* _player, SDL_Event _event)
@@ -81,11 +90,16 @@ void ScissorState::HandleInput(Player* _player, SDL_Event _event)
 	if (InputController::Instance().KB()->KeyUp(_event, SDLK_SPACE))
 	{
 		_player->GetAnimations()->ResetCurrentClip(EN_AN_SCISSOR);
-		_player->SetState(PlayerState::GetRollState());
+		_player->SetState(PlayerState::GetIdleState());
 	}
 }
 
 void ScissorState::Update(Player* _player, float _deltaTime)
 {
 	_player->GetAnimations()->Update(EN_AN_SCISSOR, _deltaTime, _player->GetSrcRect());
+	if (_player->GetAnimations()->GetCurrentClip(EN_AN_SCISSOR) >= 11.0f)
+	{
+		_player->GetAnimations()->ResetCurrentClip(EN_AN_SCISSOR);
+		_player->SetState(PlayerState::GetIdleState());
+	}
 }

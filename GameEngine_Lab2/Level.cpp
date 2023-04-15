@@ -310,6 +310,8 @@ void Level::RunLevel(Renderer* _renderer)
 
 void Level::RunLevel2(Renderer* _renderer)
 {
+	m_audio->Play(m_song);
+
 	
 	while (!m_quit)
 	{

@@ -31,7 +31,7 @@ public:
 	static ScissorState* GetScissorState() { return &m_scissorState; }
 
 	virtual void HandleInput(Player* _player, SDL_Event _event) = 0;
-	virtual void Update(Player* _player, float _deltaTIme) = 0;
+	virtual void Update(Player* _player, float _deltaTime) = 0;
 
 private:
 	static IdleState m_idleState;
@@ -48,7 +48,7 @@ public:
 	virtual ~IdleState() { }
 
 	virtual void HandleInput(Player* _player, SDL_Event _event) override;
-	virtual void Update(Player* _player, float _deltaTIme) override;
+	virtual void Update(Player* _player, float _deltaTime) override;
 };
 
 class RollState : public PlayerState
@@ -58,7 +58,7 @@ public:
 	virtual ~RollState() { }
 
 	virtual void HandleInput(Player* _player, SDL_Event _event) override;
-	virtual void Update(Player* _player, float _deltaTIme) override;
+	virtual void Update(Player* _player, float _deltaTime) override;
 };
 
 class RockState : public PlayerState
@@ -68,7 +68,7 @@ public:
 	virtual ~RockState() { }
 
 	virtual void HandleInput(Player* _player, SDL_Event _event) override;
-	virtual void Update(Player* _player, float _deltaTIme) override;
+	virtual void Update(Player* _player, float _deltaTime) override;
 };
 
 class PaperState : public PlayerState
@@ -78,7 +78,7 @@ public:
 	virtual ~PaperState() { }
 
 	virtual void HandleInput(Player* _player, SDL_Event _event) override;
-	virtual void Update(Player* _player, float _deltaTIme) override;
+	virtual void Update(Player* _player, float _deltaTime) override;
 };
 
 class ScissorState : public PlayerState
@@ -88,7 +88,7 @@ public:
 	virtual ~ScissorState() { }
 
 	virtual void HandleInput(Player* _player, SDL_Event _event) override;
-	virtual void Update(Player* _player, float _deltaTIme) override;
+	virtual void Update(Player* _player, float _deltaTime) override;
 };
 
 #endif //PLAYER_STATE_H
