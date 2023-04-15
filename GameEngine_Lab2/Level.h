@@ -2,6 +2,11 @@
 #define LEVEL_H
 
 #include "Unit.h"
+class Renderer;
+class InputController;
+class AudioController;
+class TTFont;
+class Song;
 
 class Level : public Resource
 {
@@ -15,6 +20,10 @@ public:
 	void Deserialize(std::istream& _stream) override;
 	void ToString() override;
 	void AssignNonDefaultValues() override;
+	void RunLevel(Renderer* _renderer);
+	void HandleInput(SDL_Event _event);
+	//void RunLevel1(Renderer* _renderer, glm::vec2 m_kPos, glm::vec2 m_npcPos);
+
 
 private:
 	//Members
@@ -22,7 +31,19 @@ private:
 	int m_mapSizeY;
 	float m_gameTime;
 	vector<Unit*> m_units;
+	Point m_point;
+	SDL_Event m_sdlEvent;
+	InputController* m_input;
+	bool m_quit;
+	bool m_level2;
+	AudioController* m_audio;
+	Song* m_song;
+	SoundEffects* m_effect;
+	string m_player1Name;
+	string m_player2Name;
+	TTFont* m_fArial20;
 };
 
 #endif //LEVEL_H
+
 
