@@ -14,8 +14,8 @@ void StandingState::HandleInput(Heroine* _heroine, SDL_Event _event)
 {
 	if (InputController::Instance().KB()->KeyDown(_event, SDLK_b))
 	{
-		//_heroine->GetRigidBody()->SetBuoyancy(glm::vec2(0, 100));
-		//_heroine->GetRigidBody()->SetBuoyancyDecay(glm::vec2(0, 600));
+		_heroine->GetRigidBody()->SetBuoyancy(glm::vec2(0, 100));
+		_heroine->GetRigidBody()->SetBuoyancyDecay(glm::vec2(0, 600));
 		_heroine->SetState(HeroineState::GetJumpingState());
 	}
 	else if (InputController::Instance().KB()->KeyDown(_event, SDLK_DOWN))
