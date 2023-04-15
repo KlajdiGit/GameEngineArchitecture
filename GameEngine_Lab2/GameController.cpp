@@ -46,7 +46,7 @@ void GameController::Initialize()
 {
 	AssetController::Instance().Initialize(10000000);
 	//SpriteSheet::Pool = new ObjectPool<SpriteSheet>();
-//	SpriteAnim::Pool = new ObjectPool<SpriteAnim>();
+ //	SpriteAnim::Pool = new ObjectPool<SpriteAnim>();
 	m_renderer = &Renderer::Instance();
 	m_renderer->Initialize();
 	m_input = &InputController::Instance();
@@ -97,7 +97,7 @@ void GameController::ShutDown()
 		m_fArial20 = nullptr;
 	}
 
-	if (SpriteAnim::Pool != nullptr)
+	/*if (SpriteAnim::Pool != nullptr)
 	{
 		delete SpriteAnim::Pool;
 		SpriteAnim::Pool = nullptr;
@@ -107,7 +107,7 @@ void GameController::ShutDown()
 	{
 		delete SpriteSheet::Pool;
 		SpriteSheet::Pool = nullptr;
-	}
+	}*/
 }
 
 void GameController::HandleInput(SDL_Event _event)
