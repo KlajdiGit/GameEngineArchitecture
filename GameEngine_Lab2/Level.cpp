@@ -282,6 +282,7 @@ void Level::RunLevel(Renderer* _renderer)
 
 		while (SDL_PollEvent(&m_sdlEvent) != 0)
 		{
+
 			HandleInput(m_sdlEvent);
 		}
 
@@ -319,27 +320,47 @@ void Level::RunLevel2(Renderer* _renderer)
 	m_audio->Play(m_song);
 	m_fArial20->Initialize(20);
 
+	std::string result = "Waiting to start...";
+	std::string numWins = "Wins: ";
+	std::string numLosses = "Losses: ";
+
 	while (!m_quit)
 	{
 		m_timing->Tick();
 		_renderer->SetDrawColor(Color(255, 255, 255, 255));
 		_renderer->ClearScreen();
-		m_fArial20->Write(_renderer->GetRenderer(), m_player1Name.c_str(), SDL_Color{ 0, 255, 0 }, SDL_Point{ 20, 10 });
-		
-
-
-		m_fArial20->Write(_renderer->GetRenderer(), m_player2Name.c_str(), SDL_Color{ 0, 255, 0 }, SDL_Point{ 20, 310 });
-
+	
 
 		while (SDL_PollEvent(&m_sdlEvent) != 0)
 		{
+
+			if (m_sdlEvent.type == SDL_KEYDOWN && m_sdlEvent.key.keysym.sym == SDLK_SPACE)
+			{
+				result = "Rolling...";
+			}
 			HandleInputLvTwo(m_sdlEvent);
 		}
+
+
 		m_player->Update(m_timing->GetDeltaTime());
-		m_player->Render(_renderer,{20, 30});
+		m_player->Render(_renderer, { 20, 30 });
 
 		m_player1->Update(m_timing->GetDeltaTime());
 		m_player->Render(_renderer, { 20, 330 });
+
+		m_fArial20->Write(_renderer->GetRenderer(), m_player1Name.c_str(), SDL_Color{ 0, 255, 0 }, SDL_Point{ 20, 10 });
+		m_fArial20->Write(_renderer->GetRenderer(), result.c_str(), SDL_Color{ 255, 0, 0 }, SDL_Point{ 20, 30 });
+		m_fArial20->Write(_renderer->GetRenderer(), numWins.c_str(), SDL_Color{ 0, 0, 255 }, SDL_Point{ 20, 50 });
+		m_fArial20->Write(_renderer->GetRenderer(), numLosses.c_str(), SDL_Color{ 0, 0, 255 }, SDL_Point{ 20, 70 });
+
+
+
+		m_fArial20->Write(_renderer->GetRenderer(), m_player2Name.c_str(), SDL_Color{ 0, 255, 0 }, SDL_Point{ 20, 310 });
+		m_fArial20->Write(_renderer->GetRenderer(), result.c_str(), SDL_Color{ 255, 0, 0 }, SDL_Point{ 20, 330 });
+		m_fArial20->Write(_renderer->GetRenderer(), numWins.c_str(), SDL_Color{ 0, 0, 255 }, SDL_Point{ 20, 350 });
+		m_fArial20->Write(_renderer->GetRenderer(), numLosses.c_str(), SDL_Color{ 0, 0, 255 }, SDL_Point{ 20, 370 });
+
+		
 
 
 		SDL_RenderPresent(_renderer->GetRenderer());
