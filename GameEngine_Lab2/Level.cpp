@@ -287,6 +287,7 @@ void Level::HandleInputLvTwo(SDL_Event _event)
 		}
 		
 	}
+
 	else if (m_input->MS()->Moved(_event, m_mPos) && m_input->MS()->GetButRDown())
 	{
 		if (m_mPos.X >= 1920 - 280 && m_mPos.Y >= 1080 - 170)
@@ -320,8 +321,15 @@ void Level::HandleInputLvTwo(SDL_Event _event)
 			m_p2Pos.x = m_mPos.X - 140;
 			m_p2Pos.y = m_mPos.Y - 85;
 		}
+	}
+
+	else if (m_input->KB()->KeyDown(_event, SDLK_d))
+	{
+		m_p1Pos.x *= m_timing->GetDeltaTime();
+		m_p1Pos.x *= m_timing->GetDeltaTime();
 
 	}
+
 
 	m_player1->HandleInput(_event, m_timing->GetDeltaTime());
 	m_player2->HandleInput(_event, m_timing->GetDeltaTime());
