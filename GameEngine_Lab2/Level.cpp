@@ -33,7 +33,9 @@ Level::Level()
 	m_quit = false;
 	m_level2 = false;
 	m_audio = &AudioController::Instance();
-	m_effect = nullptr;
+	memset(m_effects, 0, sizeof(SoundEffects*) * 2);
+	//m_effect = nullptr;
+	//m_effectWLD = nullptr;
 	m_player1Name = "";
 	m_player2Name = "";
 	m_song = nullptr;
@@ -319,10 +321,14 @@ void Level::RunLevel2(Renderer* _renderer)
 {
 	m_audio->Play(m_song);
 	m_fArial20->Initialize(20);
+	//m_effect = m_audio->LoadEffect("../Assets/Audio/Effects/Whoosh.wav");
+	//m_effectWLD = m_audio->LoadEffect("../Assets/Audio/Effects/DistantGunshot.wav");
+	m_effects[0] = m_audio->LoadEffect("../Assets/Audio/Effects/Whoosh.wav");
+	m_effects[1] = m_audio->LoadEffect("../Assets/Audio/Effects/DistantGunshot.mp3");
 
 	std::string result = "Waiting to start...";
-	std::string numWins = "Wins: ";
-	std::string numLosses = "Losses: ";
+	
+	int win = 0, win1 = 0, loss = 0, loss1 = 0;
 
 	while (!m_quit)
 	{
@@ -330,6 +336,7 @@ void Level::RunLevel2(Renderer* _renderer)
 		_renderer->SetDrawColor(Color(255, 255, 255, 255));
 		_renderer->ClearScreen();
 	
+		m_audio->Play(m_effects[1]);
 
 		while (SDL_PollEvent(&m_sdlEvent) != 0)
 		{
@@ -337,6 +344,8 @@ void Level::RunLevel2(Renderer* _renderer)
 			if (m_sdlEvent.type == SDL_KEYDOWN && m_sdlEvent.key.keysym.sym == SDLK_SPACE)
 			{
 				result = "Rolling...";
+				m_audio->Play(m_effects[0]);
+
 			}
 			HandleInputLvTwo(m_sdlEvent);
 		}
@@ -348,6 +357,35 @@ void Level::RunLevel2(Renderer* _renderer)
 		m_player1->Update(m_timing->GetDeltaTime());
 		m_player->Render(_renderer, { 20, 330 });
 
+		//m_audio->Play(m_effectWLD);
+		//m_audio->Play(m_effects[1]);
+
+		if (m_player->GetState() == m_player1->GetState())
+		{
+		}
+		else
+		{
+			if (m_player->GetState() == PlayerState::GetRockState() && m_player1->GetState() == PlayerState::GetScissorState() ||
+				m_player->GetState() == PlayerState::GetPaperState() && m_player1->GetState() == PlayerState::GetRockState() ||
+				m_player->GetState() == PlayerState::GetScissorState() && m_player1->GetState() == PlayerState::GetPaperState())
+			{
+				win++;
+				loss1++;
+			}
+			else
+			{
+				win1++;
+				loss++;
+
+			}	
+		}
+
+		std::string numWins = "Wins: " + to_string(win);
+		std::string numLosses = "Losses: " + to_string(loss);
+
+		std::string numWins1 = "Wins: " + to_string(win1);
+		std::string numLosses1 = "Losses: " + to_string(loss1);
+
 		m_fArial20->Write(_renderer->GetRenderer(), m_player1Name.c_str(), SDL_Color{ 0, 255, 0 }, SDL_Point{ 20, 10 });
 		m_fArial20->Write(_renderer->GetRenderer(), result.c_str(), SDL_Color{ 255, 0, 0 }, SDL_Point{ 20, 30 });
 		m_fArial20->Write(_renderer->GetRenderer(), numWins.c_str(), SDL_Color{ 0, 0, 255 }, SDL_Point{ 20, 50 });
@@ -357,8 +395,8 @@ void Level::RunLevel2(Renderer* _renderer)
 
 		m_fArial20->Write(_renderer->GetRenderer(), m_player2Name.c_str(), SDL_Color{ 0, 255, 0 }, SDL_Point{ 20, 310 });
 		m_fArial20->Write(_renderer->GetRenderer(), result.c_str(), SDL_Color{ 255, 0, 0 }, SDL_Point{ 20, 330 });
-		m_fArial20->Write(_renderer->GetRenderer(), numWins.c_str(), SDL_Color{ 0, 0, 255 }, SDL_Point{ 20, 350 });
-		m_fArial20->Write(_renderer->GetRenderer(), numLosses.c_str(), SDL_Color{ 0, 0, 255 }, SDL_Point{ 20, 370 });
+		m_fArial20->Write(_renderer->GetRenderer(), numWins1.c_str(), SDL_Color{ 0, 0, 255 }, SDL_Point{ 20, 350 });
+		m_fArial20->Write(_renderer->GetRenderer(), numLosses1.c_str(), SDL_Color{ 0, 0, 255 }, SDL_Point{ 20, 370 });
 
 		
 
