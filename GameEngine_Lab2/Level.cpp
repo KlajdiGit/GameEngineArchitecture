@@ -48,8 +48,6 @@ Level::Level()
 	m_player1Loss = 0;
 	m_p1Pos = { 20, 30 };
 	m_p2Pos = { 20, 330 };
-
-	m_smPos = "";
 	m_mPos = { };
 
 }
@@ -197,7 +195,7 @@ void Level::HandleInput(SDL_Event _event)
 
 		else if (m_input->KB()->KeyUp(m_sdlEvent, SDLK_RETURN))
 		{
-			if (m_player1Name.length() == 0 || m_player1Name.length() > 21)
+			if (m_player1Name.length() == 0 || m_player1Name.length() > 20)
 			{
 				error = "Nickname must contain 1 to 20 characters";
 			}
@@ -227,7 +225,7 @@ void Level::HandleInput(SDL_Event _event)
 
 		else if (m_input->KB()->KeyUp(m_sdlEvent, SDLK_RETURN))
 		{
-			if (m_player2Name.length() == 0 || m_player2Name.length() > 21)
+			if (m_player2Name.length() == 0 || m_player2Name.length() > 20)
 			{
 				error = "Nickname must contain 1 to 20 characters";
 			}
@@ -254,11 +252,75 @@ void Level::HandleInputLvTwo(SDL_Event _event)
 		m_quit = true;
 	}
 
-	else if (m_input->MS()->Moved(_event, m_mPos))
+	else if (m_input->MS()->Moved(_event, m_mPos) && m_input->MS()->GetButLDown())
 	{
-		m_smPos = "Mouse Position [" + to_string(m_mPos.X) +
-			";" + to_string(m_mPos.Y) + "]";
-		//m_p1Pos
+		if (m_mPos.X >= 1920 - 280 && m_mPos.Y >= 1080 - 170)
+		{
+			m_p1Pos.x = 1920 - 320;
+			m_p1Pos.y = 1080 - 210;
+		}
+		else if (m_mPos.X >= 1920 -280 )
+		{
+			m_p1Pos.x = 1920 - 320;
+		}
+		else if (m_mPos.Y >= 1080 - 170)
+		{
+			m_p1Pos.y = 1080 - 210;
+		}
+		else if (m_mPos.X <= 140)
+		{
+			m_p1Pos.x = 20;
+		}
+		else if (m_mPos.Y <=85)
+		{
+			m_p1Pos.y = 30;
+		}
+		else if (m_mPos.X <= 0 && m_mPos.Y <= 0)
+		{
+			m_p1Pos.x = 20;
+			m_p1Pos.y = 30;
+		}
+		else
+		{
+			m_p1Pos.x = m_mPos.X - 140;
+			m_p1Pos.y = m_mPos.Y - 85;
+		}
+		
+	}
+	else if (m_input->MS()->Moved(_event, m_mPos) && m_input->MS()->GetButRDown())
+	{
+		if (m_mPos.X >= 1920 - 280 && m_mPos.Y >= 1080 - 170)
+		{
+			m_p2Pos.x = 1920 - 320;
+			m_p2Pos.y = 1080 - 210;
+		}
+		else if (m_mPos.X >= 1920 - 280)
+		{
+			m_p2Pos.x = 1920 - 320;
+		}
+		else if (m_mPos.Y >= 1080 - 170)
+		{
+			m_p2Pos.y = 1080 - 210;
+		}
+		else if (m_mPos.X <= 140)
+		{
+			m_p2Pos.x = 20;
+		}
+		else if (m_mPos.Y <= 85)
+		{
+			m_p2Pos.y = 30;
+		}
+		else if (m_mPos.X <= 0 && m_mPos.Y <= 0)
+		{
+			m_p2Pos.x = 20;
+			m_p2Pos.y = 30;
+		}
+		else
+		{
+			m_p2Pos.x = m_mPos.X - 140;
+			m_p2Pos.y = m_mPos.Y - 85;
+		}
+
 	}
 
 	m_player1->HandleInput(_event, m_timing->GetDeltaTime());
@@ -436,22 +498,24 @@ void Level::RunLevel2(Renderer* _renderer)
  		std::string numLosses = "Losses: " + to_string(m_playerLoss);
 
 		std::string numWins1 = "Wins: " + to_string(m_player1Win);
-		std::string numLosses1 = "Losses: " + to_string(m_player1Loss);
+		std::string numLosses1 = "Losses: " + to_string(m_player1Loss); 
+		
+		
+		
 
-		m_fArial20->Write(_renderer->GetRenderer(), m_player1Name.c_str(), SDL_Color{ 0, 255, 0 }, SDL_Point{ 20, 10 });
-		m_fArial20->Write(_renderer->GetRenderer(), resultP1.c_str(), SDL_Color{ 255, 0, 0 }, SDL_Point{ 20, 30 });
-		m_fArial20->Write(_renderer->GetRenderer(), numWins.c_str(), SDL_Color{ 0, 0, 255 }, SDL_Point{ 20, 50 });
-		m_fArial20->Write(_renderer->GetRenderer(), numLosses.c_str(), SDL_Color{ 0, 0, 255 }, SDL_Point{ 20, 70 });
+		m_fArial20->Write(_renderer->GetRenderer(), m_player1Name.c_str(), SDL_Color{ 0, 255, 0 }, SDL_Point{ (int)m_p1Pos.x,  (int)m_p1Pos.y - 20});
+		m_fArial20->Write(_renderer->GetRenderer(), resultP1.c_str(), SDL_Color{ 255, 0, 0 }, SDL_Point{ (int)m_p1Pos.x,  (int)m_p1Pos.y});
+		m_fArial20->Write(_renderer->GetRenderer(), numWins.c_str(), SDL_Color{ 0, 0, 255 }, SDL_Point{ (int)m_p1Pos.x,  (int)m_p1Pos.y + 20 });
+		m_fArial20->Write(_renderer->GetRenderer(), numLosses.c_str(), SDL_Color{ 0, 0, 255 }, SDL_Point{ (int)m_p1Pos.x,  (int)m_p1Pos.y + 40 });
 
 
 
-		m_fArial20->Write(_renderer->GetRenderer(), m_player2Name.c_str(), SDL_Color{ 0, 255, 0 }, SDL_Point{ 20, 310 });
-		m_fArial20->Write(_renderer->GetRenderer(), resultP2.c_str(), SDL_Color{ 255, 0, 0 }, SDL_Point{ 20, 330 });
-		m_fArial20->Write(_renderer->GetRenderer(), numWins1.c_str(), SDL_Color{ 0, 0, 255 }, SDL_Point{ 20, 350 });
-		m_fArial20->Write(_renderer->GetRenderer(), numLosses1.c_str(), SDL_Color{ 0, 0, 255 }, SDL_Point{ 20, 370 });
+		m_fArial20->Write(_renderer->GetRenderer(), m_player2Name.c_str(), SDL_Color{ 0, 255, 0 }, SDL_Point{ (int)m_p2Pos.x,  (int)m_p2Pos.y - 20 });
+		m_fArial20->Write(_renderer->GetRenderer(), resultP2.c_str(), SDL_Color{ 255, 0, 0 }, SDL_Point{ (int)m_p2Pos.x,  (int)m_p2Pos.y});
+		m_fArial20->Write(_renderer->GetRenderer(), numWins1.c_str(), SDL_Color{ 0, 0, 255 }, SDL_Point{ (int)m_p2Pos.x,  (int)m_p2Pos.y + 20 });
+		m_fArial20->Write(_renderer->GetRenderer(), numLosses1.c_str(), SDL_Color{ 0, 0, 255 }, SDL_Point{ (int)m_p2Pos.x,  (int)m_p2Pos.y + 40 });
 
 		
-		m_fArial20->Write(_renderer->GetRenderer(), m_smPos.c_str(), SDL_Color{ 255, 0, 255 }, SDL_Point{ 200, 370 });
 
 
 		SDL_RenderPresent(_renderer->GetRenderer());

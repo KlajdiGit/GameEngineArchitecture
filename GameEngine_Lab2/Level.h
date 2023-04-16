@@ -56,7 +56,6 @@ private:
 	int m_player1Loss;
 	glm::vec2 m_p1Pos;
 	glm::vec2 m_p2Pos;
-	string m_smPos;
 	Point m_mPos;
 
 
