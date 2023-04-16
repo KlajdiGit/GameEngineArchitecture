@@ -15,7 +15,6 @@ void IdleState::HandleInput(Player* _player, SDL_Event _event)
 	if (InputController::Instance().KB()->KeyUp(_event, SDLK_SPACE))
 	{
 		_player->SetState(PlayerState::GetRollState());
-		SDL_Log("Entering Roll state...");
 	}
 }
 
@@ -34,15 +33,12 @@ void RollState::HandleInput(Player* _player, SDL_Event _event)
 		{
 		case 0:
 			_player->SetState(PlayerState::GetRockState());
-			SDL_Log("Entering Rock state...");
 			break;
 		case 1:
 			_player->SetState(PlayerState::GetPaperState());
-			SDL_Log("Entering Paper state...");
 			break;
 		case 2:
 			_player->SetState(PlayerState::GetScissorState());
-			SDL_Log("Entering Scissor state...");
 			break;
 		default:
 			break;
@@ -60,7 +56,6 @@ void RockState::HandleInput(Player* _player, SDL_Event _event)
 	if (InputController::Instance().KB()->KeyUp(_event, SDLK_SPACE))
 	{
 		_player->SetState(PlayerState::GetIdleState());
-		SDL_Log("Entering Idle state...");
 	}
 }
 
@@ -74,7 +69,6 @@ void PaperState::HandleInput(Player* _player, SDL_Event _event)
 	if (InputController::Instance().KB()->KeyUp(_event, SDLK_SPACE))
 	{
 		_player->SetState(PlayerState::GetIdleState());
-		SDL_Log("Entering Idle state...");
 	}
 }
 
@@ -88,7 +82,6 @@ void ScissorState::HandleInput(Player* _player, SDL_Event _event)
 	if (InputController::Instance().KB()->KeyUp(_event, SDLK_SPACE))
 	{
 		_player->SetState(PlayerState::GetIdleState());
-		SDL_Log("Entering Idle state...");
 	}
 }
 

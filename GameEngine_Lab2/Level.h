@@ -46,8 +46,8 @@ private:
 	string m_player1Name;
 	string m_player2Name;
 	TTFont* m_fArial20;
-	Player* m_player;
 	Player* m_player1;
+	Player* m_player2;
 	Timing* m_timing;
 	PhysicsController* m_physics;
 	int m_playerWin;

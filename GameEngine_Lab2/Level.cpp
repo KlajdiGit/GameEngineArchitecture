@@ -39,8 +39,8 @@ Level::Level()
 	m_song = nullptr;
 	m_fArial20 = nullptr;
 	m_physics = nullptr;
-	m_player = new Player();
 	m_player1 = new Player();
+	m_player2 = new Player();
 	m_timing = &Timing::Instance();
 	m_playerWin = 0;
 	m_player1Win = 0;
@@ -55,16 +55,16 @@ Level::~Level()
 	delete Unit::Pool;
 	AssetController::Instance().Clear(); //Free 10MB
 	//m_fArial20->Shutdown();
-	if (m_player != nullptr)
-	{
-		delete m_player;
-		m_player = nullptr;
-	}
-
 	if (m_player1 != nullptr)
 	{
 		delete m_player1;
 		m_player1 = nullptr;
+	}
+
+	if (m_player2 != nullptr)
+	{
+		delete m_player2;
+		m_player2 = nullptr;
 	}
 
 	if (m_fArial20 != nullptr)
@@ -248,7 +248,9 @@ void Level::HandleInputLvTwo(SDL_Event _event)
 		m_quit = true;
 	}
 
-	m_player->HandleInput(_event, m_timing->GetDeltaTime());
+	m_player1->HandleInput(_event, m_timing->GetDeltaTime());
+	m_player2->HandleInput(_event, m_timing->GetDeltaTime());
+
 	m_input->MS()->ProcessButtons(_event);
 }
 
@@ -327,138 +329,111 @@ void Level::RunLevel2(Renderer* _renderer)
 	m_effects[0] = m_audio->LoadEffect("../Assets/Audio/Effects/Whoosh.wav");
 	m_effects[1] = m_audio->LoadEffect("../Assets/Audio/Effects/DistantGunshot.mp3");
 
-	std::string result = "Waiting to start...";
+	std::string resultP1 = "Waiting to start...";
 	
-	//int win = 0, win1 = 0, loss = 0, loss1 = 0;
+	std::string resultP2 = "Waiting to start...";
+	
+
 
 	while (!m_quit)
 	{
 		m_timing->Tick();
 		_renderer->SetDrawColor(Color(255, 255, 255, 255));
 		_renderer->ClearScreen();
-		//int win = 0, win1 = 0, loss = 0, loss1 = 0;
+		/*resultP1 = "Waiting to start...";
+		resultP2 = "Waiting to start...";*/
 
-
-		/*if (m_player->GetState() == m_player1->GetState())
+ 		while (SDL_PollEvent(&m_sdlEvent) != 0)
 		{
-			//m_audio->Play(m_effects[1]);
+			
 
-		}
-		else
-		{
-			//m_audio->Play(m_effects[1]);
 
-			if (m_player->GetState() == PlayerState::GetRockState() && m_player1->GetState() == PlayerState::GetScissorState() ||
-				m_player->GetState() == PlayerState::GetPaperState() && m_player1->GetState() == PlayerState::GetRockState() ||
-				m_player->GetState() == PlayerState::GetScissorState() && m_player1->GetState() == PlayerState::GetPaperState()||
-				m_player1->GetState() == PlayerState::GetRockState() && m_player->GetState() == PlayerState::GetScissorState() ||
-				m_player1->GetState() == PlayerState::GetPaperState() && m_player->GetState() == PlayerState::GetRockState() ||
-				m_player1->GetState() == PlayerState::GetScissorState() && m_player->GetState() == PlayerState::GetPaperState() )
+  			if (m_sdlEvent.type == SDL_KEYUP && m_sdlEvent.key.keysym.sym == SDLK_SPACE)
 			{
-				win++;
-				loss1++;
-			}
-			else
-			{
-				win1++;
-				loss++;
+				/*resultP1 = "Rolling...";
+				resultP2 = "Rolling...";*/
 
-			}
-		}
-		m_player1Loss += loss1;
-		m_player1Win += win1;
-		m_playerLoss += loss;
-		m_playerWin += win;
-		win = 0, win1 = 0, loss = 0, loss1 = 0; */
-
-		while (SDL_PollEvent(&m_sdlEvent) != 0)
-		{
-
-			if (m_sdlEvent.type == SDL_KEYUP && m_sdlEvent.key.keysym.sym == SDLK_SPACE)
-			{
-				result = "Rolling...";
-				m_audio->Play(m_effects[0]);
+				//m_audio->Play(m_effects[0]);
 				int win = 0, win1 = 0, loss = 0, loss1 = 0;
 
-				if (m_player->GetState() == m_player1->GetState())
+				if (m_player1->GetState() == PlayerState::GetRollState() && m_player2->GetState() == PlayerState::GetRollState())
+				{
+					m_audio->Play(m_effects[0]);
+
+					//m_audio->Play(m_effects[1]);
+					resultP1 = "Rolling...";
+					resultP2 = "Rolling...";
+				}
+
+				else if (m_player1->GetState() == m_player2->GetState() &&
+					     m_player1->GetState() != PlayerState::GetRollState() && m_player2->GetState() != PlayerState::GetRollState())
 				{
 					//m_audio->Play(m_effects[1]);
+					resultP1 = "DRAW!";
+					resultP2 = "DRAW!";
 
 				}
 				else
 				{
 					//m_audio->Play(m_effects[1]);
 
-					if (m_player->GetState() == PlayerState::GetRockState() && m_player1->GetState() == PlayerState::GetScissorState() ||
-						m_player->GetState() == PlayerState::GetPaperState() && m_player1->GetState() == PlayerState::GetRockState() ||
-						m_player->GetState() == PlayerState::GetScissorState() && m_player1->GetState() == PlayerState::GetPaperState() ||
-						m_player1->GetState() == PlayerState::GetRockState() && m_player->GetState() == PlayerState::GetScissorState() ||
-						m_player1->GetState() == PlayerState::GetPaperState() && m_player->GetState() == PlayerState::GetRockState() ||
-						m_player1->GetState() == PlayerState::GetScissorState() && m_player->GetState() == PlayerState::GetPaperState())
+					if (m_player1->GetState() == PlayerState::GetRockState() && m_player2->GetState() == PlayerState::GetScissorState() ||
+						m_player1->GetState() == PlayerState::GetPaperState() && m_player2->GetState() == PlayerState::GetRockState() ||
+						m_player1->GetState() == PlayerState::GetScissorState() && m_player2->GetState() == PlayerState::GetPaperState() ||
+						m_player2->GetState() == PlayerState::GetRockState() && m_player1->GetState() == PlayerState::GetPaperState() ||
+						m_player2->GetState() == PlayerState::GetPaperState() && m_player1->GetState() == PlayerState::GetScissorState() ||
+						m_player2->GetState() == PlayerState::GetScissorState() && m_player1->GetState() == PlayerState::GetRockState())
 					{
-						win++;
-						loss1++;
+						std::cout << "Player 1 wins!" << std::endl;
+						resultP1 = "WINNER!";
+						resultP2 = "LOSSER!";
+						m_playerWin++;
+						m_player1Loss++;
 					}
 					else
 					{
-						win1++;
-						loss++;
+						std::cout << "Player 2 wins!" << std::endl;
+						resultP2 = "WINNER!";
+						resultP1 = "LOSSER!";
+						m_player1Win++;
+						m_playerLoss++;
 
 					}
 				}
-				m_player1Loss += loss1;
+				/*m_player1Win += loss1;
 				m_player1Win += win1;
 				m_playerLoss += loss;
-				m_playerWin += win;
+				m_playerWin += win; */
 
 			}
 			HandleInputLvTwo(m_sdlEvent);
 		}
 
 
-		m_player->Update(m_timing->GetDeltaTime());
-		m_player->Render(_renderer, { 20, 30 });
-
 		m_player1->Update(m_timing->GetDeltaTime());
-		m_player->Render(_renderer, { 20, 330 });
+		m_player1->Render(_renderer, { 20, 30 });
+
+		m_player2->Update(m_timing->GetDeltaTime());
+		m_player2->Render(_renderer, { 20, 330 });
+
 
 		
 
-	/*	if (m_player->GetState() == m_player1->GetState())
-		{
-		}
-		else
-		{
-			if (m_player->GetState() == PlayerState::GetRockState() && m_player1->GetState() == PlayerState::GetScissorState() ||
-				m_player->GetState() == PlayerState::GetPaperState() && m_player1->GetState() == PlayerState::GetRockState() ||
-				m_player->GetState() == PlayerState::GetScissorState() && m_player1->GetState() == PlayerState::GetPaperState())
-			{
-				win++;
-				loss1++;
-			}
-			else
-			{
-				win1++;
-				loss++;
-
-			}	
-		}*/
-
 		std::string numWins = "Wins: " + to_string(m_playerWin);
-		std::string numLosses = "Losses: " + to_string(m_playerLoss);
+ 		std::string numLosses = "Losses: " + to_string(m_playerLoss);
 
 		std::string numWins1 = "Wins: " + to_string(m_player1Win);
 		std::string numLosses1 = "Losses: " + to_string(m_player1Loss);
 
 		m_fArial20->Write(_renderer->GetRenderer(), m_player1Name.c_str(), SDL_Color{ 0, 255, 0 }, SDL_Point{ 20, 10 });
-		m_fArial20->Write(_renderer->GetRenderer(), result.c_str(), SDL_Color{ 255, 0, 0 }, SDL_Point{ 20, 30 });
+		m_fArial20->Write(_renderer->GetRenderer(), resultP1.c_str(), SDL_Color{ 255, 0, 0 }, SDL_Point{ 20, 30 });
 		m_fArial20->Write(_renderer->GetRenderer(), numWins.c_str(), SDL_Color{ 0, 0, 255 }, SDL_Point{ 20, 50 });
 		m_fArial20->Write(_renderer->GetRenderer(), numLosses.c_str(), SDL_Color{ 0, 0, 255 }, SDL_Point{ 20, 70 });
 
 
 
 		m_fArial20->Write(_renderer->GetRenderer(), m_player2Name.c_str(), SDL_Color{ 0, 255, 0 }, SDL_Point{ 20, 310 });
-		m_fArial20->Write(_renderer->GetRenderer(), result.c_str(), SDL_Color{ 255, 0, 0 }, SDL_Point{ 20, 330 });
+		m_fArial20->Write(_renderer->GetRenderer(), resultP2.c_str(), SDL_Color{ 255, 0, 0 }, SDL_Point{ 20, 330 });
 		m_fArial20->Write(_renderer->GetRenderer(), numWins1.c_str(), SDL_Color{ 0, 0, 255 }, SDL_Point{ 20, 350 });
 		m_fArial20->Write(_renderer->GetRenderer(), numLosses1.c_str(), SDL_Color{ 0, 0, 255 }, SDL_Point{ 20, 370 });
 
