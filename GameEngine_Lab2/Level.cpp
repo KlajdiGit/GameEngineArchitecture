@@ -328,6 +328,7 @@ void Level::RunLevel2(Renderer* _renderer)
 		}
 		//m_physics->Update(m_timing->GetDeltaTime());
 		m_player->Update(m_timing->GetDeltaTime());
+
 		m_player->Render(_renderer);
 
 		SDL_RenderPresent(_renderer->GetRenderer());

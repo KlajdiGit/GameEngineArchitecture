@@ -35,14 +35,19 @@ void RollState::HandleInput(Player* _player, SDL_Event _event)
 {
 	if (InputController::Instance().KB()->KeyUp(_event, SDLK_SPACE))
 	{
-		_player->GetAnimations()->ResetCurrentClip(EN_AN_ROLL);
-		_player->SetState(PlayerState::GetPaperState());
+		//_player->GetAnimations()->ResetCurrentClip(EN_AN_ROLL);
+		_player->SetState(PlayerState::GetScissorState());
 	}
 }
 
 void RollState::Update(Player* _player, float _deltaTime)
 {
 	_player->GetAnimations()->Update(EN_AN_ROLL, _deltaTime, _player->GetSrcRect());
+	if (_player->GetAnimations()->GetCurrentClip(EN_AN_ROLL) >= 3.0f)
+	{
+		_player->GetAnimations()->ResetCurrentClip(EN_AN_ROLL);
+		_player->SetState(PlayerState::GetScissorState());
+	}
 }
 
 
@@ -78,7 +83,7 @@ void PaperState::HandleInput(Player* _player, SDL_Event _event)
 void PaperState::Update(Player* _player, float _deltaTime)
 {
 	_player->GetAnimations()->Update(EN_AN_PAPER, _deltaTime, _player->GetSrcRect());
-	if (_player->GetAnimations()->GetCurrentClip(EN_AN_PAPER) >= 7.0f)
+	if (_player->GetAnimations()->GetCurrentClip(EN_AN_PAPER) >= 6.0f)
 	{
 		_player->GetAnimations()->ResetCurrentClip(EN_AN_PAPER);
 		_player->SetState(PlayerState::GetIdleState());
