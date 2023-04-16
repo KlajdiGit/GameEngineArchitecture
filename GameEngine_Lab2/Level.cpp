@@ -33,7 +33,7 @@ Level::Level()
 	m_quit = false;
 	m_level2 = false;
 	m_audio = &AudioController::Instance();
-	memset(m_effects, 0, sizeof(SoundEffects*) * 8);
+	memset(m_effects, 0, sizeof(SoundEffects*) * 2);
 	m_player1Name = "";
 	m_player2Name = "";
 	m_song = nullptr;
@@ -42,8 +42,10 @@ Level::Level()
 	m_player = new Player();
 	m_player1 = new Player();
 	m_timing = &Timing::Instance();
-	
-
+	m_playerWin = 0;
+	m_player1Win = 0;
+	m_playerLoss = 0;
+	m_player1Loss = 0;
 }
 
 Level::~Level()
@@ -237,6 +239,7 @@ void Level::HandleInput(SDL_Event _event)
 
 
 
+
 void Level::HandleInputLvTwo(SDL_Event _event)
 {
 	if ((_event.type == SDL_QUIT) ||
@@ -259,8 +262,8 @@ void Level::RunLevel(Renderer* _renderer)
 	_renderer->EnumerateDisplayModes();
 	_renderer->ChangeDisplayMode(&_renderer->GetResolutions()[0]);
 
-
-
+	TTFont* t = new TTFont();
+	t->Initialize(20);
 
 
 	m_fArial20 = new TTFont();
@@ -285,6 +288,7 @@ void Level::RunLevel(Renderer* _renderer)
 		{
 
 			HandleInput(m_sdlEvent);
+
 		}
 
 		_renderer->RenderTexture(sheet, Point{ 0, 0 });
@@ -296,7 +300,7 @@ void Level::RunLevel(Renderer* _renderer)
 
 		std::string guideline;
 		guideline = "Quit [ESC] Next Nickname [RETURN] ";
-		m_fArial20->Write(_renderer->GetRenderer(), guideline.c_str(), SDL_Color{ 255, 255, 255 }, SDL_Point{ 10, 1050 });
+		t->Write(_renderer->GetRenderer(), guideline.c_str(), SDL_Color{ 255, 255, 255 }, SDL_Point{ 10, 1050 });
 
 
 		if (m_level2 == true)
@@ -325,16 +329,17 @@ void Level::RunLevel2(Renderer* _renderer)
 
 	std::string result = "Waiting to start...";
 	
-	int win = 0, win1 = 0, loss = 0, loss1 = 0;
+	//int win = 0, win1 = 0, loss = 0, loss1 = 0;
 
 	while (!m_quit)
 	{
 		m_timing->Tick();
 		_renderer->SetDrawColor(Color(255, 255, 255, 255));
 		_renderer->ClearScreen();
-	
+		//int win = 0, win1 = 0, loss = 0, loss1 = 0;
 
-		if (m_player->GetState() == m_player1->GetState())
+
+		/*if (m_player->GetState() == m_player1->GetState())
 		{
 			//m_audio->Play(m_effects[1]);
 
@@ -345,7 +350,10 @@ void Level::RunLevel2(Renderer* _renderer)
 
 			if (m_player->GetState() == PlayerState::GetRockState() && m_player1->GetState() == PlayerState::GetScissorState() ||
 				m_player->GetState() == PlayerState::GetPaperState() && m_player1->GetState() == PlayerState::GetRockState() ||
-				m_player->GetState() == PlayerState::GetScissorState() && m_player1->GetState() == PlayerState::GetPaperState())
+				m_player->GetState() == PlayerState::GetScissorState() && m_player1->GetState() == PlayerState::GetPaperState()||
+				m_player1->GetState() == PlayerState::GetRockState() && m_player->GetState() == PlayerState::GetScissorState() ||
+				m_player1->GetState() == PlayerState::GetPaperState() && m_player->GetState() == PlayerState::GetRockState() ||
+				m_player1->GetState() == PlayerState::GetScissorState() && m_player->GetState() == PlayerState::GetPaperState() )
 			{
 				win++;
 				loss1++;
@@ -357,13 +365,51 @@ void Level::RunLevel2(Renderer* _renderer)
 
 			}
 		}
+		m_player1Loss += loss1;
+		m_player1Win += win1;
+		m_playerLoss += loss;
+		m_playerWin += win;
+		win = 0, win1 = 0, loss = 0, loss1 = 0; */
+
 		while (SDL_PollEvent(&m_sdlEvent) != 0)
 		{
 
-			if (m_sdlEvent.type == SDL_KEYDOWN && m_sdlEvent.key.keysym.sym == SDLK_SPACE)
+			if (m_sdlEvent.type == SDL_KEYUP && m_sdlEvent.key.keysym.sym == SDLK_SPACE)
 			{
 				result = "Rolling...";
 				m_audio->Play(m_effects[0]);
+				int win = 0, win1 = 0, loss = 0, loss1 = 0;
+
+				if (m_player->GetState() == m_player1->GetState())
+				{
+					//m_audio->Play(m_effects[1]);
+
+				}
+				else
+				{
+					//m_audio->Play(m_effects[1]);
+
+					if (m_player->GetState() == PlayerState::GetRockState() && m_player1->GetState() == PlayerState::GetScissorState() ||
+						m_player->GetState() == PlayerState::GetPaperState() && m_player1->GetState() == PlayerState::GetRockState() ||
+						m_player->GetState() == PlayerState::GetScissorState() && m_player1->GetState() == PlayerState::GetPaperState() ||
+						m_player1->GetState() == PlayerState::GetRockState() && m_player->GetState() == PlayerState::GetScissorState() ||
+						m_player1->GetState() == PlayerState::GetPaperState() && m_player->GetState() == PlayerState::GetRockState() ||
+						m_player1->GetState() == PlayerState::GetScissorState() && m_player->GetState() == PlayerState::GetPaperState())
+					{
+						win++;
+						loss1++;
+					}
+					else
+					{
+						win1++;
+						loss++;
+
+					}
+				}
+				m_player1Loss += loss1;
+				m_player1Win += win1;
+				m_playerLoss += loss;
+				m_playerWin += win;
 
 			}
 			HandleInputLvTwo(m_sdlEvent);
@@ -376,6 +422,7 @@ void Level::RunLevel2(Renderer* _renderer)
 		m_player1->Update(m_timing->GetDeltaTime());
 		m_player->Render(_renderer, { 20, 330 });
 
+		
 
 	/*	if (m_player->GetState() == m_player1->GetState())
 		{
@@ -397,11 +444,11 @@ void Level::RunLevel2(Renderer* _renderer)
 			}	
 		}*/
 
-		std::string numWins = "Wins: " + to_string(win);
-		std::string numLosses = "Losses: " + to_string(loss);
+		std::string numWins = "Wins: " + to_string(m_playerWin);
+		std::string numLosses = "Losses: " + to_string(m_playerLoss);
 
-		std::string numWins1 = "Wins: " + to_string(win1);
-		std::string numLosses1 = "Losses: " + to_string(loss1);
+		std::string numWins1 = "Wins: " + to_string(m_player1Win);
+		std::string numLosses1 = "Losses: " + to_string(m_player1Loss);
 
 		m_fArial20->Write(_renderer->GetRenderer(), m_player1Name.c_str(), SDL_Color{ 0, 255, 0 }, SDL_Point{ 20, 10 });
 		m_fArial20->Write(_renderer->GetRenderer(), result.c_str(), SDL_Color{ 255, 0, 0 }, SDL_Point{ 20, 30 });

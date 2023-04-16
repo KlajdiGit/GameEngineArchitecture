@@ -50,7 +50,10 @@ private:
 	Player* m_player1;
 	Timing* m_timing;
 	PhysicsController* m_physics;
-
+	int m_playerWin;
+	int m_playerLoss;
+	int m_player1Win;
+	int m_player1Loss;
 
 
 };
