@@ -33,7 +33,7 @@ Level::Level()
 	m_quit = false;
 	m_level2 = false;
 	m_audio = &AudioController::Instance();
-	memset(m_effects, 0, sizeof(SoundEffects*) * 2);
+	memset(m_effects, 0, sizeof(SoundEffects*) * 8);
 	m_player1Name = "";
 	m_player2Name = "";
 	m_song = nullptr;
@@ -42,6 +42,7 @@ Level::Level()
 	m_player = new Player();
 	m_player1 = new Player();
 	m_timing = &Timing::Instance();
+	
 
 }
 
@@ -319,10 +320,8 @@ void Level::RunLevel2(Renderer* _renderer)
 {
 	m_audio->Play(m_song);
 	m_fArial20->Initialize(20);
-	//m_effect = m_audio->LoadEffect("../Assets/Audio/Effects/Whoosh.wav");
-	//m_effectWLD = m_audio->LoadEffect("../Assets/Audio/Effects/DistantGunshot.wav");
-	m_effects[0] = m_audio->LoadEffect("../Assets/Audio/Effects/Whoosh.wav");
-	m_effects[1] = m_audio->LoadEffect("../Assets/Audio/Effects/DistantGunshot.mp3");
+	m_effects[1] = m_audio->LoadEffect("../Assets/Audio/Effects/Whoosh.wav");
+	m_effects[0] = m_audio->LoadEffect("../Assets/Audio/Effects/DistantGunshot.mp3");
 
 	std::string result = "Waiting to start...";
 	
@@ -335,6 +334,29 @@ void Level::RunLevel2(Renderer* _renderer)
 		_renderer->ClearScreen();
 	
 
+		if (m_player->GetState() == m_player1->GetState())
+		{
+			//m_audio->Play(m_effects[1]);
+
+		}
+		else
+		{
+			//m_audio->Play(m_effects[1]);
+
+			if (m_player->GetState() == PlayerState::GetRockState() && m_player1->GetState() == PlayerState::GetScissorState() ||
+				m_player->GetState() == PlayerState::GetPaperState() && m_player1->GetState() == PlayerState::GetRockState() ||
+				m_player->GetState() == PlayerState::GetScissorState() && m_player1->GetState() == PlayerState::GetPaperState())
+			{
+				win++;
+				loss1++;
+			}
+			else
+			{
+				win1++;
+				loss++;
+
+			}
+		}
 		while (SDL_PollEvent(&m_sdlEvent) != 0)
 		{
 
@@ -354,9 +376,8 @@ void Level::RunLevel2(Renderer* _renderer)
 		m_player1->Update(m_timing->GetDeltaTime());
 		m_player->Render(_renderer, { 20, 330 });
 
-		//m_audio->Play(m_effects[1]);
 
-		if (m_player->GetState() == m_player1->GetState())
+	/*	if (m_player->GetState() == m_player1->GetState())
 		{
 		}
 		else
@@ -374,7 +395,7 @@ void Level::RunLevel2(Renderer* _renderer)
 				loss++;
 
 			}	
-		}
+		}*/
 
 		std::string numWins = "Wins: " + to_string(win);
 		std::string numLosses = "Losses: " + to_string(loss);
