@@ -325,11 +325,45 @@ void Level::HandleInputLvTwo(SDL_Event _event)
 
 	else if (m_input->KB()->KeyDown(_event, SDLK_d))
 	{
-		m_p1Pos.x *= m_timing->GetDeltaTime();
-		m_p1Pos.x *= m_timing->GetDeltaTime();
-
+	    if(m_p1Pos.x <= 1920 - 280)
+		m_p1Pos.x +=  400 * m_timing->GetDeltaTime();
+	}
+	else if (m_input->KB()->KeyDown(_event, SDLK_a))
+	{
+		if (m_p1Pos.x >= 20)
+		m_p1Pos.x -= 400 * m_timing->GetDeltaTime();
+	}
+	else if (m_input->KB()->KeyDown(_event, SDLK_w))
+	{
+		if (m_p1Pos.y >= 30)
+		m_p1Pos.y -= 400 * m_timing->GetDeltaTime();
+	}
+	else if (m_input->KB()->KeyDown(_event, SDLK_s))
+	{
+		if (m_p1Pos.y <= 1080 - 170)
+		m_p1Pos.y += 400 * m_timing->GetDeltaTime();
 	}
 
+	else if (m_input->KB()->KeyDown(_event, SDLK_RIGHT))
+	{
+		if (m_p2Pos.x <= 1920 - 280)
+			m_p2Pos.x += 400 * m_timing->GetDeltaTime();
+	}
+	else if (m_input->KB()->KeyDown(_event, SDLK_LEFT))
+	{
+		if (m_p2Pos.x >= 20)
+			m_p2Pos.x -= 400 * m_timing->GetDeltaTime();
+	}
+	else if (m_input->KB()->KeyDown(_event, SDLK_UP))
+	{
+		if (m_p2Pos.y >= 30)
+			m_p2Pos.y -= 400 * m_timing->GetDeltaTime();
+	}
+	else if (m_input->KB()->KeyDown(_event, SDLK_DOWN))
+	{
+		if (m_p2Pos.y <= 1080 - 170)
+			m_p2Pos.y += 400 * m_timing->GetDeltaTime();
+	}
 
 	m_player1->HandleInput(_event, m_timing->GetDeltaTime());
 	m_player2->HandleInput(_event, m_timing->GetDeltaTime());
