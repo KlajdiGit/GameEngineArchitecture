@@ -34,8 +34,6 @@ Level::Level()
 	m_level2 = false;
 	m_audio = &AudioController::Instance();
 	memset(m_effects, 0, sizeof(SoundEffects*) * 2);
-	//m_effect = nullptr;
-	//m_effectWLD = nullptr;
 	m_player1Name = "";
 	m_player2Name = "";
 	m_song = nullptr;
@@ -336,7 +334,6 @@ void Level::RunLevel2(Renderer* _renderer)
 		_renderer->SetDrawColor(Color(255, 255, 255, 255));
 		_renderer->ClearScreen();
 	
-		m_audio->Play(m_effects[1]);
 
 		while (SDL_PollEvent(&m_sdlEvent) != 0)
 		{
@@ -357,7 +354,6 @@ void Level::RunLevel2(Renderer* _renderer)
 		m_player1->Update(m_timing->GetDeltaTime());
 		m_player->Render(_renderer, { 20, 330 });
 
-		//m_audio->Play(m_effectWLD);
 		//m_audio->Play(m_effects[1]);
 
 		if (m_player->GetState() == m_player1->GetState())

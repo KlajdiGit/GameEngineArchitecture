@@ -43,7 +43,6 @@ private:
 	AudioController* m_audio;
 	Song* m_song;
 	SoundEffects* m_effects[2];
-	//SoundEffects* m_effectWLD;
 	string m_player1Name;
 	string m_player2Name;
 	TTFont* m_fArial20;
