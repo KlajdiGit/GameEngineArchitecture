@@ -320,8 +320,8 @@ void Level::RunLevel2(Renderer* _renderer)
 {
 	m_audio->Play(m_song);
 	m_fArial20->Initialize(20);
-	m_effects[1] = m_audio->LoadEffect("../Assets/Audio/Effects/Whoosh.wav");
-	m_effects[0] = m_audio->LoadEffect("../Assets/Audio/Effects/DistantGunshot.mp3");
+	m_effects[0] = m_audio->LoadEffect("../Assets/Audio/Effects/Whoosh.wav");
+	m_effects[1] = m_audio->LoadEffect("../Assets/Audio/Effects/DistantGunshot.mp3");
 
 	std::string result = "Waiting to start...";
 	
