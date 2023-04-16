@@ -46,6 +46,12 @@ Level::Level()
 	m_player1Win = 0;
 	m_playerLoss = 0;
 	m_player1Loss = 0;
+	m_p1Pos = { 20, 30 };
+	m_p2Pos = { 20, 330 };
+
+	m_smPos = "";
+	m_mPos = { };
+
 }
 
 Level::~Level()
@@ -248,6 +254,13 @@ void Level::HandleInputLvTwo(SDL_Event _event)
 		m_quit = true;
 	}
 
+	else if (m_input->MS()->Moved(_event, m_mPos))
+	{
+		m_smPos = "Mouse Position [" + to_string(m_mPos.X) +
+			";" + to_string(m_mPos.Y) + "]";
+		//m_p1Pos
+	}
+
 	m_player1->HandleInput(_event, m_timing->GetDeltaTime());
 	m_player2->HandleInput(_event, m_timing->GetDeltaTime());
 
@@ -411,10 +424,10 @@ void Level::RunLevel2(Renderer* _renderer)
 
 
 		m_player1->Update(m_timing->GetDeltaTime());
-		m_player1->Render(_renderer, { 20, 30 });
+		m_player1->Render(_renderer, m_p1Pos);
 
 		m_player2->Update(m_timing->GetDeltaTime());
-		m_player2->Render(_renderer, { 20, 330 });
+		m_player2->Render(_renderer, m_p2Pos);
 
 
 		
@@ -438,6 +451,7 @@ void Level::RunLevel2(Renderer* _renderer)
 		m_fArial20->Write(_renderer->GetRenderer(), numLosses1.c_str(), SDL_Color{ 0, 0, 255 }, SDL_Point{ 20, 370 });
 
 		
+		m_fArial20->Write(_renderer->GetRenderer(), m_smPos.c_str(), SDL_Color{ 255, 0, 255 }, SDL_Point{ 200, 370 });
 
 
 		SDL_RenderPresent(_renderer->GetRenderer());
