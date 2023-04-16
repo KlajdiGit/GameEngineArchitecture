@@ -35,9 +35,9 @@ void Player::Update(float _deltaTime)
 	m_state->Update(this, _deltaTime);
 }
 
-void Player::Render(Renderer* _renderer)
+void Player::Render(Renderer* _renderer, glm::vec2 p)
 {
-	glm::vec2 p = m_rigidBody->GetPosition();
+	//glm::vec2 p = m_rigidBody->GetPosition();
 	Rect destRect = Rect(p.x, p.y, p.x + 280, p.y + 170);
 	_renderer->RenderTexture(m_animations, m_srcRect, destRect);
 }

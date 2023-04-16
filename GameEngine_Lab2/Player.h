@@ -22,7 +22,7 @@ public:
 
 	virtual void HandleInput(SDL_Event _event, float _deltaTime);
 	virtual void Update(float _deltaTime);
-	virtual void Render(Renderer* _renderer);
+	virtual void Render(Renderer* _renderer, glm::vec2 p);
 
 private:
 	RigidBody* m_rigidBody;

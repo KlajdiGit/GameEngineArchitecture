@@ -40,6 +40,7 @@ Level::Level()
 	m_fArial20 = nullptr;
 	m_physics = nullptr;
 	m_player = new Player();
+	m_player1 = new Player();
 	m_timing = &Timing::Instance();
 
 }
@@ -55,6 +56,12 @@ Level::~Level()
 	{
 		delete m_player;
 		m_player = nullptr;
+	}
+
+	if (m_player1 != nullptr)
+	{
+		delete m_player1;
+		m_player1 = nullptr;
 	}
 
 	if (m_fArial20 != nullptr)
@@ -251,8 +258,7 @@ void Level::RunLevel(Renderer* _renderer)
 	_renderer->ChangeDisplayMode(&_renderer->GetResolutions()[0]);
 
 
-	TTFont* font = new TTFont();
-	font->Initialize(20);
+
 
 
 	m_fArial20 = new TTFont();
@@ -287,7 +293,7 @@ void Level::RunLevel(Renderer* _renderer)
 
 		std::string guideline;
 		guideline = "Quit [ESC] Next Nickname [RETURN] ";
-		font->Write(_renderer->GetRenderer(), guideline.c_str(), SDL_Color{ 255, 255, 255 }, SDL_Point{ 10, 1050 });
+		m_fArial20->Write(_renderer->GetRenderer(), guideline.c_str(), SDL_Color{ 255, 255, 255 }, SDL_Point{ 10, 1050 });
 
 
 		if (m_level2 == true)
@@ -304,32 +310,36 @@ void Level::RunLevel(Renderer* _renderer)
 
 	delete SpriteAnim::Pool;
 	delete SpriteSheet::Pool;
-	font->Shutdown();
 }
 
 
 void Level::RunLevel2(Renderer* _renderer)
 {
 	m_audio->Play(m_song);
+	m_fArial20->Initialize(20);
 
-	
 	while (!m_quit)
 	{
 		m_timing->Tick();
 		_renderer->SetDrawColor(Color(255, 255, 255, 255));
 		_renderer->ClearScreen();
-		m_fArial20->Write(_renderer->GetRenderer(), m_player1Name.c_str(), SDL_Color{ 255, 255, 0 }, SDL_Point{ 50, 50 });
-		m_fArial20->Write(_renderer->GetRenderer(), m_player2Name.c_str(), SDL_Color{ 255, 255, 0 }, SDL_Point{ 50, 200 });
+		m_fArial20->Write(_renderer->GetRenderer(), m_player1Name.c_str(), SDL_Color{ 0, 255, 0 }, SDL_Point{ 20, 10 });
+		
+
+
+		m_fArial20->Write(_renderer->GetRenderer(), m_player2Name.c_str(), SDL_Color{ 0, 255, 0 }, SDL_Point{ 20, 310 });
 
 
 		while (SDL_PollEvent(&m_sdlEvent) != 0)
 		{
 			HandleInputLvTwo(m_sdlEvent);
 		}
-		//m_physics->Update(m_timing->GetDeltaTime());
 		m_player->Update(m_timing->GetDeltaTime());
+		m_player->Render(_renderer,{20, 30});
 
-		m_player->Render(_renderer);
+		m_player1->Update(m_timing->GetDeltaTime());
+		m_player->Render(_renderer, { 20, 330 });
+
 
 		SDL_RenderPresent(_renderer->GetRenderer());
 
