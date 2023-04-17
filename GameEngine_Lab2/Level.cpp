@@ -378,7 +378,7 @@ void Level::HandleInputLvTwo(SDL_Event _event)
 
 			      if (_event.caxis.axis == 0)
 				  {
-					  if (_event.caxis.value % 1921 >= 1920 - 280)
+					  if (_event.caxis.value >= 1920 - 280)
 						  m_p1Pos.x = 1920 - 320;
 
 					  else if (_event.caxis.value <= 140)
@@ -386,12 +386,12 @@ void Level::HandleInputLvTwo(SDL_Event _event)
 						  m_p1Pos.x = 20;
 					  }
 					  else
-						  m_p1Pos.x = _event.caxis.value % 1921;
+						  m_p1Pos.x = _event.caxis.value;
 
 				  }
 				  else if (_event.caxis.axis == 1)
 				  {
-					  if (_event.caxis.value % 1081 >= 1080 - 170)
+					  if (_event.caxis.value >= 1080 - 170)
 					  {
 						  m_p1Pos.y = 1080 - 210;
 					  }
@@ -400,7 +400,7 @@ void Level::HandleInputLvTwo(SDL_Event _event)
 						  m_p1Pos.y = 30;
 					  }
 					  else
-					  m_p1Pos.y = _event.caxis.value % 1081;
+					  m_p1Pos.y = _event.caxis.value;
 				  }
 
 				 
