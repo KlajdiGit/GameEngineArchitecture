@@ -49,8 +49,8 @@ Level::Level()
 	m_p1Pos = { 20, 30 };
 	m_p2Pos = { 20, 330 };
 	m_mPos = { };
-
-
+	m_loadCount = 0;
+	m_saveCount = 0;
 }
 
 Level::~Level()
@@ -59,7 +59,7 @@ Level::~Level()
 	delete SoundEffects::Pool;
 	delete Unit::Pool;
 	AssetController::Instance().Clear(); //Free 10MB
-	//m_fArial20->Shutdown();
+	m_audio->Shutdown();
 	if (m_player1 != nullptr)
 	{
 		delete m_player1;
@@ -89,7 +89,6 @@ Level::~Level()
 		delete SpriteSheet::Pool;
 		SpriteSheet::Pool = nullptr;
 	}
-
 }
 
 void Level::AssignNonDefaultValues()
@@ -152,20 +151,10 @@ void Level::ToString()
 	Resource::ToString();
 }
 
-
-
-
-
-ofstream writeStream("level.bin", ios::out | ios::binary);
-ifstream readStream("level.bin", ios::in, ios::binary);
-
-
 string temp;
 string temp2;
 string error;
 bool player1 = false;
-
-
 
 void Level::HandleInput(SDL_Event _event)
 {
@@ -175,7 +164,6 @@ void Level::HandleInput(SDL_Event _event)
 		m_quit = true;
 	}
 
-
 	if (player1 == false)
 	{
 		if ((temp = m_input->KB()->TextInput(_event)) != "")
@@ -183,17 +171,13 @@ void Level::HandleInput(SDL_Event _event)
 			m_player1Name += temp;
 			error = "";
 		}
-
 		else if (m_input->KB()->KeyUp(_event, SDLK_BACKSPACE))
 		{
-
 			if (m_player1Name.length() > 0)
 			{
 				m_player1Name.pop_back();
 			}
-
 		}
-
 		else if (m_input->KB()->KeyUp(m_sdlEvent, SDLK_RETURN))
 		{
 			if (m_player1Name.length() == 0 || m_player1Name.length() > 20)
@@ -202,9 +186,7 @@ void Level::HandleInput(SDL_Event _event)
 			}
 			else
 				player1 = true;
-
 		}
-
 	}
 	else
 	{
@@ -213,17 +195,13 @@ void Level::HandleInput(SDL_Event _event)
 			m_player2Name += temp2;
 			error = "";
 		}
-
 		else if (m_input->KB()->KeyUp(_event, SDLK_BACKSPACE))
 		{
-
 			if (m_player2Name.length() > 0)
 			{
 				m_player2Name.pop_back();
 			}
-
 		}
-
 		else if (m_input->KB()->KeyUp(m_sdlEvent, SDLK_RETURN))
 		{
 			if (m_player2Name.length() == 0 || m_player2Name.length() > 20)
@@ -231,19 +209,15 @@ void Level::HandleInput(SDL_Event _event)
 				error = "Nickname must contain 1 to 20 characters";
 			}
 			else {
-				//error = "You went to lv 2";
-				m_level2 = true;
-
+				m_level2 = true; 			
 			}
-
 		}
-
 	}
 	m_input->MS()->ProcessButtons(_event);
 }
 
-
-
+ofstream writeStream("saveGame.bin", ios::out | ios::binary);
+ifstream readStream("saveGame.bin", ios::in, ios::binary);
 
 void Level::HandleInputLvTwo(SDL_Event _event)
 {
@@ -252,7 +226,6 @@ void Level::HandleInputLvTwo(SDL_Event _event)
 	{
 		m_quit = true;
 	}
-
 	else if (m_input->MS()->Moved(_event, m_mPos) && m_input->MS()->GetButLDown())
 	{
 		if (m_mPos.X >= 1920 - 280 && m_mPos.Y >= 1080 - 170)
@@ -285,10 +258,8 @@ void Level::HandleInputLvTwo(SDL_Event _event)
 		{
 			m_p1Pos.x = m_mPos.X - 140;
 			m_p1Pos.y = m_mPos.Y - 85;
-		}
-		
+		}	
 	}
-
 	else if (m_input->MS()->Moved(_event, m_mPos) && m_input->MS()->GetButRDown())
 	{
 		if (m_mPos.X >= 1920 - 280 && m_mPos.Y >= 1080 - 170)
@@ -323,7 +294,6 @@ void Level::HandleInputLvTwo(SDL_Event _event)
 			m_p2Pos.y = m_mPos.Y - 85;
 		}
 	}
-
 	else if (m_input->KB()->KeyDown(_event, SDLK_d))
 	{
 	    if(m_p1Pos.x <= 1920 - 280)
@@ -344,7 +314,6 @@ void Level::HandleInputLvTwo(SDL_Event _event)
 		if (m_p1Pos.y <= 1080 - 170)
 		m_p1Pos.y += 400 * m_timing->GetDeltaTime();
 	}
-
 	else if (m_input->KB()->KeyDown(_event, SDLK_RIGHT))
 	{
 		if (m_p2Pos.x <= 1920 - 280)
@@ -365,29 +334,24 @@ void Level::HandleInputLvTwo(SDL_Event _event)
 		if (m_p2Pos.y <= 1080 - 170)
 			m_p2Pos.y += 400 * m_timing->GetDeltaTime();
 	}
-
 	else if ((m_input->CT()->Added(_event)) ||
 		      (m_input->CT()->Removed(_event)) ||
 			  (m_input->CT()->ProcessButtons(_event)) ||
 			  (m_input->CT()->ProcessMotion(_event)))
-			  {
-				  
+			  {			  
 				  /*NOTE: The logic implemented to handle when we pass the boundaries
 				          will make both animations to be in the same coordinates*/
-
 
 			      if (_event.caxis.axis == 0)
 				  {
 					  if (_event.caxis.value >= 1920 - 280)
 						  m_p1Pos.x = 1920 - 320;
-
 					  else if (_event.caxis.value <= 140)
 					  {
 						  m_p1Pos.x = 20;
 					  }
 					  else
 						  m_p1Pos.x = _event.caxis.value;
-
 				  }
 				  else if (_event.caxis.axis == 1)
 				  {
@@ -402,18 +366,14 @@ void Level::HandleInputLvTwo(SDL_Event _event)
 					  else
 					  m_p1Pos.y = _event.caxis.value;
 				  }
-
-				 
 				  if (_event.caxis.axis == 2) 
 				  {
 					  if (_event.caxis.value >= 1920 - 280)
 						  m_p2Pos.x = 1920 - 320;
-
 					  else if (_event.caxis.value <= 140)
 					  {
 						  m_p2Pos.x = 20;
 					  }
-
 					  else
 						  m_p1Pos.x = _event.caxis.value;
 				  }
@@ -430,10 +390,23 @@ void Level::HandleInputLvTwo(SDL_Event _event)
 					  else
 						  m_p2Pos.y = _event.caxis.value;
 				  }
-
-
 			  }
-		
+
+         // Failed to find a way to serialize and deserialize both players
+	     else if (m_input->KB()->KeyUp(_event, SDL_SCANCODE_F5))
+	     {
+			 m_saveCount++;
+			 Serialize(writeStream);
+			 ToString();
+			 writeStream.close();
+    	 }
+		 else if (m_input->KB()->KeyUp(_event, SDL_SCANCODE_F7))
+		 {
+			 m_loadCount++;
+			 Deserialize(readStream);
+			 ToString();
+			 readStream.close();
+		 } 
 	else
 	{
 		m_player1->HandleInput(_event, m_timing->GetDeltaTime());
@@ -442,19 +415,13 @@ void Level::HandleInputLvTwo(SDL_Event _event)
 	m_input->MS()->ProcessButtons(_event);
 }
 
-
-
-
-
 void Level::RunLevel(Renderer* _renderer)
 {
-	//Timing* t = &Timing::Instance();
 	_renderer->EnumerateDisplayModes();
 	_renderer->ChangeDisplayMode(&_renderer->GetResolutions()[0]);
 
 	TTFont* t = new TTFont();
 	t->Initialize(20);
-
 
 	m_fArial20 = new TTFont();
 	m_fArial20->Initialize(40);
@@ -465,10 +432,8 @@ void Level::RunLevel(Renderer* _renderer)
 	SpriteSheet* sheet = SpriteSheet::Pool->GetResource();
 	sheet->Load("../Assets/Textures/Background.tga");
 	
-
 	while (!m_quit)
-	{
-		
+	{	
 		m_timing->Tick();
 
 		_renderer->SetDrawColor(Color(255, 255, 255, 255));
@@ -476,35 +441,27 @@ void Level::RunLevel(Renderer* _renderer)
 
 		while (SDL_PollEvent(&m_sdlEvent) != 0)
 		{
-
 			HandleInput(m_sdlEvent);
-
 		}
 
 		_renderer->RenderTexture(sheet, Point{ 0, 0 });
 		m_fArial20->Write(_renderer->GetRenderer(), m_player1Name.c_str(), SDL_Color{ 255, 255, 0 }, SDL_Point{ 50, 50 });
 		m_fArial20->Write(_renderer->GetRenderer(), m_player2Name.c_str(), SDL_Color{ 255, 255, 0 }, SDL_Point{ 50, 200 });
-
 		m_fArial20->Write(_renderer->GetRenderer(), error.c_str(), SDL_Color{ 255, 0, 0 }, SDL_Point{ 50, 300 });
-
 
 		std::string guideline;
 		guideline = "Quit [ESC] Next Nickname [RETURN] ";
 		t->Write(_renderer->GetRenderer(), guideline.c_str(), SDL_Color{ 255, 255, 255 }, SDL_Point{ 10, 1050 });
 
-
 		if (m_level2 == true)
 		{
 			// call level2
 			RunLevel2(_renderer);
-
 		}
 
 		SDL_RenderPresent(_renderer->GetRenderer());
 		m_timing->CapFPS();
 	}
-
-
 	delete SpriteAnim::Pool;
 	delete SpriteSheet::Pool;
 }
@@ -518,53 +475,34 @@ void Level::RunLevel2(Renderer* _renderer)
 	m_effects[1] = m_audio->LoadEffect("../Assets/Audio/Effects/DistantGunshot.mp3");
 
 	std::string resultP1 = "Waiting to start...";
-	
 	std::string resultP2 = "Waiting to start...";
 	
-
-
 	while (!m_quit)
 	{
 		m_timing->Tick();
 		_renderer->SetDrawColor(Color(255, 255, 255, 255));
 		_renderer->ClearScreen();
-		/*resultP1 = "Waiting to start...";
-		resultP2 = "Waiting to start...";*/
-
+		
  		while (SDL_PollEvent(&m_sdlEvent) != 0)
 		{
-			
-
-
-  			if (m_sdlEvent.type == SDL_KEYUP && m_sdlEvent.key.keysym.sym == SDLK_SPACE)
+			if (m_sdlEvent.type == SDL_KEYUP && m_sdlEvent.key.keysym.sym == SDLK_SPACE)
 			{
-				/*resultP1 = "Rolling...";
-				resultP2 = "Rolling...";*/
-
-				//m_audio->Play(m_effects[0]);
-				int win = 0, win1 = 0, loss = 0, loss1 = 0;
-
 				if (m_player1->GetState() == PlayerState::GetRollState() && m_player2->GetState() == PlayerState::GetRollState())
 				{
 					m_audio->Play(m_effects[0]);
-
-					//m_audio->Play(m_effects[1]);
 					resultP1 = "Rolling...";
 					resultP2 = "Rolling...";
 				}
-
 				else if (m_player1->GetState() == m_player2->GetState() &&
 					     m_player1->GetState() != PlayerState::GetRollState() && m_player2->GetState() != PlayerState::GetRollState())
 				{
-					//m_audio->Play(m_effects[1]);
+					m_audio->Play(m_effects[1]);
 					resultP1 = "DRAW!";
 					resultP2 = "DRAW!";
-
 				}
 				else
 				{
-					//m_audio->Play(m_effects[1]);
-
+					m_audio->Play(m_effects[1]);
 					if (m_player1->GetState() == PlayerState::GetRockState() && m_player2->GetState() == PlayerState::GetScissorState() ||
 						m_player1->GetState() == PlayerState::GetPaperState() && m_player2->GetState() == PlayerState::GetRockState() ||
 						m_player1->GetState() == PlayerState::GetScissorState() && m_player2->GetState() == PlayerState::GetPaperState() ||
@@ -585,18 +523,11 @@ void Level::RunLevel2(Renderer* _renderer)
 						resultP1 = "LOSSER!";
 						m_player1Win++;
 						m_playerLoss++;
-
 					}
 				}
-				/*m_player1Win += loss1;
-				m_player1Win += win1;
-				m_playerLoss += loss;
-				m_playerWin += win; */
-
 			}
 			HandleInputLvTwo(m_sdlEvent);
 		}
-
 
 		m_player1->Update(m_timing->GetDeltaTime());
 		m_player1->Render(_renderer, m_p1Pos);
@@ -604,24 +535,16 @@ void Level::RunLevel2(Renderer* _renderer)
 		m_player2->Update(m_timing->GetDeltaTime());
 		m_player2->Render(_renderer, m_p2Pos);
 
-
-		
-
 		std::string numWins = "Wins: " + to_string(m_playerWin);
  		std::string numLosses = "Losses: " + to_string(m_playerLoss);
 
 		std::string numWins1 = "Wins: " + to_string(m_player1Win);
 		std::string numLosses1 = "Losses: " + to_string(m_player1Loss); 
-		
-		
-		
 
 		m_fArial20->Write(_renderer->GetRenderer(), m_player1Name.c_str(), SDL_Color{ 0, 255, 0 }, SDL_Point{ (int)m_p1Pos.x,  (int)m_p1Pos.y - 20});
 		m_fArial20->Write(_renderer->GetRenderer(), resultP1.c_str(), SDL_Color{ 255, 0, 0 }, SDL_Point{ (int)m_p1Pos.x,  (int)m_p1Pos.y});
 		m_fArial20->Write(_renderer->GetRenderer(), numWins.c_str(), SDL_Color{ 0, 0, 255 }, SDL_Point{ (int)m_p1Pos.x,  (int)m_p1Pos.y + 20 });
 		m_fArial20->Write(_renderer->GetRenderer(), numLosses.c_str(), SDL_Color{ 0, 0, 255 }, SDL_Point{ (int)m_p1Pos.x,  (int)m_p1Pos.y + 40 });
-
-
 
 		m_fArial20->Write(_renderer->GetRenderer(), m_player2Name.c_str(), SDL_Color{ 0, 255, 0 }, SDL_Point{ (int)m_p2Pos.x,  (int)m_p2Pos.y - 20 });
 		m_fArial20->Write(_renderer->GetRenderer(), resultP2.c_str(), SDL_Color{ 255, 0, 0 }, SDL_Point{ (int)m_p2Pos.x,  (int)m_p2Pos.y});
@@ -631,11 +554,11 @@ void Level::RunLevel2(Renderer* _renderer)
 		std::string guideLine;
 		std::string guideLine2;
 
-		guideLine = "Frames Per Second: " + to_string(m_timing->GetFPS()) + "   Game Time: " + to_string(SDL_GetTicks() / 1000) + "   Saves: " + "   Loads: ";
+		guideLine = "Frames Per Second: " + to_string(m_timing->GetFPS()) + "   Game Time: " + to_string(SDL_GetTicks() / 1000) + "   Saves: " +to_string(m_saveCount) 
+			+ "   Loads: " + to_string(m_loadCount);
 		guideLine2 = "Quit [ESC]   Next Game State [Space]   Save [F5]   Load[F7]" ;
 		m_fArial20->Write(_renderer->GetRenderer(), guideLine.c_str(), SDL_Color{ 0, 0, 255 }, SDL_Point{10, 1030});
 		m_fArial20->Write(_renderer->GetRenderer(), guideLine2.c_str(), SDL_Color{ 0, 0, 255 }, SDL_Point{ 10, 1060 });
-
 
 		SDL_RenderPresent(_renderer->GetRenderer());
 		m_timing->CapFPS();

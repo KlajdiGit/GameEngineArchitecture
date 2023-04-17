@@ -57,6 +57,8 @@ private:
 	glm::vec2 m_p1Pos;
 	glm::vec2 m_p2Pos;
 	Point m_mPos;
+	int m_loadCount;
+	int m_saveCount;
 
 
 
