@@ -628,10 +628,12 @@ void Level::RunLevel2(Renderer* _renderer)
 		m_fArial20->Write(_renderer->GetRenderer(), numWins1.c_str(), SDL_Color{ 0, 0, 255 }, SDL_Point{ (int)m_p2Pos.x,  (int)m_p2Pos.y + 20 });
 		m_fArial20->Write(_renderer->GetRenderer(), numLosses1.c_str(), SDL_Color{ 0, 0, 255 }, SDL_Point{ (int)m_p2Pos.x,  (int)m_p2Pos.y + 40 });
 
+		/*std::string guideLine;
 		
+		guideLine = ""*/
 
 
-		SDL_RenderPresent(_renderer->GetRenderer());
-
+		//SDL_RenderPresent(_renderer->GetRenderer());
+		m_timing->CapFPS();
 	}
 }
