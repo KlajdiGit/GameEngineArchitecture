@@ -13,7 +13,7 @@
 #include "PhysicsController.h"
 #include "RigidBody.h"
 #include "Player.h"
-
+#include "Controller.h"
 
 
 Level::Level()
@@ -49,6 +49,7 @@ Level::Level()
 	m_p1Pos = { 20, 30 };
 	m_p2Pos = { 20, 330 };
 	m_mPos = { };
+
 
 }
 
@@ -365,9 +366,79 @@ void Level::HandleInputLvTwo(SDL_Event _event)
 			m_p2Pos.y += 400 * m_timing->GetDeltaTime();
 	}
 
-	m_player1->HandleInput(_event, m_timing->GetDeltaTime());
-	m_player2->HandleInput(_event, m_timing->GetDeltaTime());
+	else if ((m_input->CT()->Added(_event)) ||
+		      (m_input->CT()->Removed(_event)) ||
+			  (m_input->CT()->ProcessButtons(_event)) ||
+			  (m_input->CT()->ProcessMotion(_event)))
+			  {
+				  
+				  /*NOTE: The logic implemented to handle when we pass the boundaries
+				          will make both animations to be in the same coordinates*/
 
+
+			      if (_event.caxis.axis == 0)
+				  {
+					  if (_event.caxis.value % 1921 >= 1920 - 280)
+						  m_p1Pos.x = 1920 - 320;
+
+					  else if (_event.caxis.value <= 140)
+					  {
+						  m_p1Pos.x = 20;
+					  }
+					  else
+						  m_p1Pos.x = _event.caxis.value % 1921;
+
+				  }
+				  else if (_event.caxis.axis == 1)
+				  {
+					  if (_event.caxis.value % 1081 >= 1080 - 170)
+					  {
+						  m_p1Pos.y = 1080 - 210;
+					  }
+					  else if (_event.caxis.value <= 85)
+					  {
+						  m_p1Pos.y = 30;
+					  }
+					  else
+					  m_p1Pos.y = _event.caxis.value % 1081;
+				  }
+
+				 
+				  if (_event.caxis.axis == 2) 
+				  {
+					  if (_event.caxis.value >= 1920 - 280)
+						  m_p2Pos.x = 1920 - 320;
+
+					  else if (_event.caxis.value <= 140)
+					  {
+						  m_p2Pos.x = 20;
+					  }
+
+					  else
+						  m_p1Pos.x = _event.caxis.value;
+				  }
+				  else if (_event.caxis.axis == 3) 
+				  {
+					  if (_event.caxis.value >= 1080 - 170)
+					  {
+						  m_p2Pos.y = 1080 - 210;
+					  }
+					  else if (_event.caxis.value <= 85)
+					  {
+						  m_p2Pos.y = 30; 
+					  }
+					  else
+						  m_p2Pos.y = _event.caxis.value;
+				  }
+
+
+			  }
+		
+	else
+	{
+		m_player1->HandleInput(_event, m_timing->GetDeltaTime());
+		m_player2->HandleInput(_event, m_timing->GetDeltaTime());
+	}
 	m_input->MS()->ProcessButtons(_event);
 }
 
