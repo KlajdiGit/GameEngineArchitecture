@@ -628,12 +628,16 @@ void Level::RunLevel2(Renderer* _renderer)
 		m_fArial20->Write(_renderer->GetRenderer(), numWins1.c_str(), SDL_Color{ 0, 0, 255 }, SDL_Point{ (int)m_p2Pos.x,  (int)m_p2Pos.y + 20 });
 		m_fArial20->Write(_renderer->GetRenderer(), numLosses1.c_str(), SDL_Color{ 0, 0, 255 }, SDL_Point{ (int)m_p2Pos.x,  (int)m_p2Pos.y + 40 });
 
-		/*std::string guideLine;
-		
-		guideLine = ""*/
+		std::string guideLine;
+		std::string guideLine2;
+
+		guideLine = "Frames Per Second: " + to_string(m_timing->GetFPS()) + "   Game Time: " + to_string(SDL_GetTicks() / 1000) + "   Saves: " + "   Loads: ";
+		guideLine2 = "Quit [ESC]   Next Game State [Space]   Save [F5]   Load[F7]" ;
+		m_fArial20->Write(_renderer->GetRenderer(), guideLine.c_str(), SDL_Color{ 0, 0, 255 }, SDL_Point{10, 1030});
+		m_fArial20->Write(_renderer->GetRenderer(), guideLine2.c_str(), SDL_Color{ 0, 0, 255 }, SDL_Point{ 10, 1060 });
 
 
-		//SDL_RenderPresent(_renderer->GetRenderer());
+		SDL_RenderPresent(_renderer->GetRenderer());
 		m_timing->CapFPS();
 	}
 }
