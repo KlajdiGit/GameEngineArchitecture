@@ -15,7 +15,7 @@ This project illustrates a game engine architecture developed in C++ using Visua
 Technologies used in this project:
 - **OpenGL**
 - **GLM**
-- **SDL**.
+- **SDL**
 
 ## Installation
 Feel free to clone the repository by using the link at the code button or just by downloading the zip file
